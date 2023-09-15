@@ -70,7 +70,7 @@ static void __wifi_event_handler(void* arg, esp_event_base_t event_base,
             memset(st.ssid, 0,  sizeof(st.ssid));
             st.rssi = 0;
             __wifi_st_set(&st);
-
+            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_WIFI_ST, &st, sizeof(struct view_data_wifi_st ), portMAX_DELAY);
             esp_wifi_connect();
             break;
         }
@@ -441,7 +441,7 @@ int indicator_wifi_init(void)
 
     __wifi_model_init();
     
-    xTaskCreate(&__indicator_wifi_task, "__indicator_wifi_task", 1024 * 5, NULL, 10, NULL);
+    xTaskCreate(&__indicator_wifi_task, "__indicator_wifi_task", 1024 * 4, NULL, 10, NULL);
 
 
     ESP_ERROR_CHECK(esp_netif_init());

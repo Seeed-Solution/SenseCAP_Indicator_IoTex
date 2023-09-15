@@ -2,13 +2,13 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "bsp_board.h"
-#include "lv_port.h"
+
 #include "esp_event.h"
 #include "esp_event_base.h"
 
 #include "indicator_model.h"
 #include "indicator_view.h"
-//#include "indicator_controller.h"
+// #include "indicator_controller.h"
 
 static const char *TAG = "app_main";
 
@@ -53,9 +53,9 @@ void app_main(void)
     lv_port_sem_give();
 
     indicator_model_init();
-    indicator_controller_init();
+    // indicator_controller_init();
 
-    static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
+    // static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
     while (1) {
         // sprintf(buffer, "   Biggest /     Free /    Total\n"
         //         "\t  DRAM : [%8d / %8d / %8d]\n"

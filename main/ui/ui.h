@@ -66,6 +66,13 @@ void ui_event_setting_binding( lv_event_t * e);
 extern lv_obj_t *ui_setting_binding;
 extern lv_obj_t *ui_setting_binding_icon;
 extern lv_obj_t *ui_setting_binding_title;
+// SCREEN: ui_screen_wifi
+void ui_screen_wifi_screen_init(void);
+extern lv_obj_t *ui_screen_wifi;
+extern lv_obj_t *ui_wifi_st_6;
+extern lv_obj_t *ui_wifi_title;
+void ui_event_back3( lv_event_t * e);
+extern lv_obj_t *ui_back3;
 // SCREEN: ui_screen_time
 void ui_screen_time_screen_init(void);
 void ui_event_screen_time( lv_event_t * e);
@@ -176,13 +183,6 @@ extern lv_obj_t *ui_min_cfg;
 extern lv_obj_t *ui_sec_cfg;
 extern lv_obj_t *ui_time_label1;
 extern lv_obj_t *ui_time_label2;
-// SCREEN: ui_screen_wifi
-void ui_screen_wifi_screen_init(void);
-extern lv_obj_t *ui_screen_wifi;
-extern lv_obj_t *ui_wifi_st_6;
-extern lv_obj_t *ui_wifi_title;
-void ui_event_back3( lv_event_t * e);
-extern lv_obj_t *ui_back3;
 extern lv_obj_t *ui____initial_actions0;
 
 LV_IMG_DECLARE( ui_img_wifi_disconet_png);   // assets\wifi_disconet.png
@@ -191,6 +191,8 @@ LV_IMG_DECLARE( ui_img_wifi_setting_png);   // assets\wifi_setting.png
 LV_IMG_DECLARE( ui_img_display_png);   // assets\display.png
 LV_IMG_DECLARE( ui_img_time_png);   // assets\time.png
 LV_IMG_DECLARE( ui_img_1870666550);   // assets\we3stream logo (1).png
+LV_IMG_DECLARE( ui_img_back_png);   // assets\back.png
+LV_IMG_DECLARE( ui_img_lock_png);   // assets\lock.png
 LV_IMG_DECLARE( ui_img_location_png);   // assets\location.png
 LV_IMG_DECLARE( ui_img_temp_1_png);   // assets\temp_1.png
 LV_IMG_DECLARE( ui_img_humidity_1_png);   // assets\humidity_1.png
@@ -198,7 +200,6 @@ LV_IMG_DECLARE( ui_img_co2_png);   // assets\co2.png
 LV_IMG_DECLARE( ui_img_tvoc_png);   // assets\tvoc.png
 LV_IMG_DECLARE( ui_img_temp_2_png);   // assets\temp_2.png
 LV_IMG_DECLARE( ui_img_humidity_2_png);   // assets\humidity_2.png
-LV_IMG_DECLARE( ui_img_back_png);   // assets\back.png
 LV_IMG_DECLARE( ui_img_high_light_png);   // assets\high_light.png
 LV_IMG_DECLARE( ui_img_low_light_png);   // assets\low_light.png
 LV_IMG_DECLARE( ui_img_location2_png);   // assets\location2.png

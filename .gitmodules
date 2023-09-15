@@ -1,0 +1,6 @@
+[submodule "ESP32-Tools"]
+	path = ESP32-Tools
+	url = https://github.com/Love4yzp/ESP32-Tools
+[submodule "tools"]
+	path = tools
+	url = https://github.com/Love4yzp/ESP32-Tools

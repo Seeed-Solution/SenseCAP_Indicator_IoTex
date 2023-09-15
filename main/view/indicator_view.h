@@ -1,14 +1,16 @@
 #ifndef INDICATOR_VIEW_H
 #define INDICATOR_VIEW_H
 
-#include "view_data.h"
 #include "lvgl.h"
+#include "ui.h"
+#include "ui_helpers.h"
+#include "view_data.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-int indicator_view_init(void);
+LV_IMG_DECLARE( ui_img_lock_png );
+int indicator_view_init( void );
 
 #ifdef __cplusplus
 }

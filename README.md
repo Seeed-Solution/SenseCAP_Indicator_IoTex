@@ -1,22 +1,16 @@
-# SenseCAP Indicator IoTex
+# Mission Pack X SenseCAP Indicator
 
 ## Introduction
 
-This is a SenseCAP Indicator IoTex project.
+The SenseCAP Indicator will try pull data from SenseCAP portal website via MQTT protocol. The data will be displayed on the screen.
 
-## Prerequisites
+Task list:
+- [X] Pull data from SenseCAP portal website via MQTT protocol
+- [X] Display data on the screen
+- [X] Display the danamic data of Jetson model
+- [X] Trakcer Grove Sensors integration
 
-- [IoTex](https://iotex.io/) account
-- [SenseCAP Indicator](https://www.seeedstudio.com/SenseCAP-Indicator-D1S-p-5645.html)
-- [ESP-IDF](https://github.com/espressif/esp-idf)
 
-## Usage
-
-1. Clone this repository
-
-   ```bash
-   git clone https://github.com/Seeed-Solution/SenseCAP_Indicator_IoTex
-    ```
-2. Install dependencies
-
-- [How To Flash The Native Firmware](https://wiki.seeedstudio.com/SenseCAP_Indicator_How_To_Flash_The_Default_Firmware/)
+## MQTT Instruction
+> https://sensecap-docs.seeed.cc/zh/data_openstream_quickstart.html
+>

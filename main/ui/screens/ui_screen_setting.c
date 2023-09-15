@@ -36,6 +36,7 @@ lv_obj_set_height( ui_time3, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_time3, 30 );
 lv_obj_set_y( ui_time3, 20 );
 lv_label_set_text(ui_time3,"00:00");
+lv_obj_add_flag( ui_time3, LV_OBJ_FLAG_HIDDEN );   /// Flags
 lv_obj_set_style_text_font(ui_time3, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_setting_icon = lv_img_create(ui_screen_setting);
@@ -205,7 +206,7 @@ lv_obj_set_height( ui_setting_binding_title, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_setting_binding_title, 0 );
 lv_obj_set_y( ui_setting_binding_title, 25 );
 lv_obj_set_align( ui_setting_binding_title, LV_ALIGN_CENTER );
-lv_label_set_text(ui_setting_binding_title,"Binding");
+lv_label_set_text(ui_setting_binding_title,"Device Registration");
 lv_obj_set_style_text_font(ui_setting_binding_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 lv_obj_add_event_cb(ui_wifi__st_button_3, ui_event_wifi__st_button_3, LV_EVENT_ALL, NULL);

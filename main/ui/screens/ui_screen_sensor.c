@@ -36,6 +36,7 @@ lv_obj_set_height( ui_time2, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_time2, 30 );
 lv_obj_set_y( ui_time2, 20 );
 lv_label_set_text(ui_time2,"21:20");
+lv_obj_add_flag( ui_time2, LV_OBJ_FLAG_HIDDEN );   /// Flags
 lv_obj_set_style_text_font(ui_time2, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_co2 = lv_btn_create(ui_screen_sensor);

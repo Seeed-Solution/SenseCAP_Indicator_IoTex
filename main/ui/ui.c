@@ -65,6 +65,15 @@ lv_obj_t *ui_setting_binding_icon;
 lv_obj_t *ui_setting_binding_title;
 
 
+// SCREEN: ui_screen_wifi
+void ui_screen_wifi_screen_init(void);
+lv_obj_t *ui_screen_wifi;
+lv_obj_t *ui_wifi_st_6;
+lv_obj_t *ui_wifi_title;
+void ui_event_back3( lv_event_t * e);
+lv_obj_t *ui_back3;
+
+
 // SCREEN: ui_screen_time
 void ui_screen_time_screen_init(void);
 void ui_event_screen_time( lv_event_t * e);
@@ -181,15 +190,6 @@ lv_obj_t *ui_min_cfg;
 lv_obj_t *ui_sec_cfg;
 lv_obj_t *ui_time_label1;
 lv_obj_t *ui_time_label2;
-
-
-// SCREEN: ui_screen_wifi
-void ui_screen_wifi_screen_init(void);
-lv_obj_t *ui_screen_wifi;
-lv_obj_t *ui_wifi_st_6;
-lv_obj_t *ui_wifi_title;
-void ui_event_back3( lv_event_t * e);
-lv_obj_t *ui_back3;
 lv_obj_t *ui____initial_actions0;
 const lv_img_dsc_t *ui_imgset_co[1] = {&ui_img_co2_png};
 const lv_img_dsc_t *ui_imgset_humidity_[2] = {&ui_img_humidity_1_png, &ui_img_humidity_2_png};
@@ -308,6 +308,12 @@ if ( event_code == LV_EVENT_LONG_PRESSED) {
       _ui_screen_change( &ui_screen_date_time, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_date_time_screen_init);
 }
 }
+void ui_event_back3( lv_event_t * e) {
+    lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
+if ( event_code == LV_EVENT_CLICKED) {
+      _ui_screen_change( &ui_screen_setting, LV_SCR_LOAD_ANIM_OVER_TOP, 200, 0, &ui_screen_setting_screen_init);
+}
+}
 void ui_event_screen_time( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
 if ( event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT  ) {
@@ -391,12 +397,6 @@ if ( event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target,LV_STATE_
       _ui_flag_modify( ui_date_time, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
 }
 }
-void ui_event_back3( lv_event_t * e) {
-    lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_CLICKED) {
-      _ui_screen_change( &ui_screen_setting, LV_SCR_LOAD_ANIM_OVER_TOP, 200, 0, &ui_screen_setting_screen_init);
-}
-}
 
 ///////////////////// SCREENS ////////////////////
 
@@ -407,11 +407,11 @@ lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE
 lv_disp_set_theme(dispp, theme);
 ui_screen_binding_screen_init();
 ui_screen_setting_screen_init();
+ui_screen_wifi_screen_init();
 ui_screen_time_screen_init();
 ui_screen_sensor_screen_init();
 ui_screen_display_screen_init();
 ui_screen_date_time_screen_init();
-ui_screen_wifi_screen_init();
 ui____initial_actions0 = lv_obj_create(NULL);
 lv_disp_load_scr( ui_screen_binding);
 }
