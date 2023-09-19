@@ -13,7 +13,10 @@ file(GLOB_RECURSE CONTROLLER_SOURCES ${CONTROLLER_DIR}/*.c)
 set(UTIL_DIR ./util)
 file(GLOB_RECURSE UTIL_SOURCES ${UTIL_DIR}/*.c)
 
+set(LIB_DIR ./lib)
+file(GLOB_RECURSE LIB_SOURCES ${LIB_DIR}/*.c)
+
 idf_component_register(
-    SRCS "main.c" ${MODEL_SOURCES}  ${UTIL_SOURCES} "lv_port.c"  ${VIEW_SOURCES}  ${UI_SOURCES} #${CONTROLLER_SOURCES}
+    SRCS "main.c" "config.c" ${MODEL_SOURCES}  ${UTIL_SOURCES} "lv_port.c"  ${VIEW_SOURCES}  ${UI_SOURCES} #${CONTROLLER_SOURCES}
     INCLUDE_DIRS "."  ${MODEL_DIR} ${UTIL_DIR}  ${VIEW_DIR}  ${UI_DIR} #${CONTROLLER_DIR}
     EMBED_TXTFILES timeapi_cert.pem)

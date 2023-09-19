@@ -1,7 +1,7 @@
+#include "bsp_board.h"
+#include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_log.h"
-#include "bsp_board.h"
 
 #include "esp_event.h"
 #include "esp_event_base.h"
@@ -12,9 +12,9 @@
 
 static const char *TAG = "app_main";
 
-#define VERSION   "v1.0.0"
+#define VERSION  "v1.0.0"
 
-#define SENSECAP  "\n\
+#define SENSECAP "\n\
    _____                      _________    ____         \n\
   / ___/___  ____  ________  / ____/   |  / __ \\       \n\
   \\__ \\/ _ \\/ __ \\/ ___/ _ \\/ /   / /| | / /_/ /   \n\
@@ -28,6 +28,8 @@ static const char *TAG = "app_main";
 ESP_EVENT_DEFINE_BASE(VIEW_EVENT_BASE);
 esp_event_loop_handle_t view_event_handle;
 
+ESP_EVENT_DEFINE_BASE(CFG_EVENT_BASE);
+esp_event_loop_handle_t cfg_event_handle;
 
 void app_main(void)
 {
@@ -36,17 +38,24 @@ void app_main(void)
     ESP_ERROR_CHECK(bsp_board_init());
     lv_port_init();
 
-
     esp_event_loop_args_t view_event_task_args = {
-        .queue_size = 10,
-        .task_name = "view_event_task",
-        .task_priority = uxTaskPriorityGet(NULL),
+        .queue_size      = 10,
+        .task_name       = "view_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
         .task_stack_size = 10240,
-        .task_core_id = tskNO_AFFINITY
-    };
+        .task_core_id    = tskNO_AFFINITY};
+
+    esp_event_loop_args_t cfg_event_task_args = {
+        .queue_size      = 5,
+        .task_name       = "cfg_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
+        .task_stack_size = 4096,
+        .task_core_id    = tskNO_AFFINITY};
 
     ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
+    ESP_ERROR_CHECK(esp_event_loop_create(&cfg_event_task_args, &cfg_event_handle));
 
+    w3b_cfg_init();
 
     lv_port_sem_take();
     indicator_view_init();

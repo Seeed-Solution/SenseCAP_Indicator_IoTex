@@ -3,7 +3,7 @@ bin
 .config
 *.o
 *.pyc
-#sdkconfig # modified
+sdkconfig
 sdkconfig.old
 # dependencies.lock
 # emacs

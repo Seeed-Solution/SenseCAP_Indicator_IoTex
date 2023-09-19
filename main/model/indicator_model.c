@@ -6,6 +6,7 @@
 #include "indicator_btn.h"
 // #include "indicator_city.h"
 #include "indicator_mqtt.h"
+#include "indicator_cmd.h"
 
 int indicator_model_init(void)
 {
@@ -17,5 +18,5 @@ int indicator_model_init(void)
     indicator_display_init();  // lcd bl on
     indicator_btn_init();
     indicator_mqtt_init();
-
+    indicator_cmd_init();
 }
