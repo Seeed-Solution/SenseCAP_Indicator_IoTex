@@ -26,7 +26,7 @@ extern esp_event_loop_handle_t cfg_event_handle;
 #define SN_MAX_LEN      18
 #define WALLET_MAX_LEN  160
 
-enum {
+enum CFG_EVENT{
     CFG_EVENT_READ,
     CFG_EVENT_WRITE,
     CFG_EVENT_ALL,

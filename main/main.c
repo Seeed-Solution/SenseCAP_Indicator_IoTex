@@ -55,13 +55,14 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
     ESP_ERROR_CHECK(esp_event_loop_create(&cfg_event_task_args, &cfg_event_handle));
 
-    w3b_cfg_init();
 
     lv_port_sem_take();
     indicator_view_init();
     lv_port_sem_give();
 
     indicator_model_init();
+    
+    w3b_cfg_init();
     // indicator_controller_init();
 
     // static char buffer[128];    /* Make sure buffer is enough for `sprintf` */
