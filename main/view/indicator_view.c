@@ -589,15 +589,6 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             }
             break;
         }
-        case VIEW_EVENT_MQTT_IOTEX_CFG: {
-            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
-            w3b_cfg_interface * p_cfg = (w3b_cfg_interface *)event_data;
-            // ESP_LOGW(TAG, "wallet: %s",p_cfg->wallet);
-            // ESP_LOGW(TAG, "sn: %s",p_cfg->sn);
-            lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
-            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
-            break;
-        }
         default:
             break;
     }

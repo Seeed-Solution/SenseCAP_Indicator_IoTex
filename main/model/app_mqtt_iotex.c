@@ -567,11 +567,11 @@ static void iotex_app_task(void *pvParameters)
     default_SetSeed(esp_random());
     iotex_import_key_example();
 
-    // send the address
-    // if (esp_event_post_to(mqtt_app_event_handle, MQTT_APP_EVENT_BASE, MQTT_APP_START, &instance_ptr, sizeof(instance_ptr), portMAX_DELAY) != ESP_OK) {
-    //     ESP_LOGE(TAG, "esp_event_post_to error");
-    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    // }
+    // Start the MQTT
+    if (esp_event_post_to(mqtt_app_event_handle, MQTT_APP_EVENT_BASE, MQTT_APP_START, &instance_ptr, sizeof(instance_ptr), portMAX_DELAY) != ESP_OK) {
+        ESP_LOGE(TAG, "esp_event_post_to error");
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 
     while (1) {
 

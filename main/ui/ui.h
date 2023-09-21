@@ -31,9 +31,9 @@ extern lv_obj_t *ui_scrolldots7;
 extern lv_obj_t *ui_Panel_user;
 extern lv_obj_t *ui_Panel_SN;
 extern lv_obj_t *ui_Label_SN;
-extern lv_obj_t *ui_TextArea_SN;
-extern lv_obj_t *ui_Label_WAD;
 extern lv_obj_t *ui_TextArea_WAD;
+extern lv_obj_t *ui_Label_WAD;
+extern lv_obj_t *ui_TextArea_SN;
 extern lv_obj_t *ui_btn_bind;
 extern lv_obj_t *ui_label_bind;
 // SCREEN: ui_screen_setting

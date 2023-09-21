@@ -2735,7 +2735,7 @@
                       {
                         "nid": -2044314812,
                         "strtype": "OBJECT/Name",
-                        "strval": "TextArea SN",
+                        "strval": "TextArea WAD",
                         "InheritedType": 10
                       },
                       {
@@ -3099,7 +3099,7 @@
                       {
                         "disabled": false,
                         "nid": 1146802193,
-                        "strtype": "TEXTAREA/EventHandler",
+                        "strtype": "_event/EventHandler",
                         "strval": "CLICKED",
                         "childs": [
                           {
@@ -3122,7 +3122,7 @@
                           },
                           {
                             "nid": 1323732085,
-                            "strtype": "_custom/action",
+                            "strtype": "_event/action",
                             "strval": "MODIFY FLAG",
                             "childs": [
                               {
@@ -3465,7 +3465,7 @@
                       {
                         "nid": -1263849582,
                         "strtype": "OBJECT/Name",
-                        "strval": "TextArea WAD",
+                        "strval": "TextArea SN",
                         "InheritedType": 10
                       },
                       {
@@ -3830,7 +3830,7 @@
                       {
                         "disabled": false,
                         "nid": -243896573,
-                        "strtype": "TEXTAREA/EventHandler",
+                        "strtype": "_event/EventHandler",
                         "strval": "CLICKED",
                         "childs": [
                           {
@@ -3853,7 +3853,7 @@
                           },
                           {
                             "nid": 536569650,
-                            "strtype": "_custom/action",
+                            "strtype": "_event/action",
                             "strval": "MODIFY FLAG",
                             "childs": [
                               {

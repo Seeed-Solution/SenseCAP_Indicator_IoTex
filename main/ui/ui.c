@@ -26,9 +26,9 @@ lv_obj_t *ui_scrolldots7;
 lv_obj_t *ui_Panel_user;
 lv_obj_t *ui_Panel_SN;
 lv_obj_t *ui_Label_SN;
-lv_obj_t *ui_TextArea_SN;
-lv_obj_t *ui_Label_WAD;
 lv_obj_t *ui_TextArea_WAD;
+lv_obj_t *ui_Label_WAD;
+lv_obj_t *ui_TextArea_SN;
 lv_obj_t *ui_btn_bind;
 lv_obj_t *ui_label_bind;
 

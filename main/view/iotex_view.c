@@ -10,6 +10,8 @@
  */
 #include "iotex_view.h"
 
+static const char *TAG = "IOTEX_VIEW";
+
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
     lv_port_sem_take();
@@ -29,7 +31,6 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
 
 int iotex_view_init(void)
 {
-    int i = 0;
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,
                                                              __view_event_handler, NULL, NULL));
