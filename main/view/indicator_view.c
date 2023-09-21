@@ -524,7 +524,7 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             // lv_img_set_src(ui_wifi_st_4, (void *)p_src);
             // lv_img_set_src(ui_wifi_st_5, (void *)p_src);
             lv_img_set_src(ui_wifi_st_6, (void *)p_src);
-            lv_img_set_src(ui_wifi_st_7 , (void *)p_src);
+            lv_img_set_src(ui_wifi_st_7, (void *)p_src);
             break;
         }
         case VIEW_EVENT_WIFI_LIST: {
@@ -589,6 +589,15 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             }
             break;
         }
+        case VIEW_EVENT_MQTT_IOTEX_CFG: {
+            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
+            w3b_cfg_interface * p_cfg = (w3b_cfg_interface *)event_data;
+            // ESP_LOGW(TAG, "wallet: %s",p_cfg->wallet);
+            // ESP_LOGW(TAG, "sn: %s",p_cfg->sn);
+            lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
+            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
+            break;
+        }
         default:
             break;
     }
@@ -622,6 +631,7 @@ static void draw_part_event_cb(lv_event_t *e)
     }
 }
 
+#include "iotex_view.h"
 int indicator_view_init(void)
 {
     ui_init();
@@ -633,4 +643,6 @@ int indicator_view_init(void)
                                                                  VIEW_EVENT_BASE, i,
                                                                  __view_event_handler, NULL, NULL));
     }
+
+    iotex_view_init();
 }

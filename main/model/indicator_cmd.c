@@ -48,7 +48,7 @@ static int fn_w3b_cm_set(int argc, char **argv)
     }
     if (w3b_cmd_args.sn->count == 0 || w3b_cmd_args.wallet_addr->count == 0) {
         ESP_LOGE(TAG, "w3b_cm_set: sn or wallet_addr is null");
-        response_cmd(ERR, "sn or wallet_addr is null");
+        response_cmd(CFG_FAIL, "sn or wallet_addr is null");
         return -1;
     }
 
@@ -56,20 +56,21 @@ static int fn_w3b_cm_set(int argc, char **argv)
     int wad_len = strlen(w3b_cmd_args.wallet_addr->sval[0]);
     if (sn_len > SN_MAX_LEN) {
         ESP_LOGE(TAG, "w3b_cm_set: sn %d is too long", sn_len);
-        response_cmd(ERR, "sn is too long");
+        response_cmd(CFG_FAIL, "sn is too long");
         return -1;
     }
     if (wad_len > WALLET_MAX_LEN) {
         ESP_LOGE(TAG, "w3b_cm_set: wallet_addr %d is too long", wad_len);
-        response_cmd(ERR, "wallet_addr is too long");
+        response_cmd(CFG_FAIL, "wallet_addr is too long");
         return -1;
     }
     w3b_cfg_interface cfg;
-    ESP_LOGI(TAG, "wirte sn:%s, wallet_addr:%s", w3b_cmd_args.sn->sval[0], w3b_cmd_args.wallet_addr->sval[0]);
+    memset(&cfg, 0, sizeof(w3b_cfg_interface));
     cfg.sn_len     = sn_len;
     cfg.wallet_len = wad_len;
     memcpy(cfg.sn, w3b_cmd_args.sn->sval[0], sn_len);
     memcpy(cfg.wallet, w3b_cmd_args.wallet_addr->sval[0], wad_len);
+
     esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_WRITE, &cfg, sizeof(w3b_cfg_interface), portMAX_DELAY);
     return ESP_OK;
 }

@@ -23,6 +23,9 @@ extern esp_event_loop_handle_t view_event_handle;
 ESP_EVENT_DECLARE_BASE(CFG_EVENT_BASE);
 extern esp_event_loop_handle_t cfg_event_handle;
 
+ESP_EVENT_DECLARE_BASE(MQTT_APP_EVENT_BASE);
+extern esp_event_loop_handle_t mqtt_app_event_handle;
+
 #define SN_MAX_LEN      18
 #define WALLET_MAX_LEN  160
 
@@ -32,6 +35,13 @@ enum CFG_EVENT{
     CFG_EVENT_ALL,
 };
 
+enum MQTT_APP_EVENT{
+    MQTT_APP_START,
+    MQTT_APP_RESTART,
+    MQTT_APP_STOP,
+    MQTT_APP_ALL,
+};
+
 typedef struct {
     char             sn[SN_MAX_LEN + 1];
     int              sn_len;
@@ -39,12 +49,12 @@ typedef struct {
     int              wallet_len;
 } w3b_cfg_interface;
 
-enum at_state {
-    OK,
-    ERR,
-};
+typedef enum {
+    CFG_OK,
+    CFG_FAIL,
+}CFG_STATUS;
 
-void response_cmd(enum at_state state, char *resp);
+void response_cmd(CFG_STATUS status, char *resp);
 esp_err_t w3b_cfg_init();
 #ifdef __cplusplus
 }

@@ -111,40 +111,14 @@ lv_obj_set_x( ui_Label_SN, 0 );
 lv_obj_set_y( ui_Label_SN, 10 );
 lv_label_set_text(ui_Label_SN,"S/N");
 
-ui_TextArea_SN = lv_textarea_create(ui_Panel_SN);
-lv_obj_set_width( ui_TextArea_SN, 220);
-lv_obj_set_height( ui_TextArea_SN, LV_SIZE_CONTENT);   /// 42
-lv_obj_set_x( ui_TextArea_SN, 0 );
-lv_obj_set_y( ui_TextArea_SN, 120 );
-lv_obj_set_align( ui_TextArea_SN, LV_ALIGN_TOP_MID );
-lv_textarea_set_max_length(ui_TextArea_SN,1024);
-lv_textarea_set_placeholder_text(ui_TextArea_SN,"Set Wallet Address");
-lv_textarea_set_one_line(ui_TextArea_SN,true);
-lv_obj_clear_flag( ui_TextArea_SN, LV_OBJ_FLAG_CLICKABLE );    /// Flags
-lv_obj_set_style_radius(ui_TextArea_SN, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
-lv_obj_set_style_bg_color(ui_TextArea_SN, lv_color_hex(0x6E6E6E), LV_PART_MAIN | LV_STATE_DEFAULT );
-lv_obj_set_style_bg_opa(ui_TextArea_SN, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
-
-
-lv_obj_set_style_text_color(ui_TextArea_SN, lv_color_hex(0x9C9C9C), LV_PART_TEXTAREA_PLACEHOLDER | LV_STATE_DEFAULT );
-lv_obj_set_style_text_opa(ui_TextArea_SN, 255, LV_PART_TEXTAREA_PLACEHOLDER| LV_STATE_DEFAULT);
-
-ui_Label_WAD = lv_label_create(ui_Panel_SN);
-lv_obj_set_width( ui_Label_WAD, LV_SIZE_CONTENT);  /// 1
-lv_obj_set_height( ui_Label_WAD, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_x( ui_Label_WAD, 0 );
-lv_obj_set_y( ui_Label_WAD, 20 );
-lv_obj_set_align( ui_Label_WAD, LV_ALIGN_LEFT_MID );
-lv_label_set_text(ui_Label_WAD,"Wallet Address");
-
 ui_TextArea_WAD = lv_textarea_create(ui_Panel_SN);
 lv_obj_set_width( ui_TextArea_WAD, 220);
 lv_obj_set_height( ui_TextArea_WAD, LV_SIZE_CONTENT);   /// 42
 lv_obj_set_x( ui_TextArea_WAD, 0 );
-lv_obj_set_y( ui_TextArea_WAD, 30 );
+lv_obj_set_y( ui_TextArea_WAD, 120 );
 lv_obj_set_align( ui_TextArea_WAD, LV_ALIGN_TOP_MID );
-lv_textarea_set_max_length(ui_TextArea_WAD,16);
-lv_textarea_set_placeholder_text(ui_TextArea_WAD,"Set S/N");
+lv_textarea_set_max_length(ui_TextArea_WAD,1024);
+lv_textarea_set_placeholder_text(ui_TextArea_WAD,"Set Wallet Address");
 lv_textarea_set_one_line(ui_TextArea_WAD,true);
 lv_obj_clear_flag( ui_TextArea_WAD, LV_OBJ_FLAG_CLICKABLE );    /// Flags
 lv_obj_set_style_radius(ui_TextArea_WAD, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
@@ -154,6 +128,32 @@ lv_obj_set_style_bg_opa(ui_TextArea_WAD, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 lv_obj_set_style_text_color(ui_TextArea_WAD, lv_color_hex(0x9C9C9C), LV_PART_TEXTAREA_PLACEHOLDER | LV_STATE_DEFAULT );
 lv_obj_set_style_text_opa(ui_TextArea_WAD, 255, LV_PART_TEXTAREA_PLACEHOLDER| LV_STATE_DEFAULT);
+
+ui_Label_WAD = lv_label_create(ui_Panel_SN);
+lv_obj_set_width( ui_Label_WAD, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Label_WAD, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_x( ui_Label_WAD, 0 );
+lv_obj_set_y( ui_Label_WAD, 20 );
+lv_obj_set_align( ui_Label_WAD, LV_ALIGN_LEFT_MID );
+lv_label_set_text(ui_Label_WAD,"Wallet Address");
+
+ui_TextArea_SN = lv_textarea_create(ui_Panel_SN);
+lv_obj_set_width( ui_TextArea_SN, 220);
+lv_obj_set_height( ui_TextArea_SN, LV_SIZE_CONTENT);   /// 42
+lv_obj_set_x( ui_TextArea_SN, 0 );
+lv_obj_set_y( ui_TextArea_SN, 30 );
+lv_obj_set_align( ui_TextArea_SN, LV_ALIGN_TOP_MID );
+lv_textarea_set_max_length(ui_TextArea_SN,16);
+lv_textarea_set_placeholder_text(ui_TextArea_SN,"Set S/N");
+lv_textarea_set_one_line(ui_TextArea_SN,true);
+lv_obj_clear_flag( ui_TextArea_SN, LV_OBJ_FLAG_CLICKABLE );    /// Flags
+lv_obj_set_style_radius(ui_TextArea_SN, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_bg_color(ui_TextArea_SN, lv_color_hex(0x6E6E6E), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_TextArea_SN, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+
+lv_obj_set_style_text_color(ui_TextArea_SN, lv_color_hex(0x9C9C9C), LV_PART_TEXTAREA_PLACEHOLDER | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_TextArea_SN, 255, LV_PART_TEXTAREA_PLACEHOLDER| LV_STATE_DEFAULT);
 
 ui_btn_bind = lv_btn_create(ui_Panel_user);
 lv_obj_set_width( ui_btn_bind, 300);

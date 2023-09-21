@@ -161,9 +161,7 @@ enum {
     VIEW_EVENT_FACTORY_RESET, //NULL
     VIEW_EVENT_SCREEN_CTRL,   // bool  0:disable , 1:enable
 
-    // VIEW_EVENT_JETSON_DATA,
-    // VIEW_EVENT_JETSON_DELETE,
-    VIEW_EVENT_JETSON_SHOW,
+    VIEW_EVENT_MQTT_IOTEX_CFG, // struct view_data_mqtt_iotex_cfg
     
     VIEW_EVENT_ALL,
 };

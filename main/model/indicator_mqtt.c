@@ -109,8 +109,6 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
 
 int indicator_mqtt_init(void)
 {
-    // instance_container = create_instance_mqtt_container();
-
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_WIFI_ST,
                                                              __view_event_handler, NULL, NULL));
