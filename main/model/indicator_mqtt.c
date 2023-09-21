@@ -1,38 +1,67 @@
 #include "indicator_mqtt.h"
 
-#define X(name, str) str,
-const char *MQTT_PLATFORM_STR[] = {
-    MQTT_PLATFORM};
-#undef X
+static const char *TAG = "MQTT";
 
-static const char            *TAG                             = "MQTT";
-bool                          mqtt_net_flag                   = false;
-// static const instance_mqtt_t *instance_ptr[MQTT_PLATFORM_MAX] = {&mqtt_portal_instance, &mqtt_jetson_instance};
-static const instance_mqtt_t *instance_ptr[MQTT_PLATFORM_MAX] = {};
+bool mqtt_net_flag     = false;
 
-
-// When use RESTART? you change the url, username, password, or other parameters, you need to restart mqtt
-void mqtt_start_interface(instance_mqtt_t *instance, enum MQTT_START_ENUM flag)
+// instance_mqtt_container *instance_container;
+// gloable func for get the mqtt flag
+bool get_mqtt_net_flag(void)
+{
+    return mqtt_net_flag;
+}
+/**
+ * @brief MQTT interface start port function.
+ *
+ * This function starts or restarts an MQTT client instance based on the provided flag.
+ *
+ * @param instance A pointer to the MQTT instance.
+ * @param flag The MQTT start flag (MQTT_START or MQTT_RESTART).
+ *
+ * @note Use MQTT_RESTART when you need to change the MQTT broker URL, username, password, or other connection parameters.
+ */
+static void mqtt_start_interface(const instance_mqtt *instance, enum MQTT_START_ENUM flag)
 {
     if (mqtt_net_flag == false) {
         return;
     }
 
-    if (instance->mqtt_connected_flag && MQTT_START) { // if mqtt is connected, and not restart, return void
+    // Check for NULL instance or missing fields
+    if(!instance)
+    {
+        ESP_LOGE(TAG, "instance is NULL, make sure you have initialized instance");
         return;
-    } else if (instance->mqtt_connected_flag && MQTT_RESTART) {
-        esp_mqtt_client_stop(instance->mqtt_client);
-        esp_mqtt_client_destroy(instance->mqtt_client);
+    }
+    if(!instance->mqtt_name)
+    {
+        ESP_LOGE(TAG, "mqtt_name is NULL, make sure you have initialized instance");
+        return;
+    }
+    if(!instance->mqtt_starter)
+    {
+        ESP_LOGE(TAG, "mqtt_starter is NULL, make sure you have initialized instance");
+        return;
     }
 
-    if (instance->mqtt_name == NULL) { // if mqtt_cfg is NULL, return void
-        ESP_LOGE(TAG, "mqtt_name is NULL, which means instance is not initialized");
-        return;
+    // Check for existing MQTT connection
+    if (instance->mqtt_connected_flag) {
+        switch (flag) {
+            case MQTT_RESTART:
+                esp_mqtt_client_stop(instance->mqtt_client);
+                esp_mqtt_client_destroy(instance->mqtt_client);
+                break;
+            case MQTT_START:
+                ESP_LOGW(TAG, "%s is already connected.", instance->mqtt_name);
+                return;
+            default:
+                ESP_LOGE(TAG, "Invalid flag.");
+                break;
+        }
     }
+
     // first connecntion and reconnect
     instance->mqtt_starter(instance);
 }
-
 
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
@@ -43,12 +72,6 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             if (p_st->is_network) { // avoid repeatly start mqtt
                 if (mqtt_net_flag == false) {
                     mqtt_net_flag = true; // WiFI Network is connected
-                    // for (int i = 0; i < MQTT_PLATFORM_MAX; i++) {
-                    //     if (instance_ptr[i]->is_using) {
-                    //         ESP_LOGE(TAG, "MQTT %s is Starting", MQTT_PLATFORM_STR[i]);
-                    //         mqtt_start_interface(instance_ptr[i], MQTT_START);
-                    //     }
-                    // }VIEW_EVENT_WIFI_ST
                 }
             } else {
                 mqtt_net_flag = false;
@@ -59,20 +82,47 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             mqtt_net_flag = false;
             break;
         }
+        case MQTT_APP_START: {
+            ESP_LOGI(TAG, "event: MQTT_START");
+
+            instance_mqtt_t *p_instance = (instance_mqtt_t *)event_data;
+            instance_mqtt   *instance   = *p_instance;
+
+            if (mqtt_net_flag && (instance->is_using)) {
+                mqtt_start_interface(instance, MQTT_START);
+            }
+
+            break;
+        }
+        case MQTT_APP_RESTART: {
+            ESP_LOGI(TAG, "event: MQTT_RESTART");
+            instance_mqtt_t *p_instance = (instance_mqtt_t *)event_data;
+            instance_mqtt   *instance   = *p_instance;
+            if (mqtt_net_flag && (instance->is_using)) {
+                mqtt_start_interface(instance, MQTT_RESTART);
+            }
+            break;
+        }
     }
 }
 
 
 int indicator_mqtt_init(void)
 {
-    // indicator_mqtt_portal_init(&mqtt_portal_instance);
-    // indicator_mqtt_jetson_init(&mqtt_jetson_instance);
+    // instance_container = create_instance_mqtt_container();
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_WIFI_ST,
                                                              __view_event_handler, NULL, NULL));
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, WIFI_EVENT_STA_DISCONNECTED,
+                                                             __view_event_handler, NULL, NULL));
+
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(mqtt_app_event_handle,
+                                                             MQTT_APP_EVENT_BASE, MQTT_APP_START,
+                                                             __view_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(mqtt_app_event_handle,
+                                                             MQTT_APP_EVENT_BASE, MQTT_APP_RESTART,
                                                              __view_event_handler, NULL, NULL));
 }
 

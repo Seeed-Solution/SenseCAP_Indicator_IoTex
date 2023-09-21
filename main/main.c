@@ -31,6 +31,9 @@ esp_event_loop_handle_t view_event_handle;
 ESP_EVENT_DEFINE_BASE(CFG_EVENT_BASE);
 esp_event_loop_handle_t cfg_event_handle;
 
+ESP_EVENT_DEFINE_BASE(MQTT_APP_EVENT_BASE);
+esp_event_loop_handle_t mqtt_app_event_handle;
+
 void app_main(void)
 {
     ESP_LOGI("", SENSECAP, VERSION, __DATE__, __TIME__);
@@ -52,16 +55,23 @@ void app_main(void)
         .task_stack_size = 4096,
         .task_core_id    = tskNO_AFFINITY};
 
+    esp_event_loop_args_t mqtt_event_task_args = {
+        .queue_size      = 3,
+        .task_name       = "mqtt_app_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
+        .task_stack_size = 4096,
+        .task_core_id    = tskNO_AFFINITY};
+
     ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
     ESP_ERROR_CHECK(esp_event_loop_create(&cfg_event_task_args, &cfg_event_handle));
-
+    ESP_ERROR_CHECK(esp_event_loop_create(&mqtt_event_task_args, &mqtt_app_event_handle));
 
     lv_port_sem_take();
     indicator_view_init();
     lv_port_sem_give();
 
     indicator_model_init();
-    
+
     w3b_cfg_init();
     // indicator_controller_init();
 
