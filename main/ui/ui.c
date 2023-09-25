@@ -281,14 +281,14 @@ if ( event_code == LV_EVENT_LONG_PRESSED) {
 }
 void ui_event_btn_setting_binding( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
+if ( event_code == LV_EVENT_CLICKED) {
       _ui_screen_change( &ui_screen_binding, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_screen_binding_screen_init);
 }
 }
 void ui_event_btn_setting_unbind( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
-      _ui_screen_change( &ui_screen_date_time, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_date_time_screen_init);
+if ( event_code == LV_EVENT_CLICKED) {
+      fn_iotex_unbind( e );
 }
 }
 void ui_event_btn_bind_back_setting( lv_event_t * e) {

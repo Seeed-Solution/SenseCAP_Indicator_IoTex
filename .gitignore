@@ -33,4 +33,4 @@ sdkconfig.old
 
 #SquareLine Project
 sensecap_d1_IoTex/*/*.zip
-sensecap_d1_IoTex/*/*.py
+sensecap_d1_IoTex/*.py

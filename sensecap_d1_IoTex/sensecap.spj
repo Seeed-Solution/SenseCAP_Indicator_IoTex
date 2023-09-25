@@ -6490,7 +6490,7 @@
                 "disabled": false,
                 "nid": -1854736595,
                 "strtype": "_event/EventHandler",
-                "strval": "LONG_PRESSED",
+                "strval": "CLICKED",
                 "childs": [
                   {
                     "nid": 1773505329,
@@ -7446,73 +7446,62 @@
               },
               {
                 "disabled": false,
-                "nid": -1354397041,
-                "strtype": "_event/EventHandler",
-                "strval": "LONG_PRESSED",
+                "nid": 1765478907,
+                "strtype": "BUTTON/EventHandler",
+                "strval": "CLICKED",
                 "childs": [
                   {
-                    "nid": 150871831,
+                    "nid": -345643177,
                     "strtype": "_custom/name",
-                    "strval": "Event6",
+                    "strval": "Event11",
                     "InheritedType": 10
                   },
                   {
-                    "nid": 972964602,
+                    "nid": -150240228,
                     "strtype": "_custom/condition_C",
                     "strval": "",
                     "InheritedType": 10
                   },
                   {
-                    "nid": 641186212,
+                    "nid": -1509560553,
                     "strtype": "_custom/condition_P",
                     "strval": "",
                     "InheritedType": 10
                   },
                   {
-                    "nid": -146872460,
-                    "strtype": "_event/action",
-                    "strval": "CHANGE SCREEN",
+                    "nid": -469388568,
+                    "strtype": "_custom/action",
+                    "strval": "CALL FUNCTION",
                     "childs": [
                       {
-                        "nid": 1895367222,
-                        "strtype": "CHANGE SCREEN/Name",
-                        "strval": "CHANGE SCREEN",
+                        "nid": -1045457575,
+                        "strtype": "CALL FUNCTION/Name",
+                        "strval": "CALL FUNCTION",
                         "InheritedType": 10
                       },
                       {
-                        "nid": -1607018543,
-                        "strtype": "CHANGE SCREEN/Call",
-                        "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+                        "nid": 1400619433,
+                        "strtype": "CALL FUNCTION/Call",
+                        "strval": "<{Function_name}>( event_struct )",
                         "InheritedType": 10
                       },
                       {
-                        "nid": 391922309,
-                        "strtype": "CHANGE SCREEN/CallC",
-                        "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+                        "nid": -1421928981,
+                        "strtype": "CALL FUNCTION/CallC",
+                        "strval": "<{Function_name}>( e );",
                         "InheritedType": 10
                       },
                       {
-                        "nid": -302321909,
-                        "strtype": "CHANGE SCREEN/Screen_to",
-                        "strval": "GUID65916522-996846S1481363",
-                        "InheritedType": 9
+                        "nid": 1315008410,
+                        "strtype": "CALL FUNCTION/Function_name",
+                        "strval": "fn_iotex_unbind",
+                        "InheritedType": 10
                       },
                       {
-                        "nid": -1218921987,
-                        "strtype": "CHANGE SCREEN/Fade_mode",
-                        "strval": "OVER_BOTTOM",
-                        "InheritedType": 3
-                      },
-                      {
-                        "nid": -561956757,
-                        "strtype": "CHANGE SCREEN/Speed",
-                        "integer": 200,
-                        "InheritedType": 6
-                      },
-                      {
-                        "nid": -1251036507,
-                        "strtype": "CHANGE SCREEN/Delay",
-                        "InheritedType": 6
+                        "nid": -74180455,
+                        "strtype": "CALL FUNCTION/Dont_export_function",
+                        "strval": "True",
+                        "InheritedType": 2
                       }
                     ],
                     "InheritedType": 10
@@ -43207,7 +43196,7 @@
     "theme_color2": 0,
     "exportFolderPath": "D:\\Dev\\Projects\\SenseCAP_Indicator_IoTex\\main\\ui",
     "projectExportFolderPath": "D:\\Dev\\Projects\\SenseCAP_Indicator_IoTex\\main\\ui",
-    "backup_cnt": 210,
+    "backup_cnt": 214,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.3",
     "callfuncsexport": "C_FILE",
