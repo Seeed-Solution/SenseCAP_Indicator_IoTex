@@ -15,30 +15,8 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 void up_Animation( lv_obj_t *TargetObject, int delay);
-// SCREEN: ui_screen_binding
-void ui_screen_binding_screen_init(void);
-void ui_event_screen_binding( lv_event_t * e);
-extern lv_obj_t *ui_screen_binding;
-extern lv_obj_t *ui_time5;
-void ui_event_wifi__st_button_4( lv_event_t * e);
-extern lv_obj_t *ui_wifi__st_button_4;
-extern lv_obj_t *ui_wifi_st_7;
-extern lv_obj_t *ui_time4;
-extern lv_obj_t *ui_scrolldots4;
-extern lv_obj_t *ui_scrolldots5;
-extern lv_obj_t *ui_scrolldots6;
-extern lv_obj_t *ui_scrolldots7;
-extern lv_obj_t *ui_Panel_user;
-extern lv_obj_t *ui_Panel_SN;
-extern lv_obj_t *ui_Label_SN;
-extern lv_obj_t *ui_TextArea_WAD;
-extern lv_obj_t *ui_Label_WAD;
-extern lv_obj_t *ui_TextArea_SN;
-extern lv_obj_t *ui_btn_bind;
-extern lv_obj_t *ui_label_bind;
 // SCREEN: ui_screen_setting
 void ui_screen_setting_screen_init(void);
-void ui_event_screen_setting( lv_event_t * e);
 extern lv_obj_t *ui_screen_setting;
 void ui_event_wifi__st_button_3( lv_event_t * e);
 extern lv_obj_t *ui_wifi__st_button_3;
@@ -62,10 +40,37 @@ extern lv_obj_t *ui_scrolldots3;
 extern lv_obj_t *ui_scrolldots31;
 extern lv_obj_t *ui_scrolldots32;
 extern lv_obj_t *ui_scrolldots33;
-void ui_event_setting_binding( lv_event_t * e);
-extern lv_obj_t *ui_setting_binding;
+void ui_event_btn_setting_binding( lv_event_t * e);
+extern lv_obj_t *ui_btn_setting_binding;
 extern lv_obj_t *ui_setting_binding_icon;
 extern lv_obj_t *ui_setting_binding_title;
+void ui_event_btn_setting_unbind( lv_event_t * e);
+extern lv_obj_t *ui_btn_setting_unbind;
+extern lv_obj_t *ui_icon_setting_unbind;
+extern lv_obj_t *ui_title_setting_unbind;
+// SCREEN: ui_screen_binding
+void ui_screen_binding_screen_init(void);
+extern lv_obj_t *ui_screen_binding;
+void ui_event_btn_bind_back_setting( lv_event_t * e);
+extern lv_obj_t *ui_btn_bind_back_setting;
+extern lv_obj_t *ui_time5;
+void ui_event_wifi__st_button_4( lv_event_t * e);
+extern lv_obj_t *ui_wifi__st_button_4;
+extern lv_obj_t *ui_wifi_st_7;
+extern lv_obj_t *ui_time4;
+extern lv_obj_t *ui_scrolldots4;
+extern lv_obj_t *ui_scrolldots5;
+extern lv_obj_t *ui_scrolldots6;
+extern lv_obj_t *ui_scrolldots7;
+extern lv_obj_t *ui_Panel_user;
+extern lv_obj_t *ui_Panel_SN;
+extern lv_obj_t *ui_Label_SN;
+extern lv_obj_t *ui_TextArea_WAD;
+extern lv_obj_t *ui_Label_WAD;
+extern lv_obj_t *ui_TextArea_SN;
+void ui_event_btn_bind( lv_event_t * e);
+extern lv_obj_t *ui_btn_bind;
+extern lv_obj_t *ui_label_bind;
 // SCREEN: ui_screen_wifi
 void ui_screen_wifi_screen_init(void);
 extern lv_obj_t *ui_screen_wifi;
@@ -191,6 +196,7 @@ LV_IMG_DECLARE( ui_img_wifi_setting_png);   // assets\wifi_setting.png
 LV_IMG_DECLARE( ui_img_display_png);   // assets\display.png
 LV_IMG_DECLARE( ui_img_time_png);   // assets\time.png
 LV_IMG_DECLARE( ui_img_1870666550);   // assets\we3stream logo (1).png
+LV_IMG_DECLARE( ui_img_unlink_png);   // assets\unlink.png
 LV_IMG_DECLARE( ui_img_back_png);   // assets\back.png
 LV_IMG_DECLARE( ui_img_lock_png);   // assets\lock.png
 LV_IMG_DECLARE( ui_img_location_png);   // assets\location.png

@@ -162,6 +162,7 @@ enum {
     VIEW_EVENT_SCREEN_CTRL,   // bool  0:disable , 1:enable
 
     VIEW_EVENT_MQTT_IOTEX_CFG, // struct view_data_mqtt_iotex_cfg
+    VIEW_EVENT_MQTT_IOTEX_BINDING, // struct view_data_mqtt_iotex_cfg
     
     VIEW_EVENT_ALL,
 };

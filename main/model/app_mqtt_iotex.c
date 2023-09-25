@@ -9,6 +9,7 @@
  * @copyright © 2023, Seeed Studio
  */
 #include "app_mqtt_iotex.h"
+#include "iotex_view.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_netif.h"

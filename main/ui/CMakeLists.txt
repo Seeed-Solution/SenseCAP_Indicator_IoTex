@@ -1,5 +1,5 @@
-SET(SOURCES screens/ui_screen_binding.c
-    screens/ui_screen_setting.c
+SET(SOURCES screens/ui_screen_setting.c
+    screens/ui_screen_binding.c
     screens/ui_screen_wifi.c
     screens/ui_screen_time.c
     screens/ui_screen_sensor.c
@@ -14,6 +14,7 @@ SET(SOURCES screens/ui_screen_binding.c
     images/ui_img_display_png.c
     images/ui_img_time_png.c
     images/ui_img_1870666550.c
+    images/ui_img_unlink_png.c
     images/ui_img_back_png.c
     images/ui_img_lock_png.c
     images/ui_img_location_png.c

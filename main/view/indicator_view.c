@@ -518,7 +518,7 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 p_src = &ui_img_wifi_disconet_png;
             }
 
-            lv_img_set_src(ui_wifi_st_1, (void *)p_src);
+            // lv_img_set_src(ui_wifi_st_1, (void *)p_src); // ui_screen_time_screen_init
             // lv_img_set_src(ui_wifi_st_2, (void *)p_src);
             lv_img_set_src(ui_wifi_st_3, (void *)p_src);
             // lv_img_set_src(ui_wifi_st_4, (void *)p_src);

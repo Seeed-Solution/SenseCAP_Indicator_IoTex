@@ -29,10 +29,15 @@ extern esp_event_loop_handle_t mqtt_app_event_handle;
 #define SN_MAX_LEN      18
 #define WALLET_MAX_LEN  160
 
-enum CFG_EVENT{
+enum W3B_CFG_EVENT{
     CFG_EVENT_READ,
     CFG_EVENT_WRITE,
-    CFG_EVENT_ALL,
+    CFG_EVENT_VIEW,
+    BIND_EVENT_READ,
+    BIND_EVENT_WRITE,
+    BIND_EVENT_VIEW,
+    BIND_EVENT_ALL,
+    W3B_CFG_EVENT_ALL,
 };
 
 enum MQTT_APP_EVENT{

@@ -30,3 +30,7 @@ sdkconfig.old
 *cmake-build-debug
 
 *.tmp
+
+#SquareLine Project
+sensecap_d1_IoTex/*/*.zip
+sensecap_d1_IoTex/*/*.py

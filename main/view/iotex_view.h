@@ -19,7 +19,8 @@ extern "C" {
 #include "indicator_view.h"
 
 int iotex_view_init(void);
-
+void show_sn_wallet(void);
+void show_bind_state(void);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
