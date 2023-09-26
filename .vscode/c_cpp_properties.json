@@ -28,7 +28,8 @@
                 "${workspaceFolder}/components/bsp/include",
                 "${workspaceFolder}/components/WSIoTSDK/include",
                 "${workspaceFolder}/components/WSIoTSDK/include/**",
-                "${workspaceFolder}/components/WSIoTSDK/"
+                "${workspaceFolder}/components/WSIoTSDK/",
+                "${workspaceFolder}/main/comm"
 
             ],
             "browse": {

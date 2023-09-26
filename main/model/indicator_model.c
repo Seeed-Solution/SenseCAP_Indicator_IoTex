@@ -2,7 +2,6 @@
 #include "indicator_storage.h"
 #include "indicator_wifi.h"
 #include "indicator_display.h"
-#include "indicator_time.h"
 #include "indicator_btn.h"
 // #include "indicator_city.h"
 #include "indicator_mqtt.h"
@@ -11,7 +10,7 @@
 int indicator_model_init(void)
 {
     indicator_storage_init();
-    // indicator_sensor_init();
+    indicator_sensor_init();
     indicator_mqtt_init();
     // mqtt_iotex_init();
     indicator_wifi_init();

@@ -76,7 +76,6 @@ void app_main(void)
     indicator_model_init();
 
     w3b_cfg_init();
-    // indicator_controller_init();
 
     default_SetSeed(esp_random());
     iotex_wsiotsdk_init(time, iotex_mqtt_pubscription, iotex_mqtt_subscription);
