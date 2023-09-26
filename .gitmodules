@@ -3,4 +3,4 @@
 	url = https://github.com/Love4yzp/ESP32-Tools
 [submodule "components/WSIoTSDK"]
 	path = components/WSIoTSDK
-	url = https://github.com/Love4yzp/WSIoTSDK
+	url = https://github.com/machinefi/w3bstream-client-esp32
