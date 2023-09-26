@@ -124,7 +124,7 @@ enum {
     VIEW_EVENT_WIFI_ST,   //view_data_wifi_st_t
     // VIEW_EVENT_CITY,      // char city[32], max display 24 char
 
-    // VIEW_EVENT_SENSOR_DATA, // struct view_data_sensor_data
+    VIEW_EVENT_SENSOR_DATA, // struct view_data_sensor_data
 
     // VIEW_EVENT_SENSOR_TEMP,
     // VIEW_EVENT_SENSOR_HUMIDITY,

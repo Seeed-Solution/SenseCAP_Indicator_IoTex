@@ -97,7 +97,7 @@ int iotex_view_init(void)
                                                              __view_event_handler));
 }
 
-lv_obj_t *pop_up_custom(char *title, char *text, )
+lv_obj_t *pop_up_custom(char *title, char *text)
 {
     // 创建一个主屏幕
     lv_obj_t *main_screen = lv_scr_act();

@@ -9,6 +9,9 @@
 #include "indicator_model.h"
 #include "indicator_view.h"
 // #include "indicator_controller.h"
+#include "wsiotsdk.h"
+#include "ws_mqtt.h"
+#include "nvs_flash.h"
 
 static const char *TAG = "app_main";
 
@@ -75,6 +78,12 @@ void app_main(void)
     w3b_cfg_init();
     // indicator_controller_init();
 
+    default_SetSeed(esp_random());
+    iotex_wsiotsdk_init(time, iotex_mqtt_pubscription, iotex_mqtt_subscription);
+
+    ws_mqtt_init();
+    iotex_upload_data_init();
+    
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10000));
     }
