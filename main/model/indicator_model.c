@@ -7,13 +7,13 @@
 // #include "indicator_city.h"
 #include "indicator_mqtt.h"
 #include "indicator_cmd.h"
-#include "app_mqtt_iotex.h"
+
 int indicator_model_init(void)
 {
     indicator_storage_init();
     // indicator_sensor_init();
     indicator_mqtt_init();
-    mqtt_iotex_init();
+    // mqtt_iotex_init();
     indicator_wifi_init();
     // indicator_time_init();
     // indicator_city_init();
