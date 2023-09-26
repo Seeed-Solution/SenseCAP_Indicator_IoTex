@@ -9,15 +9,16 @@
  * @copyright © 2023, Seeed Studio
  */
 #include "iotex_view.h"
+#include "lvgl/lvgl.h"
 #include "ui_events.h" /* the functions need to be implemented */
 
 static const char *TAG = "IOTEX_VIEW";
 
-#include "lvgl/lvgl.h"
+static bool bind_flag  = true;
 
 static void yes_btn_click_handler(lv_event_t *e);
 static void no_btn_click_handler(lv_event_t *e);
-lv_obj_t *pop_up_custom(char *title, char *text);
+lv_obj_t   *pop_up_custom(char *title, char *text);
 
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
@@ -54,21 +55,37 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
  */
 void fn_bind_confirm(lv_event_t *e)
 {
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t       *ta   = lv_event_get_target(e);
-
-    bool bind_flag = true;
+    // lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *ta = lv_event_get_target(e);
     // 1. User press the `Bind` Button
     ESP_LOGI(TAG, "fn_bind_confirm");
 
     // 2. Tell model to send a up message
     // esp_event_post_to(mqtt_app_event_handle, MQTT_APP_EVENT_BASE, MQTT_APP_START, 0, portMAX_DELAY);
-        // 会提供一个返回值：esp_err_t
+    // 会提供一个返回值：esp_err_t
     // 3. Pop up a confirm window
     // 4. change the button state BIND_EVENT_WRITE
-    lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");    
+    // see the global bind_flag
+    lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
 }
 
+void fn_iotex_unbind(lv_event_t *e)
+{
+    // lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *ta = lv_event_get_target(e);
+
+    // check if it's binded.
+    lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
+
+    if (bind_flag) {
+        ESP_LOGI(TAG, "fn_iotex_unbind");
+        bind_flag = false;
+        esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
+
+    } else {
+        ESP_LOGW(TAG, "You should bind it first");
+    }
+}
 int iotex_view_init(void)
 {
 
@@ -80,7 +97,7 @@ int iotex_view_init(void)
                                                              __view_event_handler));
 }
 
-lv_obj_t *pop_up_custom(char *title, char *text)
+lv_obj_t *pop_up_custom(char *title, char *text, )
 {
     // 创建一个主屏幕
     lv_obj_t *main_screen = lv_scr_act();
@@ -137,7 +154,7 @@ static void yes_btn_click_handler(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED) {
         // 在点击"Yes"按钮时进行回调任务的检测和处理
         ESP_LOGI(TAG, "YES button clicked");
-        bool bind_flag = true;
+        bind_flag = true;
         esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
         // 关闭弹窗
         lv_obj_del(lv_obj_get_parent(target));
@@ -151,10 +168,7 @@ static void no_btn_click_handler(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED) {
         // 点击"No"按钮时不执行任何事件处理，直接关闭弹窗
         ESP_LOGI(TAG, "NO button clicked");
-        bool bind_flag = false;
-
-        esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
-        // 关闭弹窗
+        // do nothing 关闭弹窗
         lv_obj_del(lv_obj_get_parent(target));
     }
 }
