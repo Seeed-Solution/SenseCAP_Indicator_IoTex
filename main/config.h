@@ -26,6 +26,9 @@ extern esp_event_loop_handle_t cfg_event_handle;
 ESP_EVENT_DECLARE_BASE(MQTT_APP_EVENT_BASE);
 extern esp_event_loop_handle_t mqtt_app_event_handle;
 
+ESP_EVENT_DECLARE_BASE(DATA_EVENT_BASE);
+extern esp_event_loop_handle_t data_event_handle;
+
 #define SN_MAX_LEN      18
 #define WALLET_MAX_LEN  160
 
@@ -58,6 +61,12 @@ typedef enum {
     CFG_OK,
     CFG_FAIL,
 }CFG_STATUS;
+
+enum SENSOR_DATA_EVENT{
+    DATA_EVENT_SRNSOR_CAPTURE,
+    DATA_EVENT_SRNSOR_UPLOAD,
+    DATA_EVENT_ALL,
+};
 
 void response_cmd(CFG_STATUS status, char *resp);
 esp_err_t w3b_cfg_init();

@@ -1,5 +1,17 @@
-#ifndef __UPLOAD_DATA_H__
-#define __UPLOAD_DATA_H__
+/**
+ * @file indicator_mqtt_iotex.h
+ * @date  18 September 2023
+
+ * @author Spencer Yan
+ *
+ * @note Description of the file
+ *
+ * @copyright © 2023, Seeed Studio
+ */
+
+#ifndef INDICATOR_MQTT_IOTEX_H
+#define INDICATOR_MQTT_IOTEX_H
+#include "indicator_mqtt.h"
 
 #include "config.h"
 
@@ -27,4 +39,6 @@ enum upload_data_type {
 
 void iotex_upload_data_set_value(int value, enum upload_data_type data_type);
 
-#endif
+#define IOTEX_LOG_ENABLE 1
+void mqtt_iotex_init(void);
+#endif /*INDICATOR_MQTT_IOTEX_H*/

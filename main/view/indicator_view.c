@@ -594,33 +594,6 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
     }
     lv_port_sem_give();
 }
-// static void draw_part_event_cb(lv_event_t *e)
-// {
-//     lv_obj_t               *obj = lv_event_get_target(e);
-//     lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
-//     /*If the cells are drawn...*/
-//     if (dsc->part == LV_PART_ITEMS) {
-//         uint32_t row = dsc->id / lv_table_get_col_cnt(obj);
-//         uint32_t col = dsc->id - row * lv_table_get_col_cnt(obj);
-
-//         /*Make the texts in the first cell center aligned*/
-//         if (row == 0) {
-//             dsc->label_dsc->align   = LV_TEXT_ALIGN_CENTER;
-//             dsc->rect_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_BLUE), dsc->rect_dsc->bg_color, LV_OPA_20);
-//             dsc->rect_dsc->bg_opa   = LV_OPA_COVER;
-//         }
-//         /*In the first column align the texts to the right*/
-//         else if (col == 0) {
-//             dsc->label_dsc->align = LV_TEXT_ALIGN_RIGHT;
-//         }
-
-//         /*MAke every 2nd row grayish*/
-//         if ((row != 0 && row % 2) == 0) {
-//             dsc->rect_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_GREY), dsc->rect_dsc->bg_color, LV_OPA_10);
-//             dsc->rect_dsc->bg_opa   = LV_OPA_COVER;
-//         }
-//     }
-// }
 
 #include "iotex_view.h"
 int indicator_view_init(void)

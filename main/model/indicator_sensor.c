@@ -58,8 +58,6 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
             data.sensor_type = SENSOR_DATA_CO2;
             memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
 
-            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
-                              &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
             break;
         }
 
@@ -72,8 +70,6 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
             data.sensor_type = SENSOR_DATA_TEMP;
             memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
 
-            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
-                              &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
             break;
         }
 
@@ -86,29 +82,31 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
             data.sensor_type = SENSOR_DATA_HUMIDITY;
             memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
 
-            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
-                              &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
             break;
         }
 
-            // case PKT_TYPE_SENSOR_TVOC_INDEX: {
-            //     struct view_data_sensor_data data;
-            //     if (len < (sizeof(data.vaule) + 1)) {
-            //         break;
-            //     }
+            case PKT_TYPE_SENSOR_TVOC_INDEX: {
+                struct view_data_sensor_data data;
+                if (len < (sizeof(data.vaule) + 1)) {
+                    break;
+                }
 
-            //     data.sensor_type = SENSOR_DATA_TVOC;
-            //     memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
-            //     // __sensor_present_data_update(&__g_sensor_present_data.tvoc, data.vaule);
+                data.sensor_type = SENSOR_DATA_TVOC;
+                memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
+                // __sensor_present_data_update(&__g_sensor_present_data.tvoc, data.vaule);
 
-            //     esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
-            //                       &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
-            //     break;
-            // }
+                // esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
+                //                   &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
+                break;
+            }
 
         default:
+            return ESP_FAIL;
             break;
     }
+    esp_event_post_to(data_event_handle, DATA_EVENT_BASE, DATA_EVENT_SRNSOR_CAPTURE,
+                      &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
+    return ESP_OK;
 }
 
 static int __cmd_send(uint8_t cmd, void *p_data, uint8_t len)
