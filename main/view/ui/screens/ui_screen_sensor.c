@@ -8,6 +8,7 @@
 void ui_screen_sensor_screen_init(void)
 {
 ui_screen_sensor = lv_obj_create(NULL);
+lv_obj_add_state( ui_screen_sensor, LV_STATE_PRESSED );     /// States
 lv_obj_clear_flag( ui_screen_sensor, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_wifi__st_button_2 = lv_btn_create(ui_screen_sensor);

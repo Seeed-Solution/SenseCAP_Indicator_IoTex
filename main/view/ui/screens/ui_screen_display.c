@@ -17,7 +17,7 @@ lv_obj_set_height( ui_wifi_st_4, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_wifi_st_4, -20 );
 lv_obj_set_y( ui_wifi_st_4, 20 );
 lv_obj_set_align( ui_wifi_st_4, LV_ALIGN_TOP_RIGHT );
-lv_obj_add_flag( ui_wifi_st_4, LV_OBJ_FLAG_ADV_HITTEST );   /// Flags
+lv_obj_add_flag( ui_wifi_st_4, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_ADV_HITTEST );   /// Flags
 lv_obj_clear_flag( ui_wifi_st_4, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_back1 = lv_btn_create(ui_screen_display);
@@ -94,6 +94,7 @@ lv_obj_set_height( ui_sleep_mode, 50);
 lv_obj_set_x( ui_sleep_mode, 0 );
 lv_obj_set_y( ui_sleep_mode, 10 );
 lv_obj_set_align( ui_sleep_mode, LV_ALIGN_CENTER );
+lv_obj_add_flag( ui_sleep_mode, LV_OBJ_FLAG_HIDDEN );   /// Flags
 lv_obj_clear_flag( ui_sleep_mode, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_sleep_mode_title = lv_label_create(ui_sleep_mode);
@@ -142,11 +143,11 @@ lv_obj_set_style_bg_opa(ui_sleep_mode_time_cfg, 255, LV_PART_MAIN| LV_STATE_DEFA
 
 
 
-ui_min = lv_label_create(ui_sleep_mode_time);
-lv_obj_set_width( ui_min, LV_SIZE_CONTENT);  /// 1
-lv_obj_set_height( ui_min, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_align( ui_min, LV_ALIGN_RIGHT_MID );
-lv_label_set_text(ui_min,"min");
+ui_display_min = lv_label_create(ui_sleep_mode_time);
+lv_obj_set_width( ui_display_min, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_display_min, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_display_min, LV_ALIGN_RIGHT_MID );
+lv_label_set_text(ui_display_min,"min");
 
 ui_display_keyboard = lv_keyboard_create(ui_screen_display);
 lv_keyboard_set_mode(ui_display_keyboard,LV_KEYBOARD_MODE_NUMBER);

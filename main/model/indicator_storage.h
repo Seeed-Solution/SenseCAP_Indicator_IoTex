@@ -1,8 +1,7 @@
 #ifndef INDICATOR_STORAGE_H
 #define INDICATOR_STORAGE_H
 
-#include "config.h"
-#include "view_data.h"
+#include "indicator_model.h"
 
 #ifdef __cplusplus
 extern "C" {

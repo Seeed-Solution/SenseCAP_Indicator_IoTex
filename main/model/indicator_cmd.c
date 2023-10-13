@@ -1,12 +1,16 @@
-#include "indicator_cmd.h"
 #include "argtable3/argtable3.h"
 #include "esp_console.h"
 #include "esp_log.h"
-#include "indicator_storage.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "indicator_model.h"
+#include "indicator_storage.h"
+
+// #include "freertos/FreeRTOS.h"
+// #include "freertos/task.h"
 
 static const char *TAG = "CMD_RESP";
 
@@ -26,7 +30,7 @@ static void register_w3b_cmd_read(void)
 
     const esp_console_cmd_t cmd = {
         .command = "Read_Device_Info",
-        .help    = NULL,
+        .help    = "Read Device Info",
         .hint    = NULL,
         .func    = &fn_w3b_cm_read,
     };
@@ -38,6 +42,8 @@ static struct {
     struct arg_str *wallet_addr;
     struct arg_end *end;
 } w3b_cmd_args;
+
+extern void response_cmd(CFG_STATUS status, char *resp);
 
 static int fn_w3b_cm_set(int argc, char **argv)
 {
@@ -83,7 +89,7 @@ static void register_w3b_cmd_set(void)
 
     const esp_console_cmd_t cmd = {
         .command  = "Device_PIN",
-        .help     = NULL,
+        .help     = "Set Device Info",
         .hint     = NULL,
         .func     = &fn_w3b_cm_set,
         .argtable = &w3b_cmd_args,

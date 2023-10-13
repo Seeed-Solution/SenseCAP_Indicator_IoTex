@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-void fn_iotex_unbind(lv_event_t * e);
 void fn_bind_confirm(lv_event_t * e);
 
 #ifdef __cplusplus

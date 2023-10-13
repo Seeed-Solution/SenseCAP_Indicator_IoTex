@@ -1,10 +1,14 @@
-#include "indicator_sensor.h"
 #include "cobs.h"
 #include "driver/uart.h"
 #include "esp_timer.h"
+#include "indicator_model.h"
 #include "nvs.h"
 #include "time.h"
 #include <stdlib.h>
+
+static const char *TAG = "sensor-model";
+
+static SemaphoreHandle_t __g_data_mutex;
 
 #define SENSOR_HISTORY_DATA_DEBUG         0
 #define SENSOR_COMM_DEBUG                 0
@@ -41,16 +45,13 @@ enum pkt_type {
 
 };
 
-#define SENSOR_HISTORY_DATA_STORAGE "sensor-data"
-
-static const char *TAG = "sensor-model";
-
 static int __data_parse_handle(uint8_t *p_data, ssize_t len)
 {
-    uint8_t pkt_type = p_data[0];
+    struct view_data_sensor_data data;
+    uint8_t                      pkt_type = p_data[0];
+    memset(&data, 0, sizeof(data));
     switch (pkt_type) {
         case PKT_TYPE_SENSOR_SCD41_CO2: {
-            struct view_data_sensor_data data;
             if (len < (sizeof(data.vaule) + 1)) {
                 break;
             }
@@ -62,7 +63,7 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
         }
 
         case PKT_TYPE_SENSOR_SHT41_TEMP: {
-            struct view_data_sensor_data data;
+
             if (len < (sizeof(data.vaule) + 1)) {
                 break;
             }
@@ -74,7 +75,6 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
         }
 
         case PKT_TYPE_SENSOR_SHT41_HUMIDITY: {
-            struct view_data_sensor_data data;
             if (len < (sizeof(data.vaule) + 1)) {
                 break;
             }
@@ -85,26 +85,27 @@ static int __data_parse_handle(uint8_t *p_data, ssize_t len)
             break;
         }
 
-            case PKT_TYPE_SENSOR_TVOC_INDEX: {
-                struct view_data_sensor_data data;
-                if (len < (sizeof(data.vaule) + 1)) {
-                    break;
-                }
-
-                data.sensor_type = SENSOR_DATA_TVOC;
-                memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
-                // __sensor_present_data_update(&__g_sensor_present_data.tvoc, data.vaule);
-
-                // esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
-                //                   &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
+        case PKT_TYPE_SENSOR_TVOC_INDEX: {
+            if (len < (sizeof(data.vaule) + 1)) {
                 break;
             }
+
+            data.sensor_type = SENSOR_DATA_TVOC;
+            memcpy(&data.vaule, &p_data[1], sizeof(data.vaule));
+            // __sensor_present_data_update(&__g_sensor_present_data.tvoc, data.vaule);
+
+            // esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
+            //                   &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
+            break;
+        }
 
         default:
             return ESP_FAIL;
             break;
     }
-    esp_event_post_to(data_event_handle, DATA_EVENT_BASE, DATA_EVENT_SRNSOR_CAPTURE,
+    esp_event_post_to(model_event_handle, DATA_EVENT_BASE, DATA_EVENT_SRNSOR_CAPTURE,
+                      &data, sizeof(struct view_data_sensor_data), portMAX_DELAY); // IMPORTANT
+    esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_SENSOR_DATA,
                       &data, sizeof(struct view_data_sensor_data), portMAX_DELAY);
     return ESP_OK;
 }
@@ -218,7 +219,7 @@ static void __sensor_shutdown(void)
 
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
-    int i;
+    // int i;
     switch (id) {
         case VIEW_EVENT_SHUTDOWN: {
             ESP_LOGI(TAG, "event: VIEW_EVENT_SHUTDOWN");
@@ -232,6 +233,7 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
 
 int indicator_sensor_init(void)
 {
+    __g_data_mutex = xSemaphoreCreateMutex();
 
     xTaskCreate(esp32_rp2040_comm_task, "esp32_rp2040_comm_task", ESP32_RP2040_COMM_TASK_STACK_SIZE, NULL, 2, NULL);
 

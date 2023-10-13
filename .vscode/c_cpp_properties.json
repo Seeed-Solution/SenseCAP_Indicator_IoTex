@@ -55,7 +55,6 @@
                     "${workspaceFolder}/components/lvgl/src/**",
                     "${workspaceFolder}/main/view",
                     "${workspaceFolder}/main/model",
-                    "${workspaceFolder}/main/controller",
                     "${workspaceFolder}/main",
                     "${workspaceFolder}/components/bsp/include",
                     "${workspaceFolder}/components/WSIoTSDK/include",

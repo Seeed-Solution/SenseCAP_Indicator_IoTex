@@ -21,6 +21,6 @@ set(COMM_DIR ./comm)
 file(GLOB_RECURSE COMM_SOURCES ${COMM_DIR}/*.c)
 
 idf_component_register(
-    SRCS "main.c" "config.c" ${MODEL_SOURCES}  ${UTIL_SOURCES} "lv_port.c"  ${VIEW_SOURCES}  ${UI_SOURCES} ${COMM_SOURCES} #${CONTROLLER_SOURCES} 
-    INCLUDE_DIRS "."  ${MODEL_DIR} ${UTIL_DIR}  ${VIEW_DIR}  ${UI_DIR} ${COMM_DIR} #${CONTROLLER_DIR} 
+    SRCS "main.c" ${MODEL_SOURCES}  ${UTIL_SOURCES} "lv_port.c"  ${VIEW_SOURCES}  ${CONTROLLER_SOURCES} ${UI_SOURCES}  ${COMM_SOURCES} 
+    INCLUDE_DIRS "."  ${MODEL_DIR} ${UTIL_DIR}  ${VIEW_DIR}  ${CONTROLLER_DIR}  ${UI_DIR} ${COMM_DIR} 
     EMBED_TXTFILES timeapi_cert.pem)

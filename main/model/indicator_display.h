@@ -1,8 +1,8 @@
 #ifndef INDICATOR_DISPLAY_H
 #define INDICATOR_DISPLAY_H
 
-#include "config.h"
-#include "view_data.h"
+#include "indicator_model.h"
+#include "indicator_view.h"
 
 #ifdef __cplusplus
 extern "C" {

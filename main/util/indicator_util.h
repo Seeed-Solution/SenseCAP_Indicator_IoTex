@@ -4,7 +4,7 @@
 #ifndef INDICATOR_UTIL_H
 #define INDICATOR_UTIL_H
 
-#include "config.h"
+#include "indicator_model.h"
 
 
 #ifdef __cplusplus
