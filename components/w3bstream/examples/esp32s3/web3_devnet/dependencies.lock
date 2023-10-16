@@ -1,0 +1,10 @@
+dependencies:
+  w3bstream-client-esp32:
+    component_hash: null
+    source:
+      path: D:\WorkSpace\Espressif\w3bstream-client-esp32
+      type: local
+    version: '*'
+manifest_hash: 1661c6c4f8bf2566a88943d21056c330e2789a8ef776cb5a2e9f1b77dd628329
+target: esp32s3
+version: 1.0.0
