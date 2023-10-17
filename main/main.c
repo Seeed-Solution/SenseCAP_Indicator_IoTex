@@ -31,18 +31,12 @@ void app_main(void)
     lv_port_init();
 
     lv_port_sem_take();
-    indicator_view_init();
+    indicator_view_init(); // LVGL 界面，初始化前端页面相关的部分，以及 event_handler: view_event_handle 在 `view_data.h` 中被定义 event collection
     lv_port_sem_give();
 
-    indicator_model_init();
-    indicator_controller_init();
-    w3b_cfg_init();
-
-    // default_SetSeed(esp_random());
-    // iotex_wsiotsdk_init(time, iotex_mqtt_pubscription, iotex_mqtt_subscription);
-
-    // ws_mqtt_init();
-    // iotex_upload_data_init();
+    indicator_model_init(); // 数据后端类型相关，提供数据和配置 handle: model_event_handle & cfg_event_handle 在 `model_data.h` 中被定义 event collection
+    indicator_controller_init(); // 时间和显示相关的配置信息
+    w3b_cfg_init(); // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10000));

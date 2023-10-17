@@ -18,7 +18,8 @@ static const char *TAG = "CMD_RESP";
 
 static int fn_w3b_cm_read(int argc, char **argv)
 {
-    if (esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_READ, NULL, 0, portMAX_DELAY) != ESP_OK) {
+    bool cmd_flag = true;
+    if (esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_READ, &cmd_flag, sizeof(bool), portMAX_DELAY) != ESP_OK) {
         ESP_LOGE(TAG, "esp_event_post_to error");
         return -1;
     }

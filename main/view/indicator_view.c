@@ -797,5 +797,5 @@ int indicator_view_init(void)
                                                                  __view_event_handler, NULL, NULL));
     }
 
-    iotex_view_cfg_event_register();
+    iotex_view_cfg_event_register(); // to be triggered by saving the configuration
 }

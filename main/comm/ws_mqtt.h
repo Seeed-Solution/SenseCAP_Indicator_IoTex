@@ -1,7 +1,7 @@
 #ifndef _WS_MQTT_H_
 #define _WS_MQTT_H_
 
-#include "indicator_model.h"
+#include "config.h"
 
 #define WS_MQTT_STATUS_INIT                                     0
 #define WS_MQTT_STATUS_TOKEN_SERVER_CONNECTING                  1
@@ -12,15 +12,21 @@
 #define WS_MQTT_STATUS_TOKEN_SERVER_FINISH                      6
 #define WS_MQTT_STATUS_APP_SERVER_START                         7
 #define WS_MQTT_STATUS_APP_SERVER_CONNECTED                     8
-#define WS_MQTT_STATUS_APP_SERVER_RECONNECT                     9
-#define WS_MQTT_STATUS_MAX                                      10
+#define WS_MQTT_STATUS_APP_SERVER_STATUS_SUBSCRIBED             9
+#define WS_MQTT_STATUS_APP_SERVER_STATUS                        10
+#define WS_MQTT_STATUS_APP_SERVER_RECONNECT                     11
+#define WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_CONFIRM           12
+#define WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_SUCCESS           13
+#define WS_MQTT_STATUS_MAX                                      14
 
 #define WS_MQTT_TOKEN_SERVER_URL                                "mqtt://gateway.w3bstream.com:1883"
 #define WS_MQTT_TOKEN_SERVER_TOPIC                              "project"
 #define WS_MQTT_TOKEN_SERVER_SUBSCRIPTION_TOPIC                 "project"
-//#define WS_MQTT_TOKEN_SERVER_PROJECT_NAME                       "seeed-staging"     
-#define WS_MQTT_TOKEN_SERVER_PROJECT_NAME                       "seeed-test"
+#define WS_MQTT_TOKEN_SERVER_PROJECT_NAME                       "seeed-staging"     
+//#define WS_MQTT_TOKEN_SERVER_PROJECT_NAME                       "seeed-test"
 #define WS_MQTT_TOKEN_SERVER_SUBSCRIPTION_TOPIC                 "project"
+
+#define WS_MQTT_TEST_DEV_SN                                     "114993069231500025"    
 
 
 #define WS_MQTT_HANDLE_USE_STATUS_MACHINE

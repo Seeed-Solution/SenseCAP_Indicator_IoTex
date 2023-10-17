@@ -1,3 +1,15 @@
+/**
+ * @file model_data.c
+ * @author Spencer
+ * @brief
+ * 无法主动读取信息，仅能通过 event 去做级联而传递出去。
+ * xxx_READ 和 xxx_WRITE 都是为 cmd 的 CI 控制提供的；
+ * 每个 WRITE 都会触发 VIEW 的显示；即 xxx_VIEW 与 view_event_handle 相关，直接 trigger 视图显示
+ *
+ * @version 0.1
+ * @date 2023-10-16
+ */
+
 #include "model_data.h"
 #include "esp_mac.h"
 #include "freertos/semphr.h"
@@ -9,11 +21,6 @@
 
 static const char *TAG = "model_data";
 
-typedef struct W3B_CFG {
-    uint8_t           mac[6];
-    w3b_cfg_interface cfg;
-} W3B_CFG;
-
 esp_err_t bind_flag_write_fn(bool *flag);
 esp_err_t bind_flag_read_fn(bool *flag);
 esp_err_t cfg_write_fn(W3B_CFG *cfg);
@@ -23,10 +30,18 @@ void      response_cmd(CFG_STATUS status, char *resp);
 W3B_CFG w3b_cfg;
 bool    IoTexBindingFlag = false;
 
-static void _event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+/**
+ * @brief xx_VIEW 与 view_event_handle 相关，直接 trigger 视图显示
+ *
+ * @param handler_args
+ * @param base
+ * @param id
+ * @param event_data
+ */
+static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
     switch (id) {
-        case CFG_EVENT_READ: {
+        case CFG_EVENT_READ: { // for host to read SN and // wallet
             ESP_LOGI(TAG, "event: CFG_EVENT_READ");
 
             int len = sizeof(W3B_CFG);
@@ -40,7 +55,7 @@ static void _event_handler(void *handler_args, esp_event_base_t base, int32_t id
             printf("%s", buf);
             break;
         }
-        case BIND_EVENT_READ: {
+        case BIND_EVENT_READ: { // TODO: NOTHING to do
             ESP_LOGI(TAG, "event: BIND_EVENT_READ");
             if (bind_flag_read_fn(&IoTexBindingFlag) != ESP_OK) {
                 ESP_LOGE(TAG, "bind_flag_read_fn failed");
@@ -63,8 +78,8 @@ static void _event_handler(void *handler_args, esp_event_base_t base, int32_t id
             /* View and trigger MQTT to restart once send w3b_cfg */
             esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_VIEW,
                               NULL, 0, portMAX_DELAY);
-            
-            
+
+
             break;
         }
         case BIND_EVENT_WRITE: { // From VIEW widget
@@ -83,11 +98,19 @@ static void _event_handler(void *handler_args, esp_event_base_t base, int32_t id
                               portMAX_DELAY);
             break;
         }
+        default:
+            break;
+    }
+}
+
+static void _view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+{
+    switch (id) {
         case CFG_EVENT_VIEW: {
             ESP_LOGI(TAG, "event: CFG_EVENT_VIEW");
             esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,
                               &w3b_cfg.cfg, sizeof(w3b_cfg.cfg),
-                              portMAX_DELAY);
+                              portMAX_DELAY);           
             break;
         }
         case BIND_EVENT_VIEW: {
@@ -102,33 +125,39 @@ static void _event_handler(void *handler_args, esp_event_base_t base, int32_t id
     }
 }
 
+/**
+ * @brief 中间层 cfg_event_handle 传递的信息，进行 CFG 的读取和写入，并传递给 view_event_handle 进行显示；
+ *
+ * @return esp_err_t
+ */
 esp_err_t w3b_cfg_init()
 {
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, CFG_EVENT_READ,
-                                                             _event_handler, NULL, NULL));
+                                                             _cfg_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, CFG_EVENT_WRITE,
-                                                             _event_handler, NULL, NULL));
+                                                             _cfg_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, BIND_EVENT_READ,
-                                                             _event_handler, NULL, NULL));
+                                                             _cfg_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, BIND_EVENT_WRITE,
-                                                             _event_handler, NULL, NULL));
+                                                             _cfg_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, CFG_EVENT_VIEW,
-                                                             _event_handler, NULL, NULL));
+                                                             _view_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, BIND_EVENT_VIEW,
-                                                             _event_handler, NULL, NULL));
+                                                             _view_event_handler, NULL, NULL));
 
+    /* NVS 为空，填充空值 */
     int len       = sizeof(W3B_CFG);
 
     esp_err_t err = cfg_read_fn(&w3b_cfg, &len);
@@ -152,6 +181,7 @@ esp_err_t w3b_cfg_init()
     }
     cfg_write_fn(&w3b_cfg);
     ESP_LOGI(TAG, "w3b_cfg_init success");
+    /* 触发: 视图显示 NVS 的数据 */
     esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_VIEW,
                       NULL, 0, portMAX_DELAY);
     esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_VIEW,
@@ -181,7 +211,7 @@ esp_err_t cfg_read_fn(W3B_CFG *cfg, int *len)
 #define EnumToStr(x) #x
 void response_cmd(CFG_STATUS status, char *resp)
 {
-    static const char *OK = "OK";
+    static const char *OK   = "OK";
     static const char *FAIL = "FAIL";
     switch (status) {
         case CFG_OK:

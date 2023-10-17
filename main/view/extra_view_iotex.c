@@ -19,66 +19,6 @@ static void yes_btn_click_handler(lv_event_t *e);
 static void no_btn_click_handler(lv_event_t *e);
 lv_obj_t   *pop_up_custom(char *title, char *text);
 
-static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
-{
-    lv_port_sem_take();
-    switch (id) {
-        case VIEW_EVENT_MQTT_IOTEX_CFG: {
-            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
-            w3b_cfg_interface *p_cfg = (w3b_cfg_interface *)event_data;
-            lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
-            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
-            break;
-        }
-        case VIEW_EVENT_MQTT_IOTEX_BINDING: {
-            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_BINDING");
-            bool *p_flag = (bool *)event_data;
-            if (*p_flag == true) {
-                ESP_LOGI(TAG, "Binding Flag is true");
-                lv_obj_add_state(ui_btn_bind, LV_STATE_DISABLED);
-            } else {
-                ESP_LOGI(TAG, "Binding Flag is false");
-                lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
-            }
-        }
-        case VIEW_EVENT_IOTEX_CONTROL:
-            ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_CONTROL");
-            enum INDICATOR_PAGE page = *(enum INDICATOR_PAGE *)event_data;
-            switch (page) {
-                case INDICATOR_PAGE_PORTAL_REGIESTER_PAGE:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_PAGE");
-                    break;
-                case INDICATOR_PAGE_PORTAL_REGIESTER_ING:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_ING");
-                    break;
-                case INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS");
-                    break;
-                default:
-                    break;
-            }
-            break;
-        default:
-            break;
-    }
-    lv_port_sem_give();
-}
-
-int iotex_view_cfg_event_register(void)
-{
-
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
-                                                             VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,
-                                                             __view_event_handler, NULL, NULL));
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
-                                                             VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_BINDING,
-                                                             __view_event_handler, NULL, NULL));
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
-                                                             VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_CONTROL,
-                                                             __view_event_handler, NULL, NULL));
-}
-
-
 /**
  * @brief The button `Confirm` being pressed
  * @attention This function is called by the button `Confirm` being pressed
@@ -98,6 +38,7 @@ void fn_bind_confirm(lv_event_t *e)
     // 4. change the button state BIND_EVENT_WRITE
     // see the global bind_flag
     lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
+    /**/
 }
 
 void fn_iotex_unbind(lv_event_t *e)
@@ -192,4 +133,64 @@ static void no_btn_click_handler(lv_event_t *e)
         // do nothing 关闭弹窗
         lv_obj_del(lv_obj_get_parent(target));
     }
+}
+
+
+static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+{
+    lv_port_sem_take();
+    switch (id) {
+        case VIEW_EVENT_MQTT_IOTEX_CFG: {
+            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
+            w3b_cfg_interface *p_cfg = (w3b_cfg_interface *)event_data;
+            lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
+            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
+            break;
+        }
+        case VIEW_EVENT_MQTT_IOTEX_BINDING: {
+            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_BINDING");
+            bool *p_flag = (bool *)event_data;
+            if (*p_flag == true) {
+                ESP_LOGI(TAG, "Binding Flag is true");
+                lv_obj_add_state(ui_btn_bind, LV_STATE_DISABLED);
+            } else {
+                ESP_LOGI(TAG, "Binding Flag is false");
+                lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
+            }
+        }
+        case VIEW_EVENT_IOTEX_CONTROL:
+            ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_CONTROL");
+            enum INDICATOR_PAGE page = *(enum INDICATOR_PAGE *)event_data;
+            switch (page) {
+                case INDICATOR_PAGE_PORTAL_REGIESTER_PAGE:
+                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_PAGE");
+                    break;
+                case INDICATOR_PAGE_PORTAL_REGIESTER_ING:
+                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_ING");
+                    break;
+                case INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS:
+                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS");
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+    lv_port_sem_give();
+}
+
+int iotex_view_cfg_event_register(void)
+{
+
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
+                                                             VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,
+                                                             __view_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
+                                                             VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_BINDING,
+                                                             __view_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
+                                                             VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_CONTROL,
+                                                             __view_event_handler, NULL, NULL));
 }
