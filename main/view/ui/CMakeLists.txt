@@ -20,7 +20,7 @@ SET(SOURCES screens/ui_screen_time.c
     images/ui_img_wifi_setting_png.c
     images/ui_img_display_png.c
     images/ui_img_time_png.c
-    images/ui_img_1870666550.c
+    images/ui_img_w3blog_png.c
     images/ui_img_back_png.c
     images/ui_img_high_light_png.c
     images/ui_img_low_light_png.c

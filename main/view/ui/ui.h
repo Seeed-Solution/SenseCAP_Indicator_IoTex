@@ -110,6 +110,7 @@ extern lv_obj_t *ui_setting_bind_icon;
 extern lv_obj_t *ui_setting_bind_title;
 // SCREEN: ui_screen_binding
 void ui_screen_binding_screen_init(void);
+void ui_event_screen_binding( lv_event_t * e);
 extern lv_obj_t *ui_screen_binding;
 void ui_event_btn_bind_back_setting( lv_event_t * e);
 extern lv_obj_t *ui_btn_bind_back_setting;
@@ -203,7 +204,7 @@ LV_IMG_DECLARE( ui_img_setting_png);   // assets\setting.png
 LV_IMG_DECLARE( ui_img_wifi_setting_png);   // assets\wifi_setting.png
 LV_IMG_DECLARE( ui_img_display_png);   // assets\display.png
 LV_IMG_DECLARE( ui_img_time_png);   // assets\time.png
-LV_IMG_DECLARE( ui_img_1870666550);   // assets\we3stream logo (1).png
+LV_IMG_DECLARE( ui_img_w3blog_png);   // assets\w3blog.png
 LV_IMG_DECLARE( ui_img_back_png);   // assets\back.png
 LV_IMG_DECLARE( ui_img_high_light_png);   // assets\high_light.png
 LV_IMG_DECLARE( ui_img_low_light_png);   // assets\low_light.png

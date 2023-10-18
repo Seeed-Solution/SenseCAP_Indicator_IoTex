@@ -787,6 +787,7 @@ int indicator_view_init(void)
     ui_init();
     wifi_list_event_init();
 
+    time_zone_init();
     btn_time_save_init();
     zone_auto_update_cfg_init();
     ui_hour_some_init();

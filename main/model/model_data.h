@@ -65,44 +65,10 @@ enum MODEL_EVENT_DEFINE {
     MODEL_EVENT_ALL,
 };
 
-// enum SENSOR_DATA_EVENT {
-//     DATA_EVENT_SRNSOR_CAPTURE,
-//     DATA_EVENT_SRNSOR_UPLOAD,
-//     DATA_EVENT_SRNSOR_UPSTREAM,
-//     DATA_EVENT_ALL,
-// };
-
-// enum W3B_CFG_EVENT {
-//     /* for host to see the configuration Only*/
-//     CFG_EVENT_READ,
-//     CFG_EVENT_WRITE, // SN and Wallet are written by host
-//     /*** END ***/
-//     BIND_EVENT_READ,
-//     BIND_EVENT_WRITE,
-//     /* For View to display */
-//     CFG_EVENT_VIEW,
-//     BIND_EVENT_VIEW,
-//     /* For Model(IoTex) to process */
-//     CFG_EVENT_MODEL,
-//     BIND_EVENT_MODEL,
-
-//     /* END */
-//     W3B_CFG_EVENT_ALL,
-// };
-
 typedef enum {
     CFG_OK,
     CFG_FAIL,
 } CFG_STATUS;
-
-/* TODO: NEED TO DELETED*/
-// enum MQTT_APP_EVENT {
-//     MQTT_APP_START,
-//     MQTT_APP_RESTART,
-//     MQTT_APP_STOP,
-//     MQTT_APP_ALL,
-// };
-
 
 #define SN_MAX_LEN     18
 #define WALLET_MAX_LEN 160

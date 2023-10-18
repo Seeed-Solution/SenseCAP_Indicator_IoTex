@@ -1,62 +1,42 @@
-/**
- * @file iotex_view.c
- * @date  21 September 2023
+// /**
+//  * @file iotex_view.c
+//  * @date  21 September 2023
 
- * @author Spencer Yan
- *
- * @note Description of the file
- *
- * @copyright © 2023, Seeed Studio
- */
+//  * @author Spencer Yan
+//  *
+//  * @note Description of the file
+//  *
+//  * @copyright © 2023, Seeed Studio
+//  */
 #include "extra_view_iotex.h"
 #include "indicator_cmd.h"
 
 static const char *TAG = "IOTEX_VIEW";
 
-static bool bind_flag  = true;
+// static bool __g_bind_flag  = false;
 
 static void yes_btn_click_handler(lv_event_t *e);
 static void no_btn_click_handler(lv_event_t *e);
 lv_obj_t   *pop_up_custom(char *title, char *text);
 
+// /**
+//  * @brief 需要处理 bind_flag 标签，如果为true，则禁用按钮
+//  * 设计弹窗样式，并确定 Event 进行的方向
+//  *
+//  */
+
+
 /**
- * @brief The button `Confirm` being pressed
- * @attention This function is called by the button `Confirm` being pressed
+ * @brief 当 Confirm 按钮被按下的行为
  * @param e
  */
 void fn_bind_confirm(lv_event_t *e)
 {
     // lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *ta = lv_event_get_target(e);
-    // 1. User press the `Bind` Button
     ESP_LOGI(TAG, "fn_bind_confirm");
 
-    // 2. Tell model to send a up message
-    // esp_event_post_to(mqtt_app_event_handle, MQTT_APP_EVENT_BASE, MQTT_APP_START, 0, portMAX_DELAY);
-    // 会提供一个返回值：esp_err_t
-    // 3. Pop up a confirm window
-    // 4. change the button state BIND_EVENT_WRITE
-    // see the global bind_flag
-    lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
-    /**/
-}
-
-void fn_iotex_unbind(lv_event_t *e)
-{
-    // lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t *ta      = lv_event_get_target(e);
-
-    // check if it's binded.
-    lv_obj_t *obj_pop = pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
-
-    if (bind_flag) {
-        ESP_LOGI(TAG, "fn_iotex_unbind");
-        bind_flag = false;
-        esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
-
-    } else {
-        ESP_LOGW(TAG, "You should bind it first");
-    }
+    pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
 }
 
 lv_obj_t *pop_up_custom(char *title, char *text)
@@ -108,18 +88,26 @@ lv_obj_t *pop_up_custom(char *title, char *text)
 
     return popup;
 }
-
+bool        bind_flag = true;
 static void yes_btn_click_handler(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t       *target     = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED) {
+        lv_obj_t *father_popup   = lv_obj_get_parent(target);
+        lv_obj_t *current_screen = lv_obj_get_parent(father_popup);
+
         // 在点击"Yes"按钮时进行回调任务的检测和处理
-        ESP_LOGI(TAG, "YES button clicked");
+        ESP_LOGI(TAG, "Pressed YES button");
+        if (current_screen == ui_screen_binding) {
+            ESP_LOGI(TAG, "current_screen == ui_screen_binding");
+        }
+
         bind_flag = true;
-        esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
         // 关闭弹窗
-        lv_obj_del(lv_obj_get_parent(target));
+        esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_USER_CONFIRM, &bind_flag, sizeof(bool), portMAX_DELAY);
+        lv_obj_del(lv_obj_get_parent(target)); // 銷毀popup
+                                               // send to VIEW_EVENT_IOTEX_USER_CONFIRM
     }
 }
 
@@ -128,10 +116,19 @@ static void no_btn_click_handler(lv_event_t *e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t       *target     = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED) {
+        lv_obj_t *father_popup   = lv_obj_get_parent(target);
+        lv_obj_t *current_screen = lv_obj_get_parent(father_popup);
         // 点击"No"按钮时不执行任何事件处理，直接关闭弹窗
-        ESP_LOGI(TAG, "NO button clicked");
+        ESP_LOGI(TAG, "Pressed NO button");
+        if (current_screen == ui_screen_binding) {
+            ESP_LOGI(TAG, "current_screen == ui_screen_binding");
+        }
+
+        bind_flag = false;
+
         // do nothing 关闭弹窗
         lv_obj_del(lv_obj_get_parent(target));
+        esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_USER_CONFIRM, &bind_flag, sizeof(bool), portMAX_DELAY);
     }
 }
 
@@ -158,23 +155,23 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
             }
         }
-        case VIEW_EVENT_IOTEX_CONTROL:
-            ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_CONTROL");
-            enum INDICATOR_PAGE page = *(enum INDICATOR_PAGE *)event_data;
-            switch (page) {
-                case INDICATOR_PAGE_PORTAL_REGIESTER_PAGE:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_PAGE");
-                    break;
-                case INDICATOR_PAGE_PORTAL_REGIESTER_ING:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_ING");
-                    break;
-                case INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS:
-                    ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS");
-                    break;
-                default:
-                    break;
-            }
-            break;
+        // case VIEW_EVENT_IOTEX_CONTROL:
+        //     ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_CONTROL");
+        //     enum INDICATOR_PAGE page = *(enum INDICATOR_PAGE *)event_data;
+        //     switch (page) {
+        //         case INDICATOR_PAGE_PORTAL_REGIESTER_PAGE:
+        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_PAGE");
+        //             break;
+        //         case INDICATOR_PAGE_PORTAL_REGIESTER_ING:
+        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_ING");
+        //             break;
+        //         case INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS:
+        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS");
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     break;
         default:
             break;
     }
@@ -184,13 +181,20 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
 int iotex_view_cfg_event_register(void)
 {
 
+    /* 触发而显示到界面上 */
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,
                                                              __view_event_handler, NULL, NULL));
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_BINDING,
                                                              __view_event_handler, NULL, NULL));
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
-                                                             VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_CONTROL,
-                                                             __view_event_handler, NULL, NULL));
+    /* END */
+    // ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
+    //                                                          VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_CONTROL,
+    //                                                          __view_event_handler, NULL, NULL));
 }
+
+// void extra_view_iotex_init()
+// {
+
+// }

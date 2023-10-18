@@ -1361,7 +1361,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Position",
                 "intarray": [
-                  13,
+                  -16,
                   -140
                 ],
                 "InheritedType": 7
@@ -1371,7 +1371,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  300,
+                  329,
                   50
                 ],
                 "InheritedType": 7
@@ -22374,7 +22374,7 @@
                   {
                     "nid": -77306238,
                     "strtype": "IMAGE/Asset",
-                    "strval": "assets\\time.png",
+                    "strval": "assets\\w3blog.png",
                     "InheritedType": 5
                   },
                   {
@@ -22675,7 +22675,7 @@
                   {
                     "nid": -374466180,
                     "strtype": "LABEL/Text",
-                    "strval": "Bind",
+                    "strval": "Device Registration",
                     "InheritedType": 10
                   },
                   {
@@ -22748,8 +22748,8 @@
                 "flags": 17,
                 "strtype": "OBJECT/Position",
                 "intarray": [
-                  170,
-                  305
+                  30,
+                  302
                 ],
                 "InheritedType": 7
               },
@@ -22758,7 +22758,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  140,
+                  420,
                   106
                 ],
                 "InheritedType": 7
@@ -22973,9 +22973,9 @@
                         "nid": 759573169,
                         "strtype": "_style/Bg_Color",
                         "intarray": [
-                          82,
-                          157,
-                          83,
+                          119,
+                          92,
+                          180,
                           255
                         ],
                         "InheritedType": 7
@@ -29145,6 +29145,82 @@
             "strtype": "SCREEN/Don’t export screen",
             "strval": "False",
             "InheritedType": 2
+          },
+          {
+            "disabled": false,
+            "nid": -1833023934,
+            "strtype": "_event/EventHandler",
+            "strval": "CLICKED",
+            "childs": [
+              {
+                "nid": 1281643261,
+                "strtype": "_custom/name",
+                "strval": "Event15",
+                "InheritedType": 10
+              },
+              {
+                "nid": 1941266622,
+                "strtype": "_custom/condition_C",
+                "strval": "",
+                "InheritedType": 10
+              },
+              {
+                "nid": -476443352,
+                "strtype": "_custom/condition_P",
+                "strval": "",
+                "InheritedType": 10
+              },
+              {
+                "nid": 1031152686,
+                "strtype": "_event/action",
+                "strval": "CHANGE SCREEN",
+                "childs": [
+                  {
+                    "nid": -2008519593,
+                    "strtype": "CHANGE SCREEN/Name",
+                    "strval": "CHANGE SCREEN",
+                    "InheritedType": 10
+                  },
+                  {
+                    "nid": -114722195,
+                    "strtype": "CHANGE SCREEN/Call",
+                    "strval": "ChangeScreen( <{Screen_to}>, lv.SCR_LOAD_ANIM.<{Fade_mode}>, <{Speed}>, <{Delay}>)",
+                    "InheritedType": 10
+                  },
+                  {
+                    "nid": 622824076,
+                    "strtype": "CHANGE SCREEN/CallC",
+                    "strval": "_ui_screen_change( &<{Screen_to}>, LV_SCR_LOAD_ANIM_<{Fade_mode}>, <{Speed}>, <{Delay}>, &<{Screen_to}>_screen_init);",
+                    "InheritedType": 10
+                  },
+                  {
+                    "nid": 959465234,
+                    "strtype": "CHANGE SCREEN/Screen_to",
+                    "strval": "GUID91666978-341668S6981361",
+                    "InheritedType": 9
+                  },
+                  {
+                    "nid": 674613383,
+                    "strtype": "CHANGE SCREEN/Fade_mode",
+                    "strval": "FADE_ON",
+                    "InheritedType": 3
+                  },
+                  {
+                    "nid": 1760029316,
+                    "strtype": "CHANGE SCREEN/Speed",
+                    "integer": 200,
+                    "InheritedType": 6
+                  },
+                  {
+                    "nid": -1004085481,
+                    "strtype": "CHANGE SCREEN/Delay",
+                    "InheritedType": 6
+                  }
+                ],
+                "InheritedType": 10
+              }
+            ],
+            "InheritedType": 4
           }
         ],
         "saved_objtypeKey": "SCREEN"
@@ -43351,7 +43427,7 @@
     "theme_color2": 0,
     "exportFolderPath": "D:\\Dev\\Projects\\SenseCAP_Indicator_IoTex\\main\\view\\ui",
     "projectExportFolderPath": "D:\\Dev\\Projects\\SenseCAP_Indicator_IoTex\\main\\view\\ui",
-    "backup_cnt": 351,
+    "backup_cnt": 363,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.3",
     "callfuncsexport": "C_FILE",

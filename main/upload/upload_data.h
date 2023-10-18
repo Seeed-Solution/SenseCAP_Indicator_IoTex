@@ -1,7 +1,8 @@
 #ifndef __UPLOAD_DATA_H__
 #define __UPLOAD_DATA_H__
 
-#include "config.h"
+#include "model_data.h"
+#include "upload_data.h"
 
 struct upload_data {
     int valid_bit;

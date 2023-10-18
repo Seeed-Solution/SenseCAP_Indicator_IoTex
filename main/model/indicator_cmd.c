@@ -1,3 +1,8 @@
+/**
+ * @file indicator_cmd.c
+ * @brief
+ * 处理来自上位机的数据
+ */
 #include "argtable3/argtable3.h"
 #include "esp_console.h"
 #include "esp_log.h"
@@ -6,9 +11,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "esp_mac.h"
 #include "indicator_model.h"
 #include "indicator_storage.h"
-
 // #include "freertos/FreeRTOS.h"
 // #include "freertos/task.h"
 
@@ -18,11 +23,21 @@ static const char *TAG = "CMD_RESP";
 
 static int fn_w3b_cm_read(int argc, char **argv)
 {
-    bool cmd_flag = true;
-    if (esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_READ, &cmd_flag, sizeof(bool), portMAX_DELAY) != ESP_OK) {
-        ESP_LOGE(TAG, "esp_event_post_to error");
+    // bool cmd_flag = true;
+    // if (esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, CFG_EVENT_READ, &cmd_flag, sizeof(bool), portMAX_DELAY) != ESP_OK) {
+    //     ESP_LOGE(TAG, "esp_event_post_to error");
+    //     return -1;
+    // }
+    W3B_CFG w3b_cfg;
+    int     len = sizeof(W3B_CFG);
+    if (cfg_read_fn(&w3b_cfg, &len) != ESP_OK) {
+        ESP_LOGE(TAG, "cfg_read_fn failed");
+        response_cmd(CFG_FAIL, "Read failed");
         return -1;
     }
+    char buf[526];
+    sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, w3b_cfg.cfg.wallet);
+    printf("%s", buf);
     return 0;
 }
 
@@ -43,8 +58,6 @@ static struct {
     struct arg_str *wallet_addr;
     struct arg_end *end;
 } w3b_cmd_args;
-
-extern void response_cmd(CFG_STATUS status, char *resp);
 
 static int fn_w3b_cm_set(int argc, char **argv)
 {
@@ -98,6 +111,26 @@ static void register_w3b_cmd_set(void)
     ESP_ERROR_CHECK(esp_console_cmd_register(&cmd));
 }
 
+static int fn_clean_bind(int argc, char **argv)
+{
+    bool bind_flag = false;
+    esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &bind_flag, sizeof(bool), portMAX_DELAY);
+    return 0;
+}
+
+static void register_clean_bind(void)
+{
+
+    const esp_console_cmd_t cmd = {
+        .command = "clear",
+        .help    = "clear bind flag",
+        .hint    = NULL,
+        .func    = &fn_clean_bind,
+    };
+    ESP_ERROR_CHECK(esp_console_cmd_register(&cmd));
+}
+
+
 int indicator_cmd_init(void)
 {
     esp_console_repl_t       *repl        = NULL;
@@ -110,8 +143,29 @@ int indicator_cmd_init(void)
 
     register_w3b_cmd_set();
     register_w3b_cmd_read();
-
+    register_clean_bind();
+    
     esp_console_dev_uart_config_t hw_config = ESP_CONSOLE_DEV_UART_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_console_new_repl_uart(&hw_config, &repl_config, &repl));
     ESP_ERROR_CHECK(esp_console_start_repl(repl));
 }
+
+#define EnumToStr(x) #x
+void response_cmd(CFG_STATUS status, char *resp)
+{
+    static const char *OK   = "OK";
+    static const char *FAIL = "FAIL";
+    switch (status) {
+        case CFG_OK:
+            printf("CMD_RESP:%s\r\n", OK);
+            break;
+        case CFG_FAIL:
+            if (resp == NULL)
+                resp = "\0";
+            printf("CMD_RESP:%s,%s\r\n", FAIL, resp);
+            break;
+        default:
+            break;
+    }
+}
+#undef EnumToStr

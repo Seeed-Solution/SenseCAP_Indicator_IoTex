@@ -42,9 +42,9 @@ lv_obj_set_style_text_align(ui_time1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN| LV_STA
 lv_obj_set_style_text_font(ui_time1, &ui_font_font4, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_date_panel = lv_obj_create(ui_screen_time);
-lv_obj_set_width( ui_date_panel, 300);
+lv_obj_set_width( ui_date_panel, 329);
 lv_obj_set_height( ui_date_panel, 50);
-lv_obj_set_x( ui_date_panel, 13 );
+lv_obj_set_x( ui_date_panel, -16 );
 lv_obj_set_y( ui_date_panel, -140 );
 lv_obj_set_align( ui_date_panel, LV_ALIGN_CENTER );
 lv_obj_clear_flag( ui_date_panel, LV_OBJ_FLAG_SCROLLABLE );    /// Flags

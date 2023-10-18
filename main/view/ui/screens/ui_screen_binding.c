@@ -191,5 +191,6 @@ lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN| 
 lv_obj_add_event_cb(ui_btn_bind_back_setting, ui_event_btn_bind_back_setting, LV_EVENT_ALL, NULL);
 lv_obj_add_event_cb(ui_wifi__st_button_4, ui_event_wifi__st_button_4, LV_EVENT_ALL, NULL);
 lv_obj_add_event_cb(ui_btn_bind, ui_event_btn_bind, LV_EVENT_ALL, NULL);
+lv_obj_add_event_cb(ui_screen_binding, ui_event_screen_binding, LV_EVENT_ALL, NULL);
 
 }

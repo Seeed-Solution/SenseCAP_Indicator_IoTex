@@ -111,6 +111,7 @@ lv_obj_t *ui_setting_bind_title;
 
 // SCREEN: ui_screen_binding
 void ui_screen_binding_screen_init(void);
+void ui_event_screen_binding( lv_event_t * e);
 lv_obj_t *ui_screen_binding;
 void ui_event_btn_bind_back_setting( lv_event_t * e);
 lv_obj_t *ui_btn_bind_back_setting;
@@ -334,7 +335,13 @@ if ( event_code == LV_EVENT_CLICKED) {
 void ui_event_btn_setting_bind( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
 if ( event_code == LV_EVENT_LONG_PRESSED) {
-      _ui_screen_change( &ui_screen_binding, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_binding_screen_init);
+      _ui_screen_change( &ui_screen_binding, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_screen_binding_screen_init);
+}
+}
+void ui_event_screen_binding( lv_event_t * e) {
+    lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
+if ( event_code == LV_EVENT_CLICKED) {
+      _ui_screen_change( &ui_screen_setting, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_screen_setting_screen_init);
 }
 }
 void ui_event_btn_bind_back_setting( lv_event_t * e) {
@@ -352,7 +359,7 @@ if ( event_code == LV_EVENT_CLICKED) {
 void ui_event_btn_bind( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
 if ( event_code == LV_EVENT_CLICKED) {
-      // fn_bind_confirm( e );
+      fn_bind_confirm( e );
 }
 }
 void ui_event_back3( lv_event_t * e) {

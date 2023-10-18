@@ -190,7 +190,6 @@ lv_obj_set_style_bg_color(ui_btn_setting_binding, lv_color_hex(0x775CB4), LV_PAR
 lv_obj_set_style_bg_opa(ui_btn_setting_binding, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_setting_binding_icon = lv_img_create(ui_btn_setting_binding);
-lv_img_set_src(ui_setting_binding_icon, &ui_img_1870666550);
 lv_obj_set_width( ui_setting_binding_icon, LV_SIZE_CONTENT);  /// 56
 lv_obj_set_height( ui_setting_binding_icon, LV_SIZE_CONTENT);   /// 56
 lv_obj_set_x( ui_setting_binding_icon, 0 );
@@ -209,17 +208,17 @@ lv_label_set_text(ui_setting_binding_title,"Device Registration");
 lv_obj_set_style_text_font(ui_setting_binding_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_btn_setting_bind = lv_btn_create(ui_screen_setting);
-lv_obj_set_width( ui_btn_setting_bind, 140);
+lv_obj_set_width( ui_btn_setting_bind, 420);
 lv_obj_set_height( ui_btn_setting_bind, 106);
-lv_obj_set_x( ui_btn_setting_bind, 170 );
-lv_obj_set_y( ui_btn_setting_bind, 305 );
+lv_obj_set_x( ui_btn_setting_bind, 30 );
+lv_obj_set_y( ui_btn_setting_bind, 302 );
 lv_obj_add_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
-lv_obj_set_style_bg_color(ui_btn_setting_bind, lv_color_hex(0x529D53), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_color(ui_btn_setting_bind, lv_color_hex(0x775CB4), LV_PART_MAIN | LV_STATE_DEFAULT );
 lv_obj_set_style_bg_opa(ui_btn_setting_bind, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_setting_bind_icon = lv_img_create(ui_btn_setting_bind);
-lv_img_set_src(ui_setting_bind_icon, &ui_img_time_png);
+lv_img_set_src(ui_setting_bind_icon, &ui_img_w3blog_png);
 lv_obj_set_width( ui_setting_bind_icon, LV_SIZE_CONTENT);  /// 56
 lv_obj_set_height( ui_setting_bind_icon, LV_SIZE_CONTENT);   /// 56
 lv_obj_set_x( ui_setting_bind_icon, 0 );
@@ -234,7 +233,7 @@ lv_obj_set_height( ui_setting_bind_title, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_setting_bind_title, 0 );
 lv_obj_set_y( ui_setting_bind_title, 25 );
 lv_obj_set_align( ui_setting_bind_title, LV_ALIGN_CENTER );
-lv_label_set_text(ui_setting_bind_title,"Bind");
+lv_label_set_text(ui_setting_bind_title,"Device Registration");
 lv_obj_set_style_text_font(ui_setting_bind_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 lv_obj_add_event_cb(ui_wifi__st_button_3, ui_event_wifi__st_button_3, LV_EVENT_ALL, NULL);

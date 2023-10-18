@@ -1,7 +1,8 @@
 #ifndef _WS_MQTT_H_
 #define _WS_MQTT_H_
 
-#include "config.h"
+#include "model_data.h"
+#include "upload_data.h"
 
 #define WS_MQTT_STATUS_INIT                                     0
 #define WS_MQTT_STATUS_TOKEN_SERVER_CONNECTING                  1
