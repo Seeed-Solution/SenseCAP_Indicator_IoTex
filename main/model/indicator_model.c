@@ -19,24 +19,6 @@ extern int indicator_btn_init(void);
 
 int indicator_model_init(void)
 {
-    esp_event_loop_args_t model_event_task_args = {
-        .queue_size      = 3,
-        .task_name       = "model_event_task",
-        .task_priority   = uxTaskPriorityGet(NULL),
-        .task_stack_size = 4096,
-        .task_core_id    = tskNO_AFFINITY};
-    ESP_ERROR_CHECK(esp_event_loop_create(&model_event_task_args, &model_event_handle));
-
-    esp_event_loop_args_t cfg_event_task_args = {
-        .queue_size      = 5,
-        .task_name       = "cfg_event_task",
-        .task_priority   = uxTaskPriorityGet(NULL),
-        .task_stack_size = 1024 * 5,
-        .task_core_id    = tskNO_AFFINITY,
-    };
-    ESP_ERROR_CHECK(esp_event_loop_create(&cfg_event_task_args, &cfg_event_handle));
-
-
     indicator_storage_init();
     indicator_btn_init();
     indicator_sensor_init(); // Get Sensor Data

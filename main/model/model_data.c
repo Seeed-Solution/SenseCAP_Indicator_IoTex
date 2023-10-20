@@ -65,7 +65,21 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
             w3b_cfg_interface *rev_cfg = (w3b_cfg_interface *)event_data;
 
             ESP_LOGI(TAG, "event: CFG_EVENT_WRITE");
-            memcpy(&w3b_cfg.cfg, rev_cfg, sizeof(w3b_cfg_interface));
+            if (rev_cfg->sn_len > 0) {
+                w3b_cfg.cfg.sn_len = rev_cfg->sn_len;
+                memcpy(&w3b_cfg.cfg.sn, rev_cfg->sn, sizeof(rev_cfg->sn));
+            } else {
+                // w3b_cfg.cfg.sn_len = rev_cfg->sn_len;
+                // 不覆盖，所以comments
+            }
+            if (rev_cfg->wallet_len > 0) {
+                w3b_cfg.cfg.wallet_len = rev_cfg->wallet_len;
+                memcpy(&w3b_cfg.cfg.wallet, rev_cfg->wallet, sizeof(rev_cfg->wallet));
+            } else {
+                // w3b_cfg.cfg.wallet_len = rev_cfg->wallet_len;
+                // 不覆盖，所以comments
+            }
+            // memcpy(&w3b_cfg.cfg, rev_cfg, sizeof(w3b_cfg_interface));
 
             if (cfg_write_fn(&w3b_cfg) != ESP_OK) {
                 ESP_LOGE(TAG, "cfg_write_fn failed");

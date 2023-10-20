@@ -774,15 +774,15 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
 int indicator_view_init(void)
 {
 
-    esp_event_loop_args_t view_event_task_args = {
-        .queue_size      = 10,
-        .task_name       = "view_event_task",
-        .task_priority   = uxTaskPriorityGet(NULL),
-        .task_stack_size = 10240,
-        .task_core_id    = tskNO_AFFINITY,
-    };
+    // esp_event_loop_args_t view_event_task_args = {
+    //     .queue_size      = 10,
+    //     .task_name       = "view_event_task",
+    //     .task_priority   = uxTaskPriorityGet(NULL),
+    //     .task_stack_size = 10240,
+    //     .task_core_id    = tskNO_AFFINITY,
+    // };
 
-    ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
+    // ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
 
     ui_init();
     wifi_list_event_init();

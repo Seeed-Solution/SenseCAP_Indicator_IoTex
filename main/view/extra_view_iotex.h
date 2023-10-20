@@ -19,7 +19,7 @@ extern "C" {
 #include "esp_event_base.h"
 
 int iotex_view_cfg_event_register(void);
-
+lv_obj_t *pop_up_custom(char *title, char *text);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

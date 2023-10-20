@@ -11,20 +11,13 @@
 #include "extra_view_iotex.h"
 #include "indicator_cmd.h"
 
-static const char *TAG = "IOTEX_VIEW";
+#include "model_data.h"
+#include "view_data.h"
 
-// static bool __g_bind_flag  = false;
+static const char *TAG        = "IOTEX_VIEW";
 
-static void yes_btn_click_handler(lv_event_t *e);
-static void no_btn_click_handler(lv_event_t *e);
-lv_obj_t   *pop_up_custom(char *title, char *text);
-
-// /**
-//  * @brief 需要处理 bind_flag 标签，如果为true，则禁用按钮
-//  * 设计弹窗样式，并确定 Event 进行的方向
-//  *
-//  */
-
+static bool __g_bind_flag     = false;
+static int  __g_scenario_flag = 4;
 
 /**
  * @brief 当 Confirm 按钮被按下的行为
@@ -35,9 +28,14 @@ void fn_bind_confirm(lv_event_t *e)
     // lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *ta = lv_event_get_target(e);
     ESP_LOGI(TAG, "fn_bind_confirm");
-
+    __g_scenario_flag = 4;
     pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
 }
+
+/********************** Pop Up **************************/
+static void yes_btn_click_handler(lv_event_t *e);
+static void no_btn_click_handler(lv_event_t *e);
+static void comfirm_btn_click_handler(lv_event_t *e);
 
 lv_obj_t *pop_up_custom(char *title, char *text)
 {
@@ -62,33 +60,52 @@ lv_obj_t *pop_up_custom(char *title, char *text)
     // 设置文本标签为自动换行模式
     lv_label_set_long_mode(text_label, LV_LABEL_LONG_WRAP);
 
-    // 创建"Yes"按钮
-    lv_obj_t *yes_btn = lv_btn_create(popup);
-    lv_obj_set_size(yes_btn, 120, 40);
-    lv_obj_align(yes_btn, LV_ALIGN_BOTTOM_LEFT, 20, -20);
-    lv_obj_set_style_bg_color(yes_btn, lv_color_hex(0x10A37F), LV_PART_MAIN | LV_STATE_DEFAULT); // 设置按钮颜色
-    lv_obj_add_event_cb(yes_btn, yes_btn_click_handler, LV_EVENT_ALL, NULL);
+    switch (__g_scenario_flag) {
+        case IOTEX_STATUS_DEVICE_SHOULD_ENROLL:
+        case IOTEX_STATUS_DEVICE_SUCCESS:
+            // 创建"Confirm"按钮 在中下方
+            lv_obj_t *confirm_btn = lv_btn_create(popup);
+            lv_obj_set_size(confirm_btn, 120, 40);
+            lv_obj_align(confirm_btn, LV_ALIGN_BOTTOM_MID, 0, -20);
+            lv_obj_set_style_bg_color(confirm_btn, lv_color_hex(0x10A37F), LV_PART_MAIN | LV_STATE_DEFAULT); // 设置按钮颜色
+            lv_obj_add_event_cb(confirm_btn, comfirm_btn_click_handler, LV_EVENT_ALL, NULL);
+            lv_obj_t *confirm_label = lv_label_create(confirm_btn);
+            lv_obj_align(confirm_label, LV_ALIGN_CENTER, 0, 0);
+            // if (__g_scenario_flag == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED)
+            lv_label_set_text(confirm_label, "OK");
+            // else if (__g_scenario_flag == IOTEX_STATUS_DEVICE_SUCCESS)
+            // lv_label_set_text(confirm_label, "OK");
+            break;
+        default:
+            // 创建"Yes"按钮
+            lv_obj_t *yes_btn = lv_btn_create(popup);
+            lv_obj_set_size(yes_btn, 120, 40);
+            lv_obj_align(yes_btn, LV_ALIGN_BOTTOM_LEFT, 20, -20);
+            lv_obj_set_style_bg_color(yes_btn, lv_color_hex(0x10A37F), LV_PART_MAIN | LV_STATE_DEFAULT); // 设置按钮颜色
+            lv_obj_add_event_cb(yes_btn, yes_btn_click_handler, LV_EVENT_ALL, NULL);
 
-    // 添加"Yes"按钮的标签
-    lv_obj_t *yes_label = lv_label_create(yes_btn);
-    lv_obj_align(yes_label, LV_ALIGN_CENTER, 0, 0);
-    lv_label_set_text(yes_label, "YES");
+            // 添加"Yes"按钮的标签
+            lv_obj_t *yes_label = lv_label_create(yes_btn);
+            lv_obj_align(yes_label, LV_ALIGN_CENTER, 0, 0);
+            lv_label_set_text(yes_label, "YES");
 
-    // 创建"No"按钮
-    lv_obj_t *no_btn = lv_btn_create(popup);
-    lv_obj_set_size(no_btn, 120, 40);
-    lv_obj_align(no_btn, LV_ALIGN_BOTTOM_RIGHT, -20, -20);
-    lv_obj_set_style_bg_color(no_btn, lv_color_hex(0x323434), LV_PART_MAIN | LV_STATE_DEFAULT); // 设置按钮颜色
-    lv_obj_add_event_cb(no_btn, no_btn_click_handler, LV_EVENT_ALL, NULL);
+            // 创建"No"按钮
+            lv_obj_t *no_btn = lv_btn_create(popup);
+            lv_obj_set_size(no_btn, 120, 40);
+            lv_obj_align(no_btn, LV_ALIGN_BOTTOM_RIGHT, -20, -20);
+            lv_obj_set_style_bg_color(no_btn, lv_color_hex(0x323434), LV_PART_MAIN | LV_STATE_DEFAULT); // 设置按钮颜色
+            lv_obj_add_event_cb(no_btn, no_btn_click_handler, LV_EVENT_ALL, NULL);
 
-    // 添加"No"按钮的标签
-    lv_obj_t *no_label = lv_label_create(no_btn);
-    lv_obj_align(no_label, LV_ALIGN_CENTER, 0, 0);
-    lv_label_set_text(no_label, "NO");
+            // 添加"No"按钮的标签
+            lv_obj_t *no_label = lv_label_create(no_btn);
+            lv_obj_align(no_label, LV_ALIGN_CENTER, 0, 0);
+            lv_label_set_text(no_label, "NO");
+            break;
+    }
 
     return popup;
 }
-bool        bind_flag = true;
+
 static void yes_btn_click_handler(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -97,20 +114,12 @@ static void yes_btn_click_handler(lv_event_t *e)
         lv_obj_t *father_popup   = lv_obj_get_parent(target);
         lv_obj_t *current_screen = lv_obj_get_parent(father_popup);
 
-        // 在点击"Yes"按钮时进行回调任务的检测和处理
         ESP_LOGI(TAG, "Pressed YES button");
-        if (current_screen == ui_screen_binding) {
-            ESP_LOGI(TAG, "current_screen == ui_screen_binding");
-        }
-
-        bind_flag = true;
+        esp_event_post_to(model_event_handle, DATA_EVENT_BASE, BUTTON_EVENT_YES, NULL, 0, portMAX_DELAY);
         // 关闭弹窗
-        esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_USER_CONFIRM, &bind_flag, sizeof(bool), portMAX_DELAY);
         lv_obj_del(lv_obj_get_parent(target)); // 銷毀popup
-                                               // send to VIEW_EVENT_IOTEX_USER_CONFIRM
     }
 }
-
 static void no_btn_click_handler(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -118,21 +127,28 @@ static void no_btn_click_handler(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED) {
         lv_obj_t *father_popup   = lv_obj_get_parent(target);
         lv_obj_t *current_screen = lv_obj_get_parent(father_popup);
-        // 点击"No"按钮时不执行任何事件处理，直接关闭弹窗
+
         ESP_LOGI(TAG, "Pressed NO button");
-        if (current_screen == ui_screen_binding) {
-            ESP_LOGI(TAG, "current_screen == ui_screen_binding");
-        }
-
-        bind_flag = false;
-
+        esp_event_post_to(model_event_handle, DATA_EVENT_BASE, BUTTON_EVENT_NO, NULL, 0, portMAX_DELAY);
         // do nothing 关闭弹窗
         lv_obj_del(lv_obj_get_parent(target));
-        esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_USER_CONFIRM, &bind_flag, sizeof(bool), portMAX_DELAY);
     }
 }
-
-
+static void comfirm_btn_click_handler(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t       *target     = lv_event_get_target(e);
+    if (event_code == LV_EVENT_CLICKED) {
+        lv_obj_t *father_popup   = lv_obj_get_parent(target);
+        lv_obj_t *current_screen = lv_obj_get_parent(father_popup);
+        ESP_LOGI(TAG, "Pressed CONFIRM button");
+        esp_event_post_to(model_event_handle, DATA_EVENT_BASE, BUTTON_EVENT_CONFIRM, NULL, 0, portMAX_DELAY);
+        // do nothing 关闭弹窗
+        lv_obj_del(lv_obj_get_parent(target));
+    }
+}
+/********************** Pop Up END **************************/
+/* 上电就会进入这里检查 Confirm 按钮是否可被按下 */
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
     lv_port_sem_take();
@@ -149,34 +165,138 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             bool *p_flag = (bool *)event_data;
             if (*p_flag == true) {
                 ESP_LOGI(TAG, "Binding Flag is true");
+                __g_bind_flag = true;
                 lv_obj_add_state(ui_btn_bind, LV_STATE_DISABLED);
             } else {
                 ESP_LOGI(TAG, "Binding Flag is false");
+                __g_bind_flag = false;
                 lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
             }
         }
-        // case VIEW_EVENT_IOTEX_CONTROL:
-        //     ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_CONTROL");
-        //     enum INDICATOR_PAGE page = *(enum INDICATOR_PAGE *)event_data;
-        //     switch (page) {
-        //         case INDICATOR_PAGE_PORTAL_REGIESTER_PAGE:
-        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_PAGE");
-        //             break;
-        //         case INDICATOR_PAGE_PORTAL_REGIESTER_ING:
-        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_ING");
-        //             break;
-        //         case INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS:
-        //             ESP_LOGI(TAG, "INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS");
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     break;
         default:
             break;
     }
     lv_port_sem_give();
 }
+
+static void __page_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+{
+    lv_port_sem_take();
+    switch (id) {
+        case IOTEX_STATUS_NO_RESPONSE: { // 没有连上网的时候 或 服务器没有应答
+            ESP_LOGI(TAG, "event: IOTEX_STATUS_NO_RESPONSE");
+            // do nothing
+            break;
+        }
+        case IOTEX_STATUS_DEVICE_SHOULD_ENROLL: { // 设备没有在 Potal 页面上注册，需要注册，弹窗提示
+            // 出现这种情况是在 bind_flag = 1时
+
+            ESP_LOGI(TAG, "event: IOTEX_STATUS_DEVICE_SHOULD_ENROLL");
+            __g_scenario_flag = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;
+            /*Function Pop Up*/ // 检测是否在 Portal 上进行注册了
+            pop_up_custom("Required", "Confirm the registration on the portal");
+
+            break;
+        }
+        case IOTEX_STATUS_DEVICE_CONFIRM_NEEDED: { // 设备（已存在的SN）已经在 Potal 页面上注册，但没有确认
+            ESP_LOGI(TAG, "event: IOTEX_STATUS_DEVICE_CONFIRM_NEEDED");
+            __g_scenario_flag = IOTEX_STATUS_DEVICE_CONFIRM_NEEDED;
+            /*Function Pop Up*/ // 弹窗提示是否需要进行确认：检测到当前设备已在 Portal 上进行注册，是否需要进行本地确认信息？
+
+            __g_bind_flag     = false;
+            esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
+
+            pop_up_custom("Required", "Confirm the registration on the Device?");
+            // TODO: YES 之后，跳转到 register 页面
+            break;
+        }
+        case IOTEX_STATUS_DEVICE_SUCCESS: { // 设备已经绑定成功
+            ESP_LOGI(TAG, "event: IOTEX_STATUS_DEVICE_SUCCESS");
+            __g_scenario_flag = IOTEX_STATUS_DEVICE_SUCCESS;
+            if (__g_bind_flag == true) {
+                ESP_LOGI(TAG, "IOTEX_STATUS_DEVICE_SUCCESS and __g_bind_flag == true");
+                lv_port_sem_give();
+                return; // nothing to do, as already registered device.
+            }
+            __g_bind_flag = true;
+            esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
+
+
+            pop_up_custom("Success", "The device has been successfully registered");
+            // 如果当前在 注册页面，就直接跳转到传感数据页面
+            // _ui_screen_change(&ui_screen_sensor, LV_SCR_LOAD_ANIM_FADE_IN, 200, 300, &ui_screen_sensor_screen_init);
+
+            break;
+        }
+        default:
+            break;
+    }
+    lv_port_sem_give();
+}
+
+
+static void __button_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+{
+    lv_port_sem_take();
+    ESP_LOGI(TAG, "__g_scenario_flag == %d", __g_scenario_flag); // 0,1,2,3 ;4
+    switch (id) {
+        case BUTTON_EVENT_YES: { // 点击Confirm 按钮和 弹出 IOTEX_STATUS_DEVICE_CONFIRM_NEEDED 时窗时，点击"Yes"按钮时的行为
+            ESP_LOGI(TAG, "event: BUTTON_EVENT_YES");
+            if (__g_scenario_flag == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
+                if (lv_scr_act() == ui_screen_binding)
+                    break;
+                else {
+                    _ui_screen_change(&ui_screen_binding, LV_SCR_LOAD_ANIM_FADE_IN, 200, 100, &ui_screen_binding_screen_init);
+                }
+            } else if (__g_scenario_flag == 4) // 设备绑定页面，点击"yes"按钮时，修改bind_flag，需要传递
+            {
+                bool bind_flag = false;
+                // 在点击"Yes"按钮时进行回调任务的检测和处理
+
+                ESP_LOGI(TAG, "Bind_flag Confirmed");
+
+                bind_flag = true;
+                esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
+                                  VIEW_EVENT_IOTEX_USER_CONFIRM,
+                                  &bind_flag, sizeof(bool), portMAX_DELAY); // To IoTex App
+            }
+
+            break;
+        }
+        case BUTTON_EVENT_NO: {
+            ESP_LOGI(TAG, "event: BUTTON_EVENT_NO");
+            // do nothing;
+
+            break;
+        }
+        case BUTTON_EVENT_CONFIRM: {
+
+            if (__g_scenario_flag == IOTEX_STATUS_DEVICE_SHOULD_ENROLL) {
+                // do noting;
+            } else if (__g_scenario_flag == IOTEX_STATUS_DEVICE_SUCCESS) {
+                // do noting;
+            } else if (__g_scenario_flag == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
+
+            } else if (__g_scenario_flag == 4) // 设备绑定页面，点击"Confirm"按钮时，修改bind_flag，需要传递
+            {
+                bool bind_flag = false;
+                // 在点击"Confirm"按钮时进行回调任务的检测和处理
+
+                ESP_LOGI(TAG, "Bind_flag Confirmed");
+
+                bind_flag = true;
+                esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
+                                  VIEW_EVENT_IOTEX_USER_CONFIRM,
+                                  &bind_flag, sizeof(bool), portMAX_DELAY); // To IoTex App
+            }
+        }
+        default:
+            break;
+    }
+    __g_scenario_flag = 4; // send to VIEW_EVENT_IOTEX_USER_CONFIRM
+    lv_port_sem_give();
+}
+
 
 int iotex_view_cfg_event_register(void)
 {
@@ -189,12 +309,25 @@ int iotex_view_cfg_event_register(void)
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_BINDING,
                                                              __view_event_handler, NULL, NULL));
     /* END */
-    // ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
-    //                                                          VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_CONTROL,
-    //                                                          __view_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, IOTEX_STATUS_NO_RESPONSE,
+                                                             __page_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, IOTEX_STATUS_DEVICE_SHOULD_ENROLL,
+                                                             __page_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, IOTEX_STATUS_DEVICE_CONFIRM_NEEDED,
+                                                             __page_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, IOTEX_STATUS_DEVICE_SUCCESS,
+                                                             __page_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, BUTTON_EVENT_YES,
+                                                             __button_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, BUTTON_EVENT_NO,
+                                                             __button_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
+                                                             DATA_EVENT_BASE, BUTTON_EVENT_CONFIRM,
+                                                             __button_event_handler, NULL, NULL));
 }
-
-// void extra_view_iotex_init()
-// {
-
-// }

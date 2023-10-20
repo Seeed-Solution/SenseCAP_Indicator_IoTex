@@ -59,6 +59,10 @@ enum MODEL_EVENT_DEFINE {
     CFG_EVENT_MODEL,
     BIND_EVENT_MODEL,
 
+    /* BUTTON */
+    BUTTON_EVENT_YES,
+    BUTTON_EVENT_NO,
+    BUTTON_EVENT_CONFIRM,
     /******* OTHER EVENT *******/
     MODEL_EVENT_IOTEX_USER_CONFIRM, // when the confirm been pressed
 

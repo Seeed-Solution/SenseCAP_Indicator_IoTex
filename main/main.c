@@ -30,6 +30,34 @@ void app_main(void)
     ESP_ERROR_CHECK(bsp_board_init());
     lv_port_init();
 
+    esp_event_loop_args_t view_event_task_args = {
+        .queue_size      = 10,
+        .task_name       = "view_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
+        .task_stack_size = 10240,
+        .task_core_id    = tskNO_AFFINITY,
+    };
+
+    ESP_ERROR_CHECK(esp_event_loop_create(&view_event_task_args, &view_event_handle));
+
+    esp_event_loop_args_t model_event_task_args = {
+        .queue_size      = 10,
+        .task_name       = "model_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
+        .task_stack_size = 1024 * 20,
+        .task_core_id    = tskNO_AFFINITY};
+    ESP_ERROR_CHECK(esp_event_loop_create(&model_event_task_args, &model_event_handle));
+
+    esp_event_loop_args_t cfg_event_task_args = {
+        .queue_size      = 5,
+        .task_name       = "cfg_event_task",
+        .task_priority   = uxTaskPriorityGet(NULL),
+        .task_stack_size = 1024 * 5,
+        .task_core_id    = tskNO_AFFINITY,
+    };
+    ESP_ERROR_CHECK(esp_event_loop_create(&cfg_event_task_args, &cfg_event_handle));
+
+
     lv_port_sem_take();
     indicator_view_init(); // LVGL 界面，初始化前端页面相关的部分，以及 event_handler: view_event_handle 在 `view_data.h` 中被定义 event collection
     lv_port_sem_give();

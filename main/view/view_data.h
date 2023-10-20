@@ -172,13 +172,13 @@ enum {
     VIEW_EVENT_ALL,
 };
 
-enum INDICATOR_PAGE{
-    INDICATOR_PAGE_SENSOR, // it will automatically change to Sensor
-    INDICATOR_PAGE_PORTAL_REGIESTER_PAGE,
-    INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS, // Pop
-    INDICATOR_PAGE_PORTAL_REGIESTER_ING,    // Pop
-    INDICATOR_PAGE_MAX,
-};
+// enum INDICATOR_PAGE{
+//     INDICATOR_PAGE_SENSOR, // it will automatically change to Sensor
+//     INDICATOR_PAGE_PORTAL_REGIESTER_PAGE,
+//     INDICATOR_PAGE_PORTAL_REGIESTER_SUCCESS, // Pop
+//     INDICATOR_PAGE_PORTAL_REGIESTER_ING,    // Pop
+//     INDICATOR_PAGE_MAX,
+// };
 
 #ifdef __cplusplus
 }
