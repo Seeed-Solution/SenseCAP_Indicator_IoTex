@@ -67,7 +67,7 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 ESP_LOGI(TAG, "User press the `NO` Button");
      
             }
-            esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &user_choice, sizeof(bool), portMAX_DELAY);
+            // esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &user_choice, sizeof(bool), portMAX_DELAY);
             break;
         }
         default:

@@ -26234,7 +26234,7 @@
                       {
                         "nid": 1840920651,
                         "strtype": "TEXTAREA/Placeholder",
-                        "strval": "ETH  Address",
+                        "strval": "Wallet Address",
                         "InheritedType": 10
                       },
                       {
@@ -26602,7 +26602,7 @@
                       {
                         "nid": 1126785861,
                         "strtype": "LABEL/Text",
-                        "strval": "ETH Address",
+                        "strval": "Wallet Address",
                         "InheritedType": 10
                       },
                       {
@@ -27042,6 +27042,7 @@
                               {
                                 "nid": 256852461,
                                 "strtype": "MODIFY FLAG/Object",
+                                "strval": "-",
                                 "InheritedType": 9
                               },
                               {
@@ -42418,7 +42419,8 @@
             "InheritedType": 2
           }
         ],
-        "saved_objtypeKey": "SCREEN"
+        "saved_objtypeKey": "SCREEN",
+        "tree_closed": true
       }
     ],
     "locked": false,
@@ -42800,7 +42802,7 @@
     "theme_color2": 0,
     "exportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\main\\view\\ui",
     "projectExportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\sensecap_d1_IoTex",
-    "backup_cnt": 380,
+    "backup_cnt": 384,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.3",
     "callfuncsexport": "C_FILE",

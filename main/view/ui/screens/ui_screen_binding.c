@@ -129,7 +129,7 @@ lv_obj_set_x( ui_TextArea_WAD, 0 );
 lv_obj_set_y( ui_TextArea_WAD, 120 );
 lv_obj_set_align( ui_TextArea_WAD, LV_ALIGN_TOP_MID );
 lv_textarea_set_max_length(ui_TextArea_WAD,1024);
-lv_textarea_set_placeholder_text(ui_TextArea_WAD,"ETH  Address");
+lv_textarea_set_placeholder_text(ui_TextArea_WAD,"Wallet Address");
 lv_textarea_set_one_line(ui_TextArea_WAD,true);
 lv_obj_add_flag( ui_TextArea_WAD, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_TextArea_WAD, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLL_ELASTIC );    /// Flags
@@ -148,7 +148,7 @@ lv_obj_set_height( ui_Label_WAD, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_Label_WAD, 0 );
 lv_obj_set_y( ui_Label_WAD, 20 );
 lv_obj_set_align( ui_Label_WAD, LV_ALIGN_LEFT_MID );
-lv_label_set_text(ui_Label_WAD,"ETH Address");
+lv_label_set_text(ui_Label_WAD,"Wallet Address");
 
 ui_TextArea_SN = lv_textarea_create(ui_Panel_SN);
 lv_obj_set_width( ui_TextArea_SN, 220);
