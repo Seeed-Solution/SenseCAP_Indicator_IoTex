@@ -179,6 +179,9 @@ lv_obj_set_style_bg_color(ui_btn_bind, lv_color_hex(0x10A37F), LV_PART_MAIN | LV
 lv_obj_set_style_bg_opa(ui_btn_bind, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 lv_obj_set_style_bg_color(ui_btn_bind, lv_color_hex(0x5F6664), LV_PART_MAIN | LV_STATE_DISABLED );
 lv_obj_set_style_bg_opa(ui_btn_bind, 255, LV_PART_MAIN| LV_STATE_DISABLED);
+lv_obj_set_style_bg_color(ui_btn_bind, lv_color_hex(0x18A0FB), LV_PART_MAIN | LV_STATE_USER_1 );
+lv_obj_set_style_bg_opa(ui_btn_bind, 255, LV_PART_MAIN| LV_STATE_USER_1);
+lv_obj_set_style_text_font(ui_btn_bind, &lv_font_montserrat_26, LV_PART_MAIN| LV_STATE_USER_1);
 
 ui_label_bind = lv_label_create(ui_btn_bind);
 lv_obj_set_width( ui_label_bind, 283);

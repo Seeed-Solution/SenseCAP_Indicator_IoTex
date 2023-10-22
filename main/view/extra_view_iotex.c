@@ -165,6 +165,7 @@ bool first_time = false;
 static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
 {
     lv_port_sem_take();
+
     switch (id) {
         case VIEW_EVENT_MQTT_IOTEX_CFG: {
             ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
@@ -180,8 +181,9 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 ESP_LOGI(TAG, "Binding Flag is true");
                 __g_bind_flag = true;
                 lv_obj_add_state(ui_btn_bind, LV_STATE_DISABLED);
-                if (first_time == false) {
-                    first_time == true;
+                if (first_time) {
+                    first_time = false;
+                    lv_obj_clear_state( ui_btn_bind, LV_STATE_USER_1 );
                     lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_label_set_text(ui_label_bind, "Registering");
                 }
@@ -235,8 +237,9 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
         case IOTEX_STATUS_NO_RESPONSE: { // 没有连上网的时候 或 服务器没有应答
             ESP_LOGI(TAG, "event: IOTEX_STATUS_NO_RESPONSE");
             // do nothing
-            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
             // lv_label_get_text(ui_label_bind);
+            lv_obj_clear_state( ui_btn_bind, LV_STATE_USER_1 );
+            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Confirm");
             // previous_status = IOTEX_STATUS_NO_RESPONSE;
             break;
@@ -252,6 +255,7 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
                 __g_bind_flag = true;
                 esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
             }
+            lv_obj_clear_state( ui_btn_bind, LV_STATE_USER_1 );
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Should Enroll on Portal");
             previous_status = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;
@@ -266,6 +270,7 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
 
             // pop_up_custom("Required", "Confirm the registration on the Device?");
+            lv_obj_clear_state( ui_btn_bind, LV_STATE_USER_1 );
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Confirm");
             previous_status = IOTEX_STATUS_DEVICE_CONFIRM_NEEDED;
@@ -283,9 +288,12 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             //     return; // nothing to do, as already registered device.
             // }
             __g_bind_flag     = true;
-            esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+
             lv_label_set_text(ui_label_bind, "Registered");
+            lv_obj_add_state( ui_btn_bind, LV_STATE_USER_1 );     /// States
+            
+            esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
             if (previous_status == IOTEX_STATUS_DEVICE_SHOULD_ENROLL || previous_status == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
                 // pop_up_custom("Success", "The device has been successfully registered");
                 // static const char *btns[] = {"OK"};
@@ -373,7 +381,7 @@ static void __button_event_handler(void *handler_args, esp_event_base_t base, in
 
 int iotex_view_cfg_event_register(void)
 {
-
+     first_time = true;
     /* 触发而显示到界面上 */
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_CFG,

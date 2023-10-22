@@ -36,7 +36,7 @@ static void __cfg_event_handler(void *handler_args, esp_event_base_t base, int32
             break;
         }
         case VIEW_EVENT_MQTT_IOTEX_BINDING: { // tirgger to read new bind_flag
-            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_BINDING");
+            ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_BINDING:read new bind_flag");
             bind_flag_read_fn(&bind_flag);
             break;
         }
