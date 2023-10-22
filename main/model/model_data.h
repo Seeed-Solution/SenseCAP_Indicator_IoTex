@@ -47,6 +47,7 @@ enum MODEL_EVENT_DEFINE {
 
     /******* W3B_CFG_EVENT *******/
     /* for host to see the configuration Only*/
+    DEVICE_ETH_EVENT_TRIGGER, // 以太坊设备地址， 显示和能上报到上位机
     CFG_EVENT_READ,
     CFG_EVENT_WRITE, // SN and Wallet are written by host
     /*** END ***/
@@ -76,6 +77,14 @@ typedef enum {
 
 #define SN_MAX_LEN     18
 #define WALLET_MAX_LEN 160
+#define ETH_CFG_LEN 64 //12字节
+
+typedef struct 
+{
+    char eth[ETH_CFG_LEN + 1];
+    int  eth_len;
+}eth_cfg;
+
 
 typedef struct {
     char sn[SN_MAX_LEN + 1];

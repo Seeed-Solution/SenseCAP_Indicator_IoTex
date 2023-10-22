@@ -169,6 +169,7 @@ enum {
     VIEW_EVENT_MQTT_IOTEX_BINDING, // struct view_data_mqtt_iotex_cfg
     VIEW_EVENT_IOTEX_USER_CONFIRM,
     // VIEW_EVENT_IOTEX_CONTROL,
+    VIEW_DEVICE_ETH_ADDRESS,
     VIEW_EVENT_ALL,
 };
 

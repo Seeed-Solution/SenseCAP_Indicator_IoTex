@@ -19,25 +19,22 @@ void up_Animation( lv_obj_t *TargetObject, int delay);
 void ui_screen_time_screen_init(void);
 void ui_event_screen_time( lv_event_t * e);
 extern lv_obj_t *ui_screen_time;
+extern lv_obj_t *ui_time_background;
+extern lv_obj_t *ui_hour1;
+extern lv_obj_t *ui_hour_cfg1;
+extern lv_obj_t *ui_min1;
+extern lv_obj_t *ui_min_cfg1;
+extern lv_obj_t *ui_min_cfg2;
+extern lv_obj_t *ui_location1;
+extern lv_obj_t *ui_city;
+extern lv_obj_t *ui_location_Icon1;
+extern lv_obj_t *ui_date_panel1;
+extern lv_obj_t *ui_date;
+extern lv_obj_t *ui_Label2;
+extern lv_obj_t *ui_adorn;
 void ui_event_wifi__st_button_1( lv_event_t * e);
 extern lv_obj_t *ui_wifi__st_button_1;
 extern lv_obj_t *ui_wifi_st_1;
-extern lv_obj_t *ui_time1;
-extern lv_obj_t *ui_date_panel;
-extern lv_obj_t *ui_date;
-extern lv_obj_t *ui_location;
-extern lv_obj_t *ui_location_Icon;
-extern lv_obj_t *ui_city;
-extern lv_obj_t *ui_sensor_temp;
-extern lv_obj_t *ui_temp_icon_1;
-extern lv_obj_t *ui_temp_title_1;
-extern lv_obj_t *ui_temp_unit_1;
-extern lv_obj_t *ui_temp_data_1;
-extern lv_obj_t *ui_sensor_humidity;
-extern lv_obj_t *ui_humidity_icon_1;
-extern lv_obj_t *ui_humidity_title_1;
-extern lv_obj_t *ui_humidity_unit_1;
-extern lv_obj_t *ui_humidity_data_1;
 extern lv_obj_t *ui_scrolldots1;
 extern lv_obj_t *ui_scrolldots11;
 extern lv_obj_t *ui_scrolldots12;
@@ -192,10 +189,9 @@ extern lv_obj_t *ui_time_label1;
 extern lv_obj_t *ui_time_label2;
 extern lv_obj_t *ui____initial_actions0;
 
+LV_IMG_DECLARE( ui_img_background_png);   // assets\background.png
+LV_IMG_DECLARE( ui_img_location2_png);   // assets\location2.png
 LV_IMG_DECLARE( ui_img_wifi_disconet_png);   // assets\wifi_disconet.png
-LV_IMG_DECLARE( ui_img_location_png);   // assets\location.png
-LV_IMG_DECLARE( ui_img_temp_1_png);   // assets\temp_1.png
-LV_IMG_DECLARE( ui_img_humidity_1_png);   // assets\humidity_1.png
 LV_IMG_DECLARE( ui_img_co2_png);   // assets\co2.png
 LV_IMG_DECLARE( ui_img_tvoc_png);   // assets\tvoc.png
 LV_IMG_DECLARE( ui_img_temp_2_png);   // assets\temp_2.png
@@ -208,7 +204,8 @@ LV_IMG_DECLARE( ui_img_w3blog_png);   // assets\w3blog.png
 LV_IMG_DECLARE( ui_img_back_png);   // assets\back.png
 LV_IMG_DECLARE( ui_img_high_light_png);   // assets\high_light.png
 LV_IMG_DECLARE( ui_img_low_light_png);   // assets\low_light.png
-LV_IMG_DECLARE( ui_img_location2_png);   // assets\location2.png
+LV_IMG_DECLARE( ui_img_humidity_1_png);   // assets\humidity_1.png
+LV_IMG_DECLARE( ui_img_temp_1_png);   // assets\temp_1.png
 LV_IMG_DECLARE( ui_img_wifi_1_png);   // assets\wifi_1.png
 LV_IMG_DECLARE( ui_img_wifi_2_png);   // assets\wifi_2.png
 LV_IMG_DECLARE( ui_img_wifi_3_png);   // assets\wifi_3.png
@@ -218,6 +215,7 @@ LV_FONT_DECLARE( ui_font_font1);
 LV_FONT_DECLARE( ui_font_font2);
 LV_FONT_DECLARE( ui_font_font3);
 LV_FONT_DECLARE( ui_font_font4);
+LV_FONT_DECLARE( ui_font_time_font);
 
 void ui_init(void);
 

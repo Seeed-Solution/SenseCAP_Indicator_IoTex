@@ -1,0 +1,16 @@
+{
+  "codename": "time_font",
+  "ttf_path": "\\assets\\Montserrat-SemiBold.ttf",
+  "bin_path": "\\assets\\ui_font_time_font.bin",
+  "c_path": "\\assets\\ui_font_time_font.c",
+  "cfg_path": "\\assets\\ui_font_time_font.fcfg",
+  "size": 140,
+  "bpp": 8,
+  "letters": 0,
+  "ranges": [
+    "0x30-0x39"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

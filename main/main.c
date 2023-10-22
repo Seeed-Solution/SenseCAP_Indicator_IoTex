@@ -65,7 +65,6 @@ void app_main(void)
     indicator_model_init(); // 数据后端类型相关，提供数据和配置 handle: model_event_handle & cfg_event_handle 在 `model_data.h` 中被定义 event collection
     indicator_controller_init(); // 时间和显示相关的配置信息
     w3b_cfg_init(); // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
-
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10000));
     }

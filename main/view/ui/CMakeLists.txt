@@ -8,10 +8,9 @@ SET(SOURCES screens/ui_screen_time.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
+    images/ui_img_background_png.c
+    images/ui_img_location2_png.c
     images/ui_img_wifi_disconet_png.c
-    images/ui_img_location_png.c
-    images/ui_img_temp_1_png.c
-    images/ui_img_humidity_1_png.c
     images/ui_img_co2_png.c
     images/ui_img_tvoc_png.c
     images/ui_img_temp_2_png.c
@@ -24,7 +23,8 @@ SET(SOURCES screens/ui_screen_time.c
     images/ui_img_back_png.c
     images/ui_img_high_light_png.c
     images/ui_img_low_light_png.c
-    images/ui_img_location2_png.c
+    images/ui_img_humidity_1_png.c
+    images/ui_img_temp_1_png.c
     images/ui_img_wifi_1_png.c
     images/ui_img_wifi_2_png.c
     images/ui_img_wifi_3_png.c
@@ -32,6 +32,7 @@ SET(SOURCES screens/ui_screen_time.c
     fonts/ui_font_font1.c
     fonts/ui_font_font2.c
     fonts/ui_font_font3.c
-    fonts/ui_font_font4.c)
+    fonts/ui_font_font4.c
+    fonts/ui_font_time_font.c)
 
 add_library(ui ${SOURCES})

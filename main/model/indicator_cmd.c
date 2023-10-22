@@ -21,6 +21,8 @@ static const char *TAG = "CMD_RESP";
 
 #define PROMPT_STR "Indicator"
 
+eth_cfg eth_address = {0};
+
 static int fn_w3b_cm_read(int argc, char **argv)
 {
     // bool cmd_flag = true;
@@ -36,7 +38,8 @@ static int fn_w3b_cm_read(int argc, char **argv)
         return -1;
     }
     char buf[526];
-    sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, w3b_cfg.cfg.wallet);
+    // sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, w3b_cfg.cfg.wallet);
+    sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, eth_address.eth);
     printf("%s", buf);
     return 0;
 }

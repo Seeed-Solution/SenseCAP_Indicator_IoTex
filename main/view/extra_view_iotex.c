@@ -157,7 +157,7 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
             ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
             w3b_cfg_interface *p_cfg = (w3b_cfg_interface *)event_data;
             lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
-            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
+            // lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
             break;
         }
         case VIEW_EVENT_MQTT_IOTEX_BINDING: {
@@ -172,6 +172,14 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 __g_bind_flag = false;
                 lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
             }
+        }
+        case VIEW_DEVICE_ETH_ADDRESS:{
+            ESP_LOGI(TAG, "event: VIEW_DEVICE_ETH");
+            eth_cfg* view_cfg  = (eth_cfg *)event_data;
+            lv_textarea_set_text(ui_TextArea_WAD, view_cfg->eth); // ETH_ADDREES
+
+            // lv_textarea_set_text(ui_TextArea_ETH, view_cfg->eth);  // TODO
+            break;
         }
         default:
             break;
@@ -307,6 +315,9 @@ int iotex_view_cfg_event_register(void)
                                                              __view_event_handler, NULL, NULL));
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
                                                              VIEW_EVENT_BASE, VIEW_EVENT_MQTT_IOTEX_BINDING,
+                                                             __view_event_handler, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle,
+                                                             VIEW_EVENT_BASE, VIEW_DEVICE_ETH_ADDRESS,
                                                              __view_event_handler, NULL, NULL));
     /* END */
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,

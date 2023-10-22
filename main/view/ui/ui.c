@@ -14,25 +14,22 @@ void up_Animation( lv_obj_t *TargetObject, int delay);
 void ui_screen_time_screen_init(void);
 void ui_event_screen_time( lv_event_t * e);
 lv_obj_t *ui_screen_time;
+lv_obj_t *ui_time_background;
+lv_obj_t *ui_hour1;
+lv_obj_t *ui_hour_cfg1;
+lv_obj_t *ui_min1;
+lv_obj_t *ui_min_cfg1;
+lv_obj_t *ui_min_cfg2;
+lv_obj_t *ui_location1;
+lv_obj_t *ui_city;
+lv_obj_t *ui_location_Icon1;
+lv_obj_t *ui_date_panel1;
+lv_obj_t *ui_date;
+lv_obj_t *ui_Label2;
+lv_obj_t *ui_adorn;
 void ui_event_wifi__st_button_1( lv_event_t * e);
 lv_obj_t *ui_wifi__st_button_1;
 lv_obj_t *ui_wifi_st_1;
-lv_obj_t *ui_time1;
-lv_obj_t *ui_date_panel;
-lv_obj_t *ui_date;
-lv_obj_t *ui_location;
-lv_obj_t *ui_location_Icon;
-lv_obj_t *ui_city;
-lv_obj_t *ui_sensor_temp;
-lv_obj_t *ui_temp_icon_1;
-lv_obj_t *ui_temp_title_1;
-lv_obj_t *ui_temp_unit_1;
-lv_obj_t *ui_temp_data_1;
-lv_obj_t *ui_sensor_humidity;
-lv_obj_t *ui_humidity_icon_1;
-lv_obj_t *ui_humidity_title_1;
-lv_obj_t *ui_humidity_unit_1;
-lv_obj_t *ui_humidity_data_1;
 lv_obj_t *ui_scrolldots1;
 lv_obj_t *ui_scrolldots11;
 lv_obj_t *ui_scrolldots12;
@@ -310,19 +307,19 @@ if ( event_code == LV_EVENT_CLICKED) {
 }
 void ui_event_setting_wifi( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
+if ( event_code == LV_EVENT_SHORT_CLICKED) {
       _ui_screen_change( &ui_screen_wifi, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_wifi_screen_init);
 }
 }
 void ui_event_setting_display( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
+if ( event_code == LV_EVENT_SHORT_CLICKED) {
       _ui_screen_change( &ui_screen_display, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_display_screen_init);
 }
 }
 void ui_event_setting_time( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
+if ( event_code == LV_EVENT_SHORT_CLICKED) {
       _ui_screen_change( &ui_screen_date_time, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 200, 0, &ui_screen_date_time_screen_init);
 }
 }
@@ -334,7 +331,7 @@ if ( event_code == LV_EVENT_CLICKED) {
 }
 void ui_event_btn_setting_bind( lv_event_t * e) {
     lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
-if ( event_code == LV_EVENT_LONG_PRESSED) {
+if ( event_code == LV_EVENT_SHORT_CLICKED) {
       _ui_screen_change( &ui_screen_binding, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_screen_binding_screen_init);
 }
 }

@@ -25,9 +25,9 @@ esp_err_t bind_flag_read_fn(bool *flag);
 esp_err_t cfg_write_fn(W3B_CFG *cfg);
 esp_err_t cfg_read_fn(W3B_CFG *cfg, int *len);
 
-W3B_CFG w3b_cfg;
-bool    IoTexBindingFlag = false;
-
+W3B_CFG        w3b_cfg;
+bool           IoTexBindingFlag = false;
+extern eth_cfg eth_address;
 /**
  * @brief xx_VIEW 与 view_event_handle 相关，直接 trigger 视图显示
  *
@@ -61,6 +61,17 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
         //     // }
         //     break;
         // }
+        case DEVICE_ETH_EVENT_TRIGGER: {
+            // display
+            ESP_LOGI(TAG, "event: DEVICE_ETH_EVENT_TRIGGER");
+            // 获取 string
+            eth_cfg *rev_cfg = (eth_cfg *)event_data;
+            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_DEVICE_ETH_ADDRESS,
+                              &rev_cfg, sizeof(eth_cfg),
+                              portMAX_DELAY);
+            // save for upload to host
+            memcpy(&eth_address, rev_cfg, sizeof(eth_cfg));
+        }
         case CFG_EVENT_WRITE: {
             w3b_cfg_interface *rev_cfg = (w3b_cfg_interface *)event_data;
 
@@ -150,6 +161,10 @@ esp_err_t w3b_cfg_init()
     // ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
     //                                                          CFG_EVENT_BASE, BIND_EVENT_READ,
     //                                                          _cfg_event_handler, NULL, NULL));
+
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
+                                                             CFG_EVENT_BASE, DEVICE_ETH_EVENT_TRIGGER,
+                                                             _cfg_event_handler, NULL, NULL));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(cfg_event_handle,
                                                              CFG_EVENT_BASE, CFG_EVENT_WRITE,
