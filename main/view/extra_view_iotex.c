@@ -29,7 +29,13 @@ void fn_bind_confirm(lv_event_t *e)
     lv_obj_t *ta = lv_event_get_target(e);
     ESP_LOGI(TAG, "fn_bind_confirm");
     __g_scenario_flag = 4;
-    pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
+    // pop_up_custom("Confirm", "Please confirm the registrationhas been completed onthe portal");
+    // 直接就是绑定, 而不用弹窗
+    __g_bind_flag     = true;
+    esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
+    esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
+                      VIEW_EVENT_IOTEX_USER_CONFIRM,
+                      &__g_bind_flag, sizeof(bool), portMAX_DELAY); // To IoTex App
 }
 
 /********************** Pop Up **************************/
@@ -105,7 +111,11 @@ lv_obj_t *pop_up_custom(char *title, char *text)
 
     return popup;
 }
-
+/**
+ * @brief 回调函数，在 Button Event 中被处理
+ *
+ * @param e
+ */
 static void yes_btn_click_handler(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -173,9 +183,9 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
                 lv_obj_clear_state(ui_btn_bind, LV_STATE_DISABLED);
             }
         }
-        case VIEW_DEVICE_ETH_ADDRESS:{
+        case VIEW_DEVICE_ETH_ADDRESS: {
             ESP_LOGI(TAG, "event: VIEW_DEVICE_ETH");
-            eth_cfg* view_cfg  = (eth_cfg *)event_data;
+            eth_cfg *view_cfg = (eth_cfg *)event_data;
             lv_textarea_set_text(ui_TextArea_WAD, view_cfg->eth); // ETH_ADDREES
 
             // lv_textarea_set_text(ui_TextArea_ETH, view_cfg->eth);  // TODO
@@ -194,6 +204,8 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
         case IOTEX_STATUS_NO_RESPONSE: { // 没有连上网的时候 或 服务器没有应答
             ESP_LOGI(TAG, "event: IOTEX_STATUS_NO_RESPONSE");
             // do nothing
+            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(ui_label_bind, "Confirm");
             break;
         }
         case IOTEX_STATUS_DEVICE_SHOULD_ENROLL: { // 设备没有在 Potal 页面上注册，需要注册，弹窗提示
@@ -202,7 +214,13 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             ESP_LOGI(TAG, "event: IOTEX_STATUS_DEVICE_SHOULD_ENROLL");
             __g_scenario_flag = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;
             /*Function Pop Up*/ // 检测是否在 Portal 上进行注册了
-            pop_up_custom("Required", "Confirm the registration on the portal");
+            // pop_up_custom("Required", "Confirm the registration on the portal");
+            if (__g_bind_flag == false) {
+                __g_bind_flag = true;
+                esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
+            }
+            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(ui_label_bind, "Should Enroll on Portal");
 
             break;
         }
@@ -214,7 +232,9 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             __g_bind_flag     = false;
             esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
 
-            pop_up_custom("Required", "Confirm the registration on the Device?");
+            // pop_up_custom("Required", "Confirm the registration on the Device?");
+            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(ui_label_bind, "Confirm");
             // TODO: YES 之后，跳转到 register 页面
             break;
         }
@@ -223,14 +243,17 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             __g_scenario_flag = IOTEX_STATUS_DEVICE_SUCCESS;
             if (__g_bind_flag == true) {
                 ESP_LOGI(TAG, "IOTEX_STATUS_DEVICE_SUCCESS and __g_bind_flag == true");
+                lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_set_text(ui_label_bind, "Registered Successfully");
                 lv_port_sem_give();
                 return; // nothing to do, as already registered device.
             }
             __g_bind_flag = true;
             esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
 
-
-            pop_up_custom("Success", "The device has been successfully registered");
+            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(ui_label_bind, "Registered Successfully");
+            // pop_up_custom("Success", "The device has been successfully registered");
             // 如果当前在 注册页面，就直接跳转到传感数据页面
             // _ui_screen_change(&ui_screen_sensor, LV_SCR_LOAD_ANIM_FADE_IN, 200, 300, &ui_screen_sensor_screen_init);
 
@@ -250,24 +273,25 @@ static void __button_event_handler(void *handler_args, esp_event_base_t base, in
     switch (id) {
         case BUTTON_EVENT_YES: { // 点击Confirm 按钮和 弹出 IOTEX_STATUS_DEVICE_CONFIRM_NEEDED 时窗时，点击"Yes"按钮时的行为
             ESP_LOGI(TAG, "event: BUTTON_EVENT_YES");
-            if (__g_scenario_flag == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
+            if (__g_scenario_flag == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) { // 当服务器需要进行本地设备 Confirm 时
                 if (lv_scr_act() == ui_screen_binding)
                     break;
                 else {
                     _ui_screen_change(&ui_screen_binding, LV_SCR_LOAD_ANIM_FADE_IN, 200, 100, &ui_screen_binding_screen_init);
                 }
-            } else if (__g_scenario_flag == 4) // 设备绑定页面，点击"yes"按钮时，修改bind_flag，需要传递
-            {
-                bool bind_flag = false;
-                // 在点击"Yes"按钮时进行回调任务的检测和处理
-
-                ESP_LOGI(TAG, "Bind_flag Confirmed");
-
-                bind_flag = true;
-                esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
-                                  VIEW_EVENT_IOTEX_USER_CONFIRM,
-                                  &bind_flag, sizeof(bool), portMAX_DELAY); // To IoTex App
             }
+            // else if (__g_scenario_flag == 4) // 设备绑定页面，点击"yes"按钮时，修改bind_flag，需要传递
+            // {
+            //     bool bind_flag = false;
+            //     // 在点击"Yes"按钮时进行回调任务的检测和处理
+
+            //     ESP_LOGI(TAG, "Bind_flag Confirmed");
+
+            //     bind_flag = true;
+            //     esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
+            //                       VIEW_EVENT_IOTEX_USER_CONFIRM,
+            //                       &bind_flag, sizeof(bool), portMAX_DELAY); // To IoTex App
+            // }
 
             break;
         }

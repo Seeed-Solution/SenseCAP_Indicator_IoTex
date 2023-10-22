@@ -209,7 +209,7 @@ lv_obj_set_style_text_font(ui_setting_binding_title, &ui_font_font1, LV_PART_MAI
 
 ui_btn_setting_bind = lv_btn_create(ui_screen_setting);
 lv_obj_set_width( ui_btn_setting_bind, 430);
-lv_obj_set_height( ui_btn_setting_bind, 95);
+lv_obj_set_height( ui_btn_setting_bind, 115);
 lv_obj_set_x( ui_btn_setting_bind, 25 );
 lv_obj_set_y( ui_btn_setting_bind, 300 );
 lv_obj_add_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags

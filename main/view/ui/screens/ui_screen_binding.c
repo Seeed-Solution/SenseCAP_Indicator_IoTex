@@ -181,7 +181,7 @@ lv_obj_set_style_bg_color(ui_btn_bind, lv_color_hex(0x5F6664), LV_PART_MAIN | LV
 lv_obj_set_style_bg_opa(ui_btn_bind, 255, LV_PART_MAIN| LV_STATE_DISABLED);
 
 ui_label_bind = lv_label_create(ui_btn_bind);
-lv_obj_set_width( ui_label_bind, 200);
+lv_obj_set_width( ui_label_bind, 283);
 lv_obj_set_height( ui_label_bind, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_align( ui_label_bind, LV_ALIGN_CENTER );
 lv_label_set_text(ui_label_bind,"Confirm");

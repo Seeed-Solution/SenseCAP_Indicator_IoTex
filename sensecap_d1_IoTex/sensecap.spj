@@ -22131,7 +22131,7 @@
                 "strtype": "OBJECT/Size",
                 "intarray": [
                   430,
-                  95
+                  115
                 ],
                 "InheritedType": 7
               },
@@ -27388,7 +27388,7 @@
                         "flags": 49,
                         "strtype": "OBJECT/Size",
                         "intarray": [
-                          200,
+                          283,
                           1
                         ],
                         "InheritedType": 7
@@ -42800,7 +42800,7 @@
     "theme_color2": 0,
     "exportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\main\\view\\ui",
     "projectExportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\sensecap_d1_IoTex",
-    "backup_cnt": 377,
+    "backup_cnt": 380,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.3",
     "callfuncsexport": "C_FILE",
