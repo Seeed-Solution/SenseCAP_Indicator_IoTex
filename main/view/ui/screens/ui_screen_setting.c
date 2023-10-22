@@ -58,7 +58,7 @@ lv_obj_set_style_text_font(ui_setting_title, &ui_font_font1, LV_PART_MAIN| LV_ST
 
 ui_setting_wifi = lv_btn_create(ui_screen_setting);
 lv_obj_set_width( ui_setting_wifi, 140);
-lv_obj_set_height( ui_setting_wifi, 142);
+lv_obj_set_height( ui_setting_wifi, 140);
 lv_obj_set_x( ui_setting_wifi, 25 );
 lv_obj_set_y( ui_setting_wifi, 150 );
 lv_obj_add_flag( ui_setting_wifi, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
@@ -89,7 +89,7 @@ lv_obj_set_style_radius(ui_setting_wifi_title, 0, LV_PART_MAIN| LV_STATE_DEFAULT
 
 ui_setting_display = lv_btn_create(ui_screen_setting);
 lv_obj_set_width( ui_setting_display, 140);
-lv_obj_set_height( ui_setting_display, 143);
+lv_obj_set_height( ui_setting_display, 140);
 lv_obj_set_x( ui_setting_display, 170 );
 lv_obj_set_y( ui_setting_display, 150 );
 lv_obj_add_flag( ui_setting_display, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
@@ -118,7 +118,7 @@ lv_obj_set_style_text_font(ui_setting_display_title, &ui_font_font1, LV_PART_MAI
 
 ui_setting_time = lv_btn_create(ui_screen_setting);
 lv_obj_set_width( ui_setting_time, 140);
-lv_obj_set_height( ui_setting_time, 145);
+lv_obj_set_height( ui_setting_time, 140);
 lv_obj_set_x( ui_setting_time, 315 );
 lv_obj_set_y( ui_setting_time, 150 );
 lv_obj_add_flag( ui_setting_time, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
@@ -208,10 +208,10 @@ lv_label_set_text(ui_setting_binding_title,"Device Registration");
 lv_obj_set_style_text_font(ui_setting_binding_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_btn_setting_bind = lv_btn_create(ui_screen_setting);
-lv_obj_set_width( ui_btn_setting_bind, 420);
-lv_obj_set_height( ui_btn_setting_bind, 106);
-lv_obj_set_x( ui_btn_setting_bind, 30 );
-lv_obj_set_y( ui_btn_setting_bind, 302 );
+lv_obj_set_width( ui_btn_setting_bind, 430);
+lv_obj_set_height( ui_btn_setting_bind, 95);
+lv_obj_set_x( ui_btn_setting_bind, 25 );
+lv_obj_set_y( ui_btn_setting_bind, 300 );
 lv_obj_add_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 lv_obj_set_style_bg_color(ui_btn_setting_bind, lv_color_hex(0x775CB4), LV_PART_MAIN | LV_STATE_DEFAULT );
