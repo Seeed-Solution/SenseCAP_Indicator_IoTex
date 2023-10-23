@@ -29,24 +29,58 @@ static void custom_event_cb(lv_event_t *e)
 }
 void msgbox(const char *title, const char *message)
 {
-    static const char *btns[] = {"OK", NULL};
+  static const char *btns_point[] = {"OK", NULL};
 
-    lv_obj_t *mbox            = lv_msgbox_create(NULL, title, message, btns, false);
+  lv_obj_t *mbox = lv_msgbox_create(NULL, title, message, btns_point, false);
+  lv_obj_add_event_cb(mbox, custom_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+  // lv_obj_set_size(mbox, LV_DPI_DEF * 2.5, LV_SIZE_CONTENT);
+  /************ 标题 ***************/
+  lv_obj_t *msg_title = lv_msgbox_get_title(mbox);
+  lv_obj_set_style_text_font(msg_title, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_color(msg_title, lv_color_hex(0x007FFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(msg_title, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_letter_space(msg_title, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_line_space(msg_title, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_decor(msg_title, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(msg_title, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_width(msg_title, 220);
+  // lv_obj_center(msg_title);
 
-    lv_obj_add_event_cb(mbox, custom_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+  /*********** 内容 **************/
+  lv_obj_t *contents_label = lv_msgbox_get_text(mbox);
+  lv_obj_set_style_text_font(contents_label, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_color(contents_label, lv_color_hex(0x007FFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(contents_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_letter_space(contents_label, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_line_space(contents_label, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_decor(contents_label, LV_TEXT_DECOR_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_text_opa(contents_label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_width(contents_label, 220);
+  lv_label_set_long_mode(contents_label, LV_LABEL_LONG_WRAP);
 
-    static lv_style_t style_msgbox;
-    lv_style_init(&style_msgbox);
-    lv_style_set_text_font(&style_msgbox, &lv_font_montserrat_22);
-    
-    lv_obj_add_style(mbox, &style_msgbox, 0);
+  // lv_obj_set_width(contents_label, 220);
+  // lv_obj_set_width(contents_label, 220);
+  //   lv_label_set_text(contents_label, message);
+  //   lv_obj_align(contents_label, LV_ALIGN_CENTER, 0, 0);
+  //   lv_obj_center(contents_label);
 
-    lv_obj_t *btn = lv_msgbox_get_btns(mbox);
-    lv_obj_align(btn, LV_ALIGN_CENTER, 0, 0);
+  // 打印两者内容
+  // LV_LOG_USER("title: %s", lv_label_get_text(title_label));
+  // LV_LOG_USER("contents: %s", lv_label_get_text(contents_label));
 
-    
-    lv_obj_center(mbox);
+  /*********** Button ***********/
+  lv_obj_t *btns = lv_msgbox_get_btns(mbox);
+  lv_obj_set_width(btns, 220);
+  // lv_obj_set_size(btns, (220), 40);
+  // lv_coord_t btns_h = lv_obj_get_height(btns);
+  // lv_obj_set_y(btns, lv_obj_get_height(mbox) - btns_h);
+  // lv_obj_set_x(btns, (LV_DPI_DEF * 2.5)/2 - 220/2);
+
+  // CENTER display btn
+  lv_obj_center(btns);
+  lv_obj_center(mbox);
 }
+
 
 // void msgbox(lv_obj_t *parent, const char *title, const char *txt, const char *btn_txts[], bool add_close_btn)
 // {
@@ -186,7 +220,7 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             lv_obj_clear_state(ui_btn_bind, LV_STATE_USER_1);
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Should Enroll on Portal");
-            msgbox("Required", "Should Enroll on Portal");
+            msgbox(LV_SYMBOL_CLOSE " Required", "Should Enroll on Portal");
             // static const char *btn_txts[] = {"OK", NULL};
             // msgbox(NULL, "Required", "Should Enroll on Portal", btn_txts, false);
             previous_status = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;
