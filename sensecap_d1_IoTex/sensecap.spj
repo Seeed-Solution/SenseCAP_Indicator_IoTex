@@ -17132,7 +17132,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Position",
                 "intarray": [
-                  25,
+                  50,
                   150
                 ],
                 "InheritedType": 7
@@ -17142,8 +17142,8 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  140,
-                  140
+                  180,
+                  120
                 ],
                 "InheritedType": 7
               },
@@ -18095,7 +18095,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Position",
                 "intarray": [
-                  170,
+                  -55,
                   150
                 ],
                 "InheritedType": 7
@@ -18105,15 +18105,15 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  140,
-                  140
+                  180,
+                  120
                 ],
                 "InheritedType": 7
               },
               {
                 "nid": 1536731396,
                 "strtype": "OBJECT/Align",
-                "strval": "TOP_LEFT",
+                "strval": "TOP_RIGHT",
                 "InheritedType": 3
               },
               {
@@ -19083,7 +19083,7 @@
               {
                 "nid": 13074498,
                 "strtype": "OBJECT/Hidden",
-                "strval": "False",
+                "strval": "True",
                 "InheritedType": 2
               },
               {
@@ -22120,8 +22120,8 @@
                 "flags": 17,
                 "strtype": "OBJECT/Position",
                 "intarray": [
-                  25,
-                  300
+                  50,
+                  285
                 ],
                 "InheritedType": 7
               },
@@ -22130,7 +22130,7 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  430,
+                  380,
                   115
                 ],
                 "InheritedType": 7
@@ -27933,6 +27933,31 @@
                               255
                             ],
                             "InheritedType": 7
+                          }
+                        ],
+                        "InheritedType": 1
+                      },
+                      {
+                        "nid": 679908433,
+                        "strtype": "_style/StyleState",
+                        "strval": "USER_1",
+                        "childs": [
+                          {
+                            "nid": -1008656003,
+                            "strtype": "_style/Bg_Color",
+                            "intarray": [
+                              24,
+                              160,
+                              251,
+                              255
+                            ],
+                            "InheritedType": 7
+                          },
+                          {
+                            "nid": -394086623,
+                            "strtype": "_style/Text_Font",
+                            "strval": "montserrat_26",
+                            "InheritedType": 3
                           }
                         ],
                         "InheritedType": 1
@@ -37893,7 +37918,7 @@
               {
                 "nid": -276816150,
                 "strtype": "OBJECT/Hidden",
-                "strval": "False",
+                "strval": "True",
                 "InheritedType": 2
               },
               {
@@ -42006,7 +42031,7 @@
               {
                 "nid": 1188913899,
                 "strtype": "OBJECT/Hidden",
-                "strval": "False",
+                "strval": "True",
                 "InheritedType": 2
               },
               {
@@ -42453,7 +42478,7 @@
           ],
           "TimeReference": 0,
           "ValueReference": 1,
-          "EarlyApply": false,
+          "EarlyApply": true,
           "ImageSet": "",
           "PlaybackTime": 0,
           "PlaybackDelay": 0,
@@ -42542,7 +42567,7 @@
             {
               "nid": -2053543700,
               "strtype": "PROPERTYANIMATION/EarlyApply",
-              "strval": "False",
+              "strval": "True",
               "InheritedType": 2
             },
             {
@@ -42765,7 +42790,7 @@
         {
           "nid": -1019768369,
           "strtype": "ELOANIMATION/TestTarget",
-          "strval": "GUID14541290-342588S3301361",
+          "strval": "GUID11953863-292951S461361",
           "InheritedType": 10
         },
         {
@@ -42802,7 +42827,7 @@
     "theme_color2": 0,
     "exportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\main\\view\\ui",
     "projectExportFolderPath": "Z:\\SenseCAP_Indicator_IoTex\\sensecap_d1_IoTex",
-    "backup_cnt": 384,
+    "backup_cnt": 396,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.3",
     "callfuncsexport": "C_FILE",

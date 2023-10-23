@@ -57,9 +57,9 @@ lv_label_set_text(ui_setting_title,"Setting");
 lv_obj_set_style_text_font(ui_setting_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_setting_wifi = lv_btn_create(ui_screen_setting);
-lv_obj_set_width( ui_setting_wifi, 140);
-lv_obj_set_height( ui_setting_wifi, 140);
-lv_obj_set_x( ui_setting_wifi, 25 );
+lv_obj_set_width( ui_setting_wifi, 180);
+lv_obj_set_height( ui_setting_wifi, 120);
+lv_obj_set_x( ui_setting_wifi, 50 );
 lv_obj_set_y( ui_setting_wifi, 150 );
 lv_obj_add_flag( ui_setting_wifi, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_setting_wifi, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
@@ -88,10 +88,11 @@ lv_obj_set_style_text_font(ui_setting_wifi_title, &ui_font_font1, LV_PART_MAIN| 
 lv_obj_set_style_radius(ui_setting_wifi_title, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_setting_display = lv_btn_create(ui_screen_setting);
-lv_obj_set_width( ui_setting_display, 140);
-lv_obj_set_height( ui_setting_display, 140);
-lv_obj_set_x( ui_setting_display, 170 );
+lv_obj_set_width( ui_setting_display, 180);
+lv_obj_set_height( ui_setting_display, 120);
+lv_obj_set_x( ui_setting_display, -55 );
 lv_obj_set_y( ui_setting_display, 150 );
+lv_obj_set_align( ui_setting_display, LV_ALIGN_TOP_RIGHT );
 lv_obj_add_flag( ui_setting_display, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_setting_display, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 lv_obj_set_style_bg_color(ui_setting_display, lv_color_hex(0xEEBF41), LV_PART_MAIN | LV_STATE_DEFAULT );
@@ -121,7 +122,7 @@ lv_obj_set_width( ui_setting_time, 140);
 lv_obj_set_height( ui_setting_time, 140);
 lv_obj_set_x( ui_setting_time, 315 );
 lv_obj_set_y( ui_setting_time, 150 );
-lv_obj_add_flag( ui_setting_time, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
+lv_obj_add_flag( ui_setting_time, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_setting_time, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 lv_obj_set_style_bg_color(ui_setting_time, lv_color_hex(0x529D53), LV_PART_MAIN | LV_STATE_DEFAULT );
 lv_obj_set_style_bg_opa(ui_setting_time, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
@@ -208,10 +209,10 @@ lv_label_set_text(ui_setting_binding_title,"Device Registration");
 lv_obj_set_style_text_font(ui_setting_binding_title, &ui_font_font1, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_btn_setting_bind = lv_btn_create(ui_screen_setting);
-lv_obj_set_width( ui_btn_setting_bind, 430);
+lv_obj_set_width( ui_btn_setting_bind, 380);
 lv_obj_set_height( ui_btn_setting_bind, 115);
-lv_obj_set_x( ui_btn_setting_bind, 25 );
-lv_obj_set_y( ui_btn_setting_bind, 300 );
+lv_obj_set_x( ui_btn_setting_bind, 50 );
+lv_obj_set_y( ui_btn_setting_bind, 285 );
 lv_obj_add_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_btn_setting_bind, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 lv_obj_set_style_bg_color(ui_btn_setting_bind, lv_color_hex(0x775CB4), LV_PART_MAIN | LV_STATE_DEFAULT );

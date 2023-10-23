@@ -27,18 +27,58 @@ static void custom_event_cb(lv_event_t *e)
     lv_obj_t *mbox = lv_obj_get_parent(btn);
     lv_msgbox_close(mbox);
 }
-
 void msgbox(const char *title, const char *message)
 {
     static const char *btns[] = {"OK", NULL};
 
     lv_obj_t *mbox            = lv_msgbox_create(NULL, title, message, btns, false);
-    lv_obj_add_event_cb(mbox, custom_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
-    // lv_obj_t *btnm = lv_msgbox_get_btnmatrix(mbox);
-    // lv_btnmatrix_set_align(btnm, LV_LABEL_ALIGN_LEFT);
 
+    lv_obj_add_event_cb(mbox, custom_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+
+    static lv_style_t style_msgbox;
+    lv_style_init(&style_msgbox);
+    lv_style_set_text_font(&style_msgbox, &lv_font_montserrat_22);
+    
+    lv_obj_add_style(mbox, &style_msgbox, 0);
+
+    lv_obj_t *btn = lv_msgbox_get_btns(mbox);
+    lv_obj_align(btn, LV_ALIGN_CENTER, 0, 0);
+
+    
     lv_obj_center(mbox);
 }
+
+// void msgbox(lv_obj_t *parent, const char *title, const char *txt, const char *btn_txts[], bool add_close_btn)
+// {
+//     ESP_LOGI(TAG, "msgbox");
+//     // 创建基本的消息框
+//     lv_obj_t *msgbox = lv_msgbox_create(parent, title, txt, btn_txts, add_close_btn);
+//     ESP_LOGI(TAG, "msgbox");
+//     // 创建并初始化背景样式
+//     // static lv_style_t bg_style;
+//     // lv_style_init(&bg_style);
+//     // lv_style_set_bg_color(&bg_style, lv_color_hex(0xFFFFFF));
+//     // ... 其他背景样式设置
+
+//     // 创建并初始化按钮样式
+//     static lv_style_t btn_style;
+//     lv_style_init(&btn_style);
+//     lv_style_set_bg_color(&btn_style, lv_color_hex(0x007FFF));
+//     // ... 其他按钮样式设置
+
+//     // 获取消息框的按钮矩阵对象
+//     lv_obj_t *btns = lv_msgbox_get_btns(msgbox);
+
+//     // 将样式应用到消息框和按钮矩阵
+//     // lv_obj_add_style(msgbox, &bg_style, 0);
+//     lv_obj_add_style(btns, &btn_style, 0);
+
+//     // 调整按钮矩阵的大小和位置以居中“OK”按钮
+//     lv_obj_set_size(btns, LV_PCT(100), LV_SIZE_CONTENT);
+//     lv_obj_align(btns, LV_ALIGN_CENTER, 0, 0);
+
+//     return msgbox;
+// }
 
 /**
  * @brief 当 Confirm 按钮被按下的行为
@@ -55,12 +95,13 @@ void fn_bind_confirm(lv_event_t *e)
     __g_bind_flag     = true;
 
     // 内容是否为空？
-    if (strlen(lv_textarea_get_text(ui_TextArea_SN)) == 0 || strlen(lv_textarea_get_text(ui_TextArea_WAD)) == 0) {
-        ESP_LOGW(TAG, "SN or Wallet Address is empty, please input");
-        // 如果为空，是不能进行操作的
-        msgbox("Warning", "SN is empty, please input");
-        return;
-    }
+    // if (strlen(lv_textarea_get_text(ui_TextArea_SN)) == 0 || strlen(lv_textarea_get_text(ui_TextArea_WAD)) == 0) {
+    //     ESP_LOGW(TAG, "SN or Wallet Address is empty, please input");
+    //     // 如果为空，是不能进行操作的
+    //     // msgbox("Warning", "SN is empty, please input");
+    //     msgbox(NULL, "Warning", "SN or Wallet Address is empty, please input", NULL, false);
+    //     return;
+    // }
 
     esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
     esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, // 当在 Portal 界面中绑定设备 Confirm 后
@@ -125,9 +166,9 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             ESP_LOGI(TAG, "event: IOTEX_STATUS_NO_RESPONSE");
             // do nothing
             // lv_label_get_text(ui_label_bind);
-            lv_obj_clear_state(ui_btn_bind, LV_STATE_USER_1);
-            lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(ui_label_bind, "Confirm");
+            // lv_obj_clear_state(ui_btn_bind, LV_STATE_USER_1);
+            // lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+            // lv_label_set_text(ui_label_bind, "Confirm");
             // previous_status = IOTEX_STATUS_NO_RESPONSE;
             break;
         }
@@ -145,7 +186,9 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             lv_obj_clear_state(ui_btn_bind, LV_STATE_USER_1);
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Should Enroll on Portal");
-            msgbox("Required", "Confirm the registration on the portal");
+            msgbox("Required", "Should Enroll on Portal");
+            // static const char *btn_txts[] = {"OK", NULL};
+            // msgbox(NULL, "Required", "Should Enroll on Portal", btn_txts, false);
             previous_status = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;
             break;
         }
@@ -182,15 +225,15 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             lv_obj_add_state(ui_btn_bind, LV_STATE_USER_1); /// States
 
             esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_WRITE, &__g_bind_flag, sizeof(bool), portMAX_DELAY);
-            if (previous_status == IOTEX_STATUS_DEVICE_SHOULD_ENROLL || previous_status == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
-                // pop_up_custom("Success", "The device has been successfully registered");
-                // static const char *btns[] = {"OK"};
-                msgbox("Success", "The device has been successfully registered");
-                // msgbox("Success", "The device has been successfully registered");
-                // msgbox("Success", "The device has been successfully registered", false);
-            }
+            // if (previous_status == IOTEX_STATUS_DEVICE_SHOULD_ENROLL || previous_status == IOTEX_STATUS_DEVICE_CONFIRM_NEEDED) {
+            //     // pop_up_custom("Success", "The device has been successfully registered");
+            //     // static const char *btns[] = {"OK"};
+            //     msgbox("Success", "The device has been successfully registered");
+            //     // msgbox("Success", "The device has been successfully registered");
+            //     // msgbox("Success", "The device has been successfully registered", false);
+            // }
             previous_status = IOTEX_STATUS_DEVICE_SUCCESS;
-            // pop_up_custom("Success", "The device has been successfully registered");
+            // pop_up_custom("Success", "The device has been successfully registered"); // 不同谈弹串
             // 如果当前在 注册页面，就直接跳转到传感数据页面
             // _ui_screen_change(&ui_screen_sensor, LV_SCR_LOAD_ANIM_FADE_IN, 200, 300, &ui_screen_sensor_screen_init);
 

@@ -228,7 +228,7 @@ lv_anim_set_playback_time(&PropertyAnimation_0, 0);
 lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
  lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
 lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
-lv_anim_set_early_apply( &PropertyAnimation_0, false );
+lv_anim_set_early_apply( &PropertyAnimation_0, true );
  lv_anim_set_get_value_cb(&PropertyAnimation_0, &_ui_anim_callback_get_y );
 lv_anim_start(&PropertyAnimation_0);
 ui_anim_user_data_t *PropertyAnimation_1_user_data = lv_mem_alloc(sizeof(ui_anim_user_data_t));
