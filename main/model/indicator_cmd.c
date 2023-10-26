@@ -85,8 +85,8 @@ static int fn_w3b_cm_set(int argc, char **argv)
     }
 
     if (w3b_cmd_args.wallet_addr->count > 0) {
-        ESP_LOGI(TAG, "w3b_cm_set: wallet_addr is %s", w3b_cmd_args.wallet_addr->sval[0]);
         wad_len = strlen(w3b_cmd_args.wallet_addr->sval[0]);
+        ESP_LOGI(TAG, "w3b_cm_set: wallet_addr is %s, len:%d", w3b_cmd_args.wallet_addr->sval[0], wad_len);
         if (wad_len > WALLET_MAX_LEN) {
             ESP_LOGE(TAG, "w3b_cm_set: wallet_addr %d is too long", wad_len);
             // response_cmd(CFG_FAIL, "wallet_addr is too long");
@@ -97,8 +97,8 @@ static int fn_w3b_cm_set(int argc, char **argv)
     }
 
     if (w3b_cmd_args.sn->count > 0) {
-        ESP_LOGI(TAG, "w3b_cm_set: sn is %s", w3b_cmd_args.sn->sval[0]);
         sn_len = strlen(w3b_cmd_args.sn->sval[0]);
+        ESP_LOGI(TAG, "w3b_cm_set: sn is %s, len:%d", w3b_cmd_args.sn->sval[0], sn_len);
         if (sn_len > SN_MAX_LEN) {
             ESP_LOGE(TAG, "w3b_cm_set: sn %d is too long", sn_len);
             response_cmd(CFG_FAIL, "sn is too long");

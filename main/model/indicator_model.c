@@ -27,5 +27,5 @@ int indicator_model_init(void)
     indicator_city_init();
     indicator_display_init(); // lcd bl on
     indicator_cmd_init();
-    indicator_iotex_init();
+    // indicator_iotex_init();
 }

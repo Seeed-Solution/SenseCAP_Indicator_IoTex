@@ -75,9 +75,11 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
                 ESP_LOGE(TAG, "eth_addr_write_fn failed");
                 return ESP_ERR_NOT_FOUND;
             }
+            break;
             // esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_DEVICE_ETH_ADDRESS,
             //                   &rev_cfg, sizeof(eth_cfg),
             //                   portMAX_DELAY);
+            // 不用顯示，上位機進行顯示
         }
         case CFG_EVENT_WRITE: {
             w3b_cfg_interface *rev_cfg = (w3b_cfg_interface *)event_data;
@@ -87,6 +89,7 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
                 w3b_cfg.cfg.sn_len = rev_cfg->sn_len;
                 memcpy(&w3b_cfg.cfg.sn, rev_cfg->sn, sizeof(rev_cfg->sn));
             } else {
+                // memset(&w3b_cfg.cfg.sn, 0, sizeof(w3b_cfg.cfg.sn));
                 // w3b_cfg.cfg.sn_len = rev_cfg->sn_len;
                 // 不覆盖，所以comments
             }
@@ -94,8 +97,9 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
                 w3b_cfg.cfg.wallet_len = rev_cfg->wallet_len;
                 memcpy(&w3b_cfg.cfg.wallet, rev_cfg->wallet, sizeof(rev_cfg->wallet));
             } else {
+                // memset(&w3b_cfg.cfg.wallet, 0, sizeof(w3b_cfg.cfg.wallet));
                 // w3b_cfg.cfg.wallet_len = rev_cfg->wallet_len;
-                // 不覆盖，所以comments
+                // 不覆盖，所以comments，使用之前獲取的内容
             }
             // memcpy(&w3b_cfg.cfg, rev_cfg, sizeof(w3b_cfg_interface));
 
