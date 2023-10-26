@@ -220,7 +220,7 @@ static void __page_event_handler(void *handler_args, esp_event_base_t base, int3
             lv_obj_clear_state(ui_btn_bind, LV_STATE_USER_1);
             lv_obj_set_style_text_font(ui_label_bind, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(ui_label_bind, "Should Enroll on Portal");
-            msgbox(LV_SYMBOL_CLOSE " Required", "Should Enroll on Portal");
+            msgbox("Required", "Should Enroll on Portal");
             // static const char *btn_txts[] = {"OK", NULL};
             // msgbox(NULL, "Required", "Should Enroll on Portal", btn_txts, false);
             previous_status = IOTEX_STATUS_DEVICE_SHOULD_ENROLL;

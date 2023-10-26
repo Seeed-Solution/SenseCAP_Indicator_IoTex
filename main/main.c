@@ -62,9 +62,13 @@ void app_main(void)
     indicator_view_init(); // LVGL 界面，初始化前端页面相关的部分，以及 event_handler: view_event_handle 在 `view_data.h` 中被定义 event collection
     lv_port_sem_give();
 
-    indicator_model_init(); // 数据后端类型相关，提供数据和配置 handle: model_event_handle & cfg_event_handle 在 `model_data.h` 中被定义 event collection
+    indicator_model_init();      // 数据后端类型相关，提供数据和配置 handle: model_event_handle & cfg_event_handle 在 `model_data.h` 中被定义 event collection
     indicator_controller_init(); // 时间和显示相关的配置信息
-    w3b_cfg_init(); // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
+    w3b_cfg_init();              // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
+    // DEVICE_ETH_EVENT_TRIGGER
+    // eth_cfg cfg = {"358f94366124d9f2817b09c84921d2a653f5ac0c",
+    //                ((sizeof("358f94366124d9f2817b09c84921d2a653f5ac0c")/sizeof(char)) - 1)};
+    // esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, DEVICE_ETH_EVENT_TRIGGER, &cfg,sizeof(eth_cfg), portMAX_DELAY);
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10000));
     }

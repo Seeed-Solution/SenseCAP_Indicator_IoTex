@@ -17,6 +17,7 @@
 #include "nvs.h"
 #define IOTEX_CFG_STORAGE     "IoTexCFG"
 #define IOTEX_BINDING_STORAGE "IoTexBindFlag"
+#define IOTEX_ETH_STORAGE     "IoTexETH"
 
 static const char *TAG = "model_data";
 
@@ -66,11 +67,17 @@ static void _cfg_event_handler(void *handler_args, esp_event_base_t base, int32_
             ESP_LOGI(TAG, "event: DEVICE_ETH_EVENT_TRIGGER");
             // 获取 string
             eth_cfg *rev_cfg = (eth_cfg *)event_data;
-            esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_DEVICE_ETH_ADDRESS,
-                              &rev_cfg, sizeof(eth_cfg),
-                              portMAX_DELAY);
+            if (rev_cfg == NULL)
+                return;
             // save for upload to host
             memcpy(&eth_address, rev_cfg, sizeof(eth_cfg));
+            if (eth_addr_write_fn(&eth_address) != ESP_OK) {
+                ESP_LOGE(TAG, "eth_addr_write_fn failed");
+                return ESP_ERR_NOT_FOUND;
+            }
+            // esp_event_post_to(view_event_handle, VIEW_EVENT_BASE, VIEW_DEVICE_ETH_ADDRESS,
+            //                   &rev_cfg, sizeof(eth_cfg),
+            //                   portMAX_DELAY);
         }
         case CFG_EVENT_WRITE: {
             w3b_cfg_interface *rev_cfg = (w3b_cfg_interface *)event_data;
@@ -226,6 +233,17 @@ esp_err_t w3b_cfg_init()
     }
     esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, BIND_EVENT_VIEW,
                       NULL, 0, portMAX_DELAY);
+
+    eth_cfg _eth_addr;
+    if (eth_addr_read_fn(&_eth_addr, &len) != ESP_OK) {
+        ESP_LOGE(TAG, "eth_addr_read_fn failed");
+        // return ESP_ERR_NOT_FOUND;
+    } else {
+        ESP_LOGI(TAG, "eth_addr_read_fn success, eth_addr:%s", _eth_addr.eth);
+        esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, DEVICE_ETH_EVENT_TRIGGER,
+                          &_eth_addr, sizeof(eth_cfg),
+                          portMAX_DELAY);
+    }
 }
 
 esp_err_t bind_flag_write_fn(bool *flag)
@@ -246,4 +264,14 @@ esp_err_t cfg_write_fn(W3B_CFG *cfg)
 esp_err_t cfg_read_fn(W3B_CFG *cfg, int *len)
 {
     return indicator_storage_read(IOTEX_CFG_STORAGE, (void *)cfg, len);
+}
+
+esp_err_t eth_addr_read_fn(eth_cfg *cfg, int *len)
+{
+    return indicator_storage_read(IOTEX_ETH_STORAGE, (void *)cfg, len);
+}
+
+esp_err_t eth_addr_write_fn(eth_cfg *cfg)
+{
+    return indicator_storage_write(IOTEX_ETH_STORAGE, (void *)cfg, sizeof(eth_cfg));
 }

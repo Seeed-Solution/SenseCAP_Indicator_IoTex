@@ -16,7 +16,9 @@
 #include "indicator_storage.h"
 // #include "freertos/FreeRTOS.h"
 // #include "freertos/task.h"
-
+#ifndef COMPACT_MACSTR
+#define COMPACT_MACSTR "%02x%02x%02x%02x%02x%02x"
+#endif
 static const char *TAG = "CMD_RESP";
 
 #define PROMPT_STR "Indicator"
@@ -39,7 +41,7 @@ static int fn_w3b_cm_read(int argc, char **argv)
     }
     char buf[526];
     // sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, w3b_cfg.cfg.wallet);
-    sprintf(buf, "CMD_RESP:%s," MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, eth_address.eth);
+    sprintf(buf, "CMD_RESP:%s," COMPACT_MACSTR ",%s,%s\r\n", "OK", MAC2STR(w3b_cfg.mac), w3b_cfg.cfg.sn, eth_address.eth);
     printf("%s", buf);
     return 0;
 }
