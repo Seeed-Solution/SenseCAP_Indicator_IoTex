@@ -12,6 +12,8 @@
 #include "ws_mqtt.h"
 #include "wsiotsdk.h"
 
+#include "view_data.h"
+
 static const char *TAG = "ws_mqtt";
 
 static SemaphoreHandle_t __g_mqtt_task_sem;
@@ -66,7 +68,7 @@ static char *ws_mqtt_get_status_topic(void)
 {
 
     memset(app_mqtt_topic_status, 0, sizeof(app_mqtt_topic_status));
-    sprintf(app_mqtt_topic_status, "%s/status/%s", app_mqtt_topic, iotex_dev_mac_get(DEV_MAC_TYPE_STR));
+    sprintf(app_mqtt_topic_status, "%s/status/%s", app_mqtt_topic, iotex_devinfo_mac_get(DEV_MAC_TYPE_STR));
 
     ESP_LOGI(TAG, "Status Topic %s", app_mqtt_topic_status);
 
@@ -148,6 +150,7 @@ static int ws_mqtt_app_server_parse_data(char *data, int data_len)
         }
 
         iotex_user_wallet_addr_set(json_proposer->valuestring, strlen(json_proposer->valuestring));
+        iotex_send_wallet_address_to_Seeed(json_proposer->valuestring, strlen(json_proposer->valuestring));
 
         ESP_LOGI(TAG, "Dev Proposer : %s", json_proposer->valuestring);
     }
@@ -240,8 +243,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
                 ws_mqtt_set_status(WS_MQTT_STATUS_TOKEN_SERVER_RECEIVED);
             } else {
                 int status = ws_mqtt_app_server_parse_data((char *)event->data, (int)event->data_len);
-                if (1 == status)
-                    ws_mqtt_set_status(WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_CONFIRM);
+                iotex_upload_data_set_status(status);
                 if (2 == status) {
                     ws_mqtt_set_status(WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_SUCCESS);
                     iotex_dev_access_set_mqtt_status(IOTEX_MQTT_BIND_STATUS_OK);
@@ -283,15 +285,31 @@ static void ws_mqtt_token_server_start(void)
     esp_mqtt_client_start(mqtt_client);
 }
 
+static void __view_event_handler(void *handler_args, esp_event_base_t base, int32_t id, void *event_data)
+{
+    switch (id) {
+        case VIEW_EVENT_IOTEX_USER_CONFIRM: {
+            ESP_LOGI(TAG, "event: VIEW_EVENT_IOTEX_USER_CONFIRM");
+
+            ws_mqtt_set_status(WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_CONFIRM);
+
+            break;
+        }
+    }
+}
+
 void ws_mqtt_token_server_request(void)
 {
 
     char *message  = NULL;
+    char *dev_sn = iotex_devinfo_dev_sn_get();
+    if (NULL == dev_sn)
+        return;
 
     cJSON *request = cJSON_CreateObject();
 
     cJSON_AddStringToObject(request, "project_name", WS_MQTT_TOKEN_SERVER_PROJECT_NAME);
-    cJSON_AddStringToObject(request, "id", WS_MQTT_TEST_DEV_SN);
+    cJSON_AddStringToObject(request, "id", dev_sn);
     cJSON_AddStringToObject(request, "client_id", "seeed-001");
 
     message = cJSON_PrintUnformatted((const cJSON *)request);
@@ -331,8 +349,12 @@ void ws_mqtt_app_server_start(void)
 
 static void __ws_mqtt_task(void *p_arg)
 {
+    uint8_t * eth_addr = NULL;
 
     xSemaphoreTake(__g_mqtt_task_sem, portMAX_DELAY);
+
+    eth_addr = iotex_wsiotsdk_get_eth_addr();
+    iotex_send_eth_address_to_Seeed(eth_addr, strlen(eth_addr));
 
     while (1) {
         ESP_LOGI(TAG, "MQTT status : %d", mqtt_status);
@@ -340,11 +362,16 @@ static void __ws_mqtt_task(void *p_arg)
         switch (mqtt_status) {
             case WS_MQTT_STATUS_INIT:
 
+                if (0 == iotex_devinfo_query_dev_sn())
+                    ws_mqtt_set_status(WS_MQTT_STATUS_DEV_SN_READY);    
+
+                break;
+            case WS_MQTT_STATUS_DEV_SN_READY:
+                
                 ws_mqtt_token_server_start();
                 ws_mqtt_set_status(WS_MQTT_STATUS_TOKEN_SERVER_CONNECTING);
 
-                break;
-
+                break;                
             case WS_MQTT_STATUS_TOKEN_SERVER_SUBSCRIBED:
             case WS_MQTT_STATUS_TOKEN_SERVER_PUBLISHED:
 
@@ -373,13 +400,13 @@ static void __ws_mqtt_task(void *p_arg)
 
             case WS_MQTT_STATUS_APP_SERVER_STATUS_SUBSCRIBED:
 
-                iotex_dev_access_query_dev_register_status(iotex_dev_mac_get(DEV_MAC_TYPE_HEX));
+                iotex_dev_access_query_dev_register_status(iotex_devinfo_mac_get(DEV_MAC_TYPE_HEX));
 
                 break;
             case WS_MQTT_STATUS_APP_SERVER_BIND_STATUS_CONFIRM:
 
-                iotex_dev_access_dev_register_confirm(iotex_dev_mac_get(DEV_MAC_TYPE_HEX));
-                iotex_dev_access_query_dev_register_status(iotex_dev_mac_get(DEV_MAC_TYPE_HEX));
+                iotex_dev_access_dev_register_confirm(iotex_devinfo_mac_get(DEV_MAC_TYPE_HEX));
+                iotex_dev_access_query_dev_register_status(iotex_devinfo_mac_get(DEV_MAC_TYPE_HEX));
 
                 break;
             default:
@@ -390,48 +417,6 @@ static void __ws_mqtt_task(void *p_arg)
         vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
-
-#if 0
-void ws_mqtt_task(void) {
-
-    ESP_LOGI(TAG, "MQTT status : %d", mqtt_status);
-
-    switch (mqtt_status)
-    {
-    case WS_MQTT_STATUS_INIT:
-
-        ws_mqtt_token_server_start();
-        mqtt_status = WS_MQTT_STATUS_TOKEN_SERVER_CONNECTING;
-
-        break;
-
-    case WS_MQTT_STATUS_TOKEN_SERVER_SUBSCRIBED:
-    case WS_MQTT_STATUS_TOKEN_SERVER_PUBLISHED:
-
-        ws_mqtt_token_server_request();
-        mqtt_status = WS_MQTT_STATUS_TOKEN_SERVER_PUBLISHED;
-
-        break;
-    case WS_MQTT_STATUS_TOKEN_SERVER_RECEIVED:   
-
-        esp_mqtt_client_destroy(mqtt_client);
-        mqtt_status = WS_MQTT_STATUS_TOKEN_SERVER_FINISH;
-
-        break;                
-    case WS_MQTT_STATUS_TOKEN_SERVER_FINISH:        
-    case WS_MQTT_STATUS_APP_SERVER_START:   
-
-        ws_mqtt_app_server_start();
-
-        break;
-
-    default:
-
-        break;
-    }
-
-}
-#endif
 
 static void __ip_event_handler(void *arg, esp_event_base_t event_base,
                                int32_t event_id, void *event_data)
@@ -489,7 +474,7 @@ static void __mqtt_event_handler(void *handler_args, esp_event_base_t base, int3
 }
 #endif
 
-int ws_mqtt_init(void)
+int iotex_ws_comm_init(void)
 {
     __g_mqtt_task_sem   = xSemaphoreCreateBinary();
     __g_mqtt_status_sem = xSemaphoreCreateBinary();
@@ -501,6 +486,10 @@ int ws_mqtt_init(void)
                                                         &__ip_event_handler,
                                                         0,
                                                         NULL));
+
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(view_event_handle, 
+                                                        VIEW_EVENT_BASE, VIEW_EVENT_IOTEX_USER_CONFIRM, 
+                                                        __view_event_handler, NULL, NULL));                                                        
 
 #ifdef WS_MQTT_HANDLE_USE_EVENT
     esp_event_loop_args_t mqtt_event_task_args = {

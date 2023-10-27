@@ -7,6 +7,10 @@
 #include "indicator_model.h"
 #include "indicator_view.h"
 
+#include "wsiotsdk.h"
+#include "ws_mqtt.h"
+#include "upload_data.h"
+
 static const char *TAG = "app_main";
 
 #define VERSION  "v1.0.0"
@@ -64,11 +68,14 @@ void app_main(void)
 
     indicator_model_init();      // 数据后端类型相关，提供数据和配置 handle: model_event_handle & cfg_event_handle 在 `model_data.h` 中被定义 event collection
     indicator_controller_init(); // 时间和显示相关的配置信息
-    w3b_cfg_init();              // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
-    // DEVICE_ETH_EVENT_TRIGGER
-    // eth_cfg cfg = {"358f94366124d9f2817b09c84921d2a653f5ac0c",
-    //                ((sizeof("358f94366124d9f2817b09c84921d2a653f5ac0c")/sizeof(char)) - 1)};
-    // esp_event_post_to(cfg_event_handle, CFG_EVENT_BASE, DEVICE_ETH_EVENT_TRIGGER, &cfg,sizeof(eth_cfg), portMAX_DELAY);
+    w3b_cfg_init(); // cmd 提供接口, 实现SN, Wallet, bind flag等的获取 以及对上位机的响应格式;
+
+    default_SetSeed(esp_random());
+    iotex_wsiotsdk_init(time, iotex_mqtt_pubscription, iotex_mqtt_subscription);
+
+    iotex_ws_comm_init();
+    iotex_upload_data_init();
+
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10000));
     }

@@ -37,9 +37,14 @@ enum dev_mac_type {
 #define BIT_UPLOAD_DATA_MASK        (BIT_UPLOAD_DATA_CO2 | BIT_UPLOAD_DATA_TVOC | BIT_UPLOAD_DATA_TEMP | BIT_UPLOAD_DATA_HUMIDITY)
 #define BIT_UPLOAD_DATA_READY       BIT_UPLOAD_DATA_MASK
 
-#define UPLOAD_DATA_TEST_DEV_MAC_OFFSET             1
+#define UPLOAD_DATA_TEST_DEV_MAC_OFFSET             0
 
 void iotex_upload_data_set_value(int value, enum upload_data_type data_type);
-int8_t *iotex_dev_mac_get(enum dev_mac_type);
+int8_t *iotex_devinfo_mac_get(enum dev_mac_type);
+int8_t *iotex_devinfo_dev_sn_get(void);
+int iotex_devinfo_query_dev_sn(void);
+void iotex_upload_data_set_status(int status);
+void iotex_send_wallet_address_to_Seeed(char *buf, int32_t buf_len); 
+void iotex_send_eth_address_to_Seeed(char *buf, int32_t buf_len); 
 
 #endif
