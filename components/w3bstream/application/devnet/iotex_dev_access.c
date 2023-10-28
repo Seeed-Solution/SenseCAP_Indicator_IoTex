@@ -418,7 +418,7 @@ int iotex_dev_access_dev_register_confirm(int8_t mac[6]) {
 	strcpy(upload.header.pub_id,   IOTEX_PUB_ID_DEFAULT);
 	strcpy(upload.header.event_type, IOTEX_EVENT_TYPE_DEFAULT);
 	strcpy(upload.header.token, dev_ctx->mqtt_ctx.token);
-	upload.header.pub_time = IOTEX_PUB_TIME_TEST_DEFAULT;
+	upload.header.pub_time = timestamp;
 
  	upload.has_payload = true;
  	upload.payload.ptype = Payload_PackageType_COMFIRM;

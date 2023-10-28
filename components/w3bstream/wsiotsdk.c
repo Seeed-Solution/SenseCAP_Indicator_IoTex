@@ -3,7 +3,7 @@
 
 psa_key_id_t g_signkey = 1;
 static uint8_t exported[PSA_KEY_EXPORT_ECC_PUBLIC_KEY_MAX_SIZE(256) + 1];
-static uint8_t exported_dev_addr[65];
+static uint8_t exported_dev_addr[64];
 
 static void iotex_export_public_key(void) {
 
@@ -84,5 +84,11 @@ uint8_t * iotex_wsiotsdk_get_public_key(void) {
 
     return (uint8_t *)exported;
 }
+
+uint8_t * iotex_wsiotsdk_get_eth_addr(void) {
+
+    return (uint8_t *)exported_dev_addr;
+}
+
 
 
