@@ -5,7 +5,7 @@
 #define PB_DEVNET_UPLOAD_PB_H_INCLUDED
 #include "ProtoBuf/pb.h"
 #include "ProtoBuf/header.pb.h"
-#include "ProtoBuf/Payload.pb.h"
+#include "ProtoBuf/payload.pb.h"
 
 #if PB_PROTO_HEADER_VERSION != 40
 #error Regenerate this file with the current version of nanopb generator.
