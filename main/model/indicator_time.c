@@ -3,7 +3,7 @@
 #include "nvs.h"
 #include <stdlib.h>
 #include "indicator_model.h"
-
+#include <esp_timer.h>
 #define TIME_CFG_STORAGE "time-cfg"
 
 struct indicator_time {

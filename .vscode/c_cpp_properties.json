@@ -1,7 +1,7 @@
 {
     "configurations": [
         {"name": "Win32",
-            "compilerPath": "C:/Espressif/tools/xtensa-esp32s3-elf/esp-2022r1-11.2.0/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc.exe",
+            "compilerPath": "C:/Espressif/tools/xtensa-esp32s3-elf/esp-12.2.0_20230208/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc.exe", // choose your compiler
             "includePath": [
                 "${env:ESP_IDF_PATH}/components/**",
                 "${workspaceFolder}/components/bsp/include",
@@ -26,9 +26,9 @@
                 "${workspaceFolder}/main/model",
                 "${workspaceFolder}/main",
                 "${workspaceFolder}/components/bsp/include",
-                "${workspaceFolder}/components/WSIoTSDK/include",
-                "${workspaceFolder}/components/WSIoTSDK/include/**",
-                "${workspaceFolder}/components/WSIoTSDK/",
+                "${workspaceFolder}/components/w3bstream/include",
+                "${workspaceFolder}/components/w3bstream/include/**",
+                "${workspaceFolder}/components/w3bstream/",
                 "${workspaceFolder}/main/comm"
 
             ],
@@ -57,8 +57,8 @@
                     "${workspaceFolder}/main/model",
                     "${workspaceFolder}/main",
                     "${workspaceFolder}/components/bsp/include",
-                    "${workspaceFolder}/components/WSIoTSDK/include",
-                    "${workspaceFolder}/components/WSIoTSDK/"
+                    "${workspaceFolder}/components/w3bstream/include",
+                    "${workspaceFolder}/components/w3bstream/"
                 ],
                 "limitSymbolsToIncludedHeaders": false
             }
