@@ -8,6 +8,7 @@ SET(SOURCES screens/ui_screen_time.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
+    ui_events.c
     images/ui_img_background_png.c
     images/ui_img_location2_png.c
     images/ui_img_wifi_disconet_png.c
@@ -33,6 +34,7 @@ SET(SOURCES screens/ui_screen_time.c
     fonts/ui_font_font2.c
     fonts/ui_font_font3.c
     fonts/ui_font_font4.c
+    fonts/ui_font_prompt.c
     fonts/ui_font_time_font.c)
 
 add_library(ui ${SOURCES})

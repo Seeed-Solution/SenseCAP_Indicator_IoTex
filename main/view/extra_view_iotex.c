@@ -156,8 +156,8 @@ static void __view_event_handler(void *handler_args, esp_event_base_t base, int3
         case VIEW_EVENT_MQTT_IOTEX_CFG: {
             ESP_LOGI(TAG, "event: VIEW_EVENT_MQTT_IOTEX_CFG");
             w3b_cfg_interface *p_cfg = (w3b_cfg_interface *)event_data;
-            lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn);
-            lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
+            // lv_textarea_set_text(ui_TextArea_SN, p_cfg->sn); /* no longer need it */
+            // lv_textarea_set_text(ui_TextArea_WAD, p_cfg->wallet);
             break;
         }
         case VIEW_EVENT_MQTT_IOTEX_BINDING: {
@@ -379,4 +379,16 @@ int iotex_view_cfg_event_register(void)
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(model_event_handle,
                                                              DATA_EVENT_BASE, BUTTON_EVENT_CONFIRM,
                                                              __button_event_handler, NULL, NULL));
+}
+
+void btn_register_device_start(lv_event_t *e)
+{
+    ESP_LOGI(TAG, "EVENT_DEVICE_REGISTRATION_START");
+    esp_event_post_to(model_event_handle, DATA_EVENT_BASE, EVENT_DEVICE_REGISTRATION_START, NULL, 0, portMAX_DELAY);
+}
+
+
+void btn_register_device_exit(lv_event_t *e){
+    ESP_LOGI(TAG, "EVENT_DEVICE_REGISTRATION_STOP");
+    esp_event_post_to(model_event_handle, DATA_EVENT_BASE, EVENT_DEVICE_REGISTRATION_STOP, NULL, 0, portMAX_DELAY);
 }
