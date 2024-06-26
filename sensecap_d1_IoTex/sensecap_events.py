@@ -14,3 +14,11 @@ def IoTex_unbind(event_struct):
 def fn_iotex_unbind(event_struct):
     return
 
+
+def btn_register_device_start(event_struct):
+    return
+
+
+def btn_register_device_exit(event_struct):
+    return
+

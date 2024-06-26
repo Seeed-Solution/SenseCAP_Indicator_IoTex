@@ -1,0 +1,16 @@
+{
+  "codename": "prompt",
+  "ttf_path": "/assets/NotoSansSC-Medium.ttf",
+  "bin_path": "/assets\\ui_font_prompt.bin",
+  "c_path": "/assets\\ui_font_prompt.c",
+  "cfg_path": "/assets\\ui_font_prompt.fcfg",
+  "size": 22,
+  "bpp": 8,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}
